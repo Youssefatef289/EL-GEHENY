@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
 import { company } from '../data/site'
+import { useLang } from '../i18n'
 
 export default function WhatsAppButton() {
-  const message = encodeURIComponent('مرحباً، أرغب في الاستفسار عن مشاريع الجهيني للتطوير العقاري')
+  const { t } = useLang()
+  const message = encodeURIComponent(t('whatsapp.message'))
   const href = `https://wa.me/${company.whatsapp}?text=${message}`
 
   return (
@@ -10,14 +12,14 @@ export default function WhatsAppButton() {
       href={href}
       target="_blank"
       rel="noreferrer"
-      aria-label="تواصل عبر واتساب"
+      aria-label={t('whatsapp.aria')}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 20 }}
       className="group fixed bottom-6 right-6 z-40 flex items-center gap-3"
     >
       <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-full bg-navy-100 px-4 py-2 text-sm font-semibold text-navy-900 opacity-0 shadow-sm backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100 sm:block">
-        تواصل معنا الآن
+        {t('whatsapp.tooltip')}
       </span>
       <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_10px_30px_-5px_rgba(37,211,102,0.6)] transition-transform duration-300 group-hover:scale-110">
         <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-30" />

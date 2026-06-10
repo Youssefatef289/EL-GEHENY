@@ -5,6 +5,7 @@ import LazyImage from '../components/LazyImage'
 import Reveal from '../components/Reveal'
 import { getProjectById, projects } from '../data/projects'
 import { company } from '../data/site'
+import { useLang, L } from '../i18n'
 
 export default function ProjectDetail() {
   const { id } = useParams()
@@ -12,10 +13,13 @@ export default function ProjectDetail() {
   const [activeImg, setActiveImg] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
+  const { t, lang } = useLang()
 
   if (!project) return <Navigate to="/projects" replace />
 
   const related = projects.filter((p) => p.id !== project.id).slice(0, 3)
+  const delivered = project.statusKey === 'delivered'
+  const title = L(project.title, lang)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -27,7 +31,7 @@ export default function ProjectDetail() {
       {/* رأس الصفحة مع صورة الغلاف */}
       <section className="relative pt-32 sm:pt-40">
         <div className="absolute inset-0 h-[60vh]">
-          <LazyImage src={project.cover} alt={project.title} className="h-full w-full" />
+          <LazyImage src={project.cover} alt={title} className="h-full w-full" />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-white/40" />
         </div>
 
@@ -37,11 +41,11 @@ export default function ProjectDetail() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-5 flex items-center gap-2 text-sm text-navy-600"
           >
-            <Link to="/" className="hover:text-primary-600">الرئيسية</Link>
+            <Link to="/" className="hover:text-primary-600">{t('project.breadcrumbHome')}</Link>
             <span>/</span>
-            <Link to="/projects" className="hover:text-primary-600">المشاريع</Link>
+            <Link to="/projects" className="hover:text-primary-600">{t('project.breadcrumbProjects')}</Link>
             <span>/</span>
-            <span className="text-primary-600">{project.title}</span>
+            <span className="text-primary-600">{title}</span>
           </motion.nav>
 
           <motion.div
@@ -51,16 +55,16 @@ export default function ProjectDetail() {
             className="flex flex-wrap items-center gap-3"
           >
             <span className="rounded-full bg-primary-400/15 px-4 py-1.5 text-sm font-semibold text-primary-600 ring-1 ring-primary-400/30">
-              {project.categoryName}
+              {L(project.categoryName, lang)}
             </span>
             <span
               className={`rounded-full px-4 py-1.5 text-sm font-semibold ${
-                project.status === 'تم التسليم'
+                delivered
                   ? 'bg-emerald-500/20 text-emerald-300'
                   : 'bg-amber-500/20 text-amber-200'
               }`}
             >
-              {project.status}
+              {delivered ? t('project.delivered') : t('project.inProgress')}
             </span>
           </motion.div>
 
@@ -70,7 +74,7 @@ export default function ProjectDetail() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="heading-lg mt-4 text-navy-900"
           >
-            {project.title}
+            {title}
           </motion.h1>
 
           <motion.p
@@ -82,7 +86,7 @@ export default function ProjectDetail() {
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-primary-400">
               <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
             </svg>
-            {project.location}
+            {L(project.location, lang)}
           </motion.p>
         </div>
       </section>
@@ -95,18 +99,18 @@ export default function ProjectDetail() {
             {/* معلومات سريعة */}
             <Reveal>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <InfoBox label="النوع" value={project.type} />
-                <InfoBox label="المساحة تبدأ من" value={project.area} />
-                <InfoBox label="عدد الوحدات" value={project.units} />
-                <InfoBox label="سنة التسليم" value={project.deliveryYear} />
+                <InfoBox label={t('project.type')} value={L(project.type, lang)} />
+                <InfoBox label={t('project.areaFrom')} value={L(project.area, lang)} />
+                <InfoBox label={t('project.units')} value={L(project.units, lang)} />
+                <InfoBox label={t('project.deliveryYear')} value={project.deliveryYear} />
               </div>
             </Reveal>
 
             {/* الوصف */}
             <Reveal>
               <div>
-                <h2 className="mb-4 font-display text-2xl font-bold text-navy-900">عن المشروع</h2>
-                <p className="leading-relaxed text-navy-700">{project.description}</p>
+                <h2 className="mb-4 font-display text-2xl font-bold text-navy-900">{t('project.about')}</h2>
+                <p className="leading-relaxed text-navy-700">{L(project.description, lang)}</p>
               </div>
             </Reveal>
 
@@ -114,7 +118,7 @@ export default function ProjectDetail() {
             <Reveal>
               <div className="glass rounded-3xl p-8">
                 <div className="mb-3 flex items-center justify-between">
-                  <h3 className="font-display text-lg font-bold text-navy-900">نسبة الإنجاز</h3>
+                  <h3 className="font-display text-lg font-bold text-navy-900">{t('project.progress')}</h3>
                   <span className="font-display text-2xl font-extrabold text-gradient-primary">
                     {project.progress}%
                   </span>
@@ -134,11 +138,11 @@ export default function ProjectDetail() {
             {/* المميزات */}
             <Reveal>
               <div>
-                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">مميزات المشروع</h2>
+                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">{t('project.featuresTitle')}</h2>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {project.features.map((f) => (
+                  {project.features.map((f, fi) => (
                     <div
-                      key={f}
+                      key={fi}
                       className="flex items-center gap-3 rounded-2xl border border-navy-200 bg-navy-50 p-4"
                     >
                       <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-white">
@@ -146,7 +150,7 @@ export default function ProjectDetail() {
                           <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </span>
-                      <span className="text-sm text-navy-100">{f}</span>
+                      <span className="text-sm text-navy-800">{L(f, lang)}</span>
                     </div>
                   ))}
                 </div>
@@ -156,11 +160,11 @@ export default function ProjectDetail() {
             {/* معرض الصور والمخططات */}
             <Reveal>
               <div>
-                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">صور المشروع والمخططات</h2>
+                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">{t('project.galleryTitle')}</h2>
                 <div className="overflow-hidden rounded-3xl border border-navy-200">
                   <LazyImage
                     src={project.gallery[activeImg]}
-                    alt={`${project.title} - صورة ${activeImg + 1}`}
+                    alt={`${title} - ${activeImg + 1}`}
                     className="aspect-video w-full"
                   />
                 </div>
@@ -173,7 +177,7 @@ export default function ProjectDetail() {
                         activeImg === i ? 'border-primary-400' : 'border-transparent opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <LazyImage src={img} alt={`مصغّر ${i + 1}`} className="aspect-video w-full" />
+                      <LazyImage src={img} alt={`${title} ${i + 1}`} className="aspect-video w-full" />
                     </button>
                   ))}
                 </div>
@@ -183,14 +187,14 @@ export default function ProjectDetail() {
             {/* طرق السداد */}
             <Reveal>
               <div>
-                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">طرق السداد</h2>
+                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">{t('project.paymentTitle')}</h2>
                 <div className="grid gap-4 sm:grid-cols-3">
-                  {project.payment.map((p) => (
-                    <div key={p.label} className="glass-primary rounded-2xl p-6 text-center">
+                  {project.payment.map((p, pi) => (
+                    <div key={pi} className="glass-primary rounded-2xl p-6 text-center">
                       <p className="font-display text-2xl font-extrabold text-gradient-primary">
-                        {p.value}
+                        {L(p.value, lang)}
                       </p>
-                      <p className="mt-2 text-sm text-navy-100">{p.label}</p>
+                      <p className="mt-2 text-sm text-navy-800">{L(p.label, lang)}</p>
                     </div>
                   ))}
                 </div>
@@ -203,9 +207,9 @@ export default function ProjectDetail() {
             <div className="sticky top-28">
               <Reveal direction="left">
                 <div className="glass rounded-3xl p-8">
-                  <h3 className="font-display text-xl font-bold text-navy-900">احجز أو استفسر</h3>
-                  <p className="mt-2 text-sm text-navy-300">
-                    سجّل بياناتك وسيتواصل معك فريق المبيعات في أقرب وقت.
+                  <h3 className="font-display text-xl font-bold text-navy-900">{t('project.bookTitle')}</h3>
+                  <p className="mt-2 text-sm text-navy-600">
+                    {t('project.bookDesc')}
                   </p>
 
                   {submitted ? (
@@ -219,20 +223,20 @@ export default function ProjectDetail() {
                           <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
-                      <p className="font-semibold text-navy-900">تم استلام طلبك بنجاح!</p>
-                      <p className="mt-1 text-sm text-navy-700">سنتواصل معك قريباً.</p>
+                      <p className="font-semibold text-navy-900">{t('project.successTitle')}</p>
+                      <p className="mt-1 text-sm text-navy-700">{t('project.successDesc')}</p>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                       <Field
-                        label="الاسم"
+                        label={t('project.fieldName')}
                         value={form.name}
                         onChange={(v) => setForm({ ...form, name: v })}
-                        placeholder="اسمك الكامل"
+                        placeholder={t('project.fieldNamePh')}
                         required
                       />
                       <Field
-                        label="رقم الهاتف"
+                        label={t('project.fieldPhone')}
                         type="tel"
                         value={form.phone}
                         onChange={(v) => setForm({ ...form, phone: v })}
@@ -241,25 +245,25 @@ export default function ProjectDetail() {
                       />
                       <div>
                         <label className="mb-1.5 block text-sm font-medium text-navy-700">
-                          رسالتك
+                          {t('project.fieldMessage')}
                         </label>
                         <textarea
                           rows={3}
                           value={form.message}
                           onChange={(e) => setForm({ ...form, message: e.target.value })}
-                          placeholder="استفسارك عن المشروع..."
+                          placeholder={t('project.fieldMessagePh')}
                           className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
                         />
                       </div>
                       <button type="submit" className="btn-primary w-full">
-                        إرسال الطلب
+                        {t('project.submitRequest')}
                       </button>
                     </form>
                   )}
 
                   <div className="mt-6 border-t border-navy-200 pt-6">
                     <a
-                      href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent('استفسار عن مشروع: ' + project.title)}`}
+                      href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent((lang === 'ar' ? 'استفسار عن مشروع: ' : 'Inquiry about project: ') + title)}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366]/15 px-4 py-3 text-sm font-semibold text-[#25D366] transition-colors hover:bg-[#25D366]/25"
@@ -267,7 +271,7 @@ export default function ProjectDetail() {
                       <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                         <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 004.79 1.22c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2z" />
                       </svg>
-                      تواصل عبر واتساب
+                      {t('contact.whatsapp')}
                     </a>
                   </div>
                 </div>
@@ -280,10 +284,10 @@ export default function ProjectDetail() {
       {/* مشاريع مشابهة */}
       <section className="section-pad pt-0">
         <div className="container-x">
-          <h2 className="mb-8 font-display text-2xl font-bold text-navy-900">مشاريع قد تهمك</h2>
+          <h2 className="mb-8 font-display text-2xl font-bold text-navy-900">{t('project.relatedTitle')}</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p, i) => (
-              <RelatedCard key={p.id} project={p} index={i} />
+              <RelatedCard key={p.id} project={p} index={i} lang={lang} />
             ))}
           </div>
         </div>
@@ -317,7 +321,7 @@ function Field({ label, value, onChange, type = 'text', placeholder, required })
   )
 }
 
-function RelatedCard({ project, index }) {
+function RelatedCard({ project, index, lang }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -332,7 +336,7 @@ function RelatedCard({ project, index }) {
         <div className="relative aspect-[4/3] overflow-hidden">
           <LazyImage
             src={project.cover}
-            alt={project.title}
+            alt={L(project.title, lang)}
             className="h-full w-full"
             imgClassName="transition-transform duration-700 group-hover:scale-110"
           />
@@ -340,9 +344,9 @@ function RelatedCard({ project, index }) {
         </div>
         <div className="p-5">
           <h3 className="font-display text-lg font-bold text-navy-900 group-hover:text-primary-600">
-            {project.title}
+            {L(project.title, lang)}
           </h3>
-          <p className="mt-1 text-sm text-navy-300">{project.categoryName}</p>
+          <p className="mt-1 text-sm text-navy-600">{L(project.categoryName, lang)}</p>
         </div>
       </Link>
     </motion.div>

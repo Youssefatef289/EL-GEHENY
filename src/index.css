@@ -50,7 +50,7 @@
   }
 
   .glass-primary {
-    background: linear-gradient(135deg, rgba(255, 195, 77, 0.12), rgba(255, 195, 77, 0.04));
+    background: linear-gradient(135deg, rgba(189, 154, 104, 0.14), rgba(189, 154, 104, 0.05));
     @apply backdrop-blur-xl border border-primary-200;
   }
 
@@ -80,11 +80,11 @@
   }
 
   .btn-primary {
-    @apply btn btn-shine bg-primary-gradient text-white shadow-lg hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-[0_18px_55px_-10px_rgba(255,195,77,0.7)];
+    @apply btn btn-shine bg-primary-gradient text-white shadow-lg hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-[0_18px_55px_-10px_rgba(189,154,104,0.7)];
   }
 
   .btn-outline {
-    @apply btn btn-shine border border-primary-300 bg-white/60 text-navy-900 backdrop-blur-md hover:-translate-y-0.5 hover:scale-[1.03] hover:border-primary-500 hover:bg-primary-50 hover:text-primary-700 hover:shadow-[0_16px_45px_-12px_rgba(255,195,77,0.45)];
+    @apply btn btn-shine border border-primary-300 bg-white/60 text-navy-900 backdrop-blur-md hover:-translate-y-0.5 hover:scale-[1.03] hover:border-primary-500 hover:bg-primary-50 hover:text-primary-700 hover:shadow-[0_16px_45px_-12px_rgba(189,154,104,0.45)];
   }
 
   .section-pad {

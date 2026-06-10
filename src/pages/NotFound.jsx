@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useLang } from '../i18n'
 
 export default function NotFound() {
+  const { t } = useLang()
   return (
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
@@ -13,12 +15,12 @@ export default function NotFound() {
         className="container-x relative text-center"
       >
         <p className="font-display text-8xl font-extrabold text-gradient-primary sm:text-9xl">404</p>
-        <h1 className="mt-4 font-display text-3xl font-bold text-navy-900">الصفحة غير موجودة</h1>
+        <h1 className="mt-4 font-display text-3xl font-bold text-navy-900">{t('notFound.title')}</h1>
         <p className="mx-auto mt-3 max-w-md text-navy-700">
-          عذراً، الصفحة التي تبحث عنها غير متوفرة أو تم نقلها.
+          {t('notFound.desc')}
         </p>
         <Link to="/" className="btn-primary mt-8">
-          العودة للرئيسية
+          {t('notFound.back')}
         </Link>
       </motion.div>
     </section>

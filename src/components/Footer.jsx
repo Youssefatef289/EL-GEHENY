@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom'
 import Logo from './Logo'
 import { company, navLinks } from '../data/site'
 import { projectCategories } from '../data/projects'
+import { useLang, L } from '../i18n'
 
 export default function Footer() {
+  const { t, lang } = useLang()
   return (
     <footer className="relative mt-20 overflow-hidden border-t border-navy-200 bg-navy-50">
       <div className="pointer-events-none absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-primary-500/10 blur-[120px]" />
@@ -11,11 +13,10 @@ export default function Footer() {
         <div className="flex flex-col gap-5">
           <Logo />
           <p className="max-w-xs text-sm leading-relaxed text-navy-700">
-            منذ عام {company.since}، نبني سجلاً من النجاحات يعتمد على الجودة والالتزام والثقة في
-            مجال التطوير العقاري.
+            {t('footer.aboutSince')} {company.since} — {t('footer.about')}
           </p>
           <div className="flex gap-3">
-            <Social href={company.social.facebook} label="فيسبوك">
+            <Social href={company.social.facebook} label="Facebook">
               <path d="M13 22v-8h2.7l.4-3H13V9c0-.9.2-1.5 1.5-1.5H16V4.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.8 1.3-3.8 3.8V11H7.5v3H10v8h3z" />
             </Social>
             <Social href={company.social.instagram} label="انستجرام">
@@ -31,7 +32,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="mb-5 font-display text-lg font-bold text-navy-900">روابط سريعة</h4>
+          <h4 className="mb-5 font-display text-lg font-bold text-navy-900">{t('footer.quickLinks')}</h4>
           <ul className="flex flex-col gap-3 text-sm">
             {navLinks.map((l) => (
               <li key={l.to}>
@@ -39,7 +40,7 @@ export default function Footer() {
                   to={l.to}
                   className="text-navy-700 transition-colors hover:text-primary-600"
                 >
-                  {l.label}
+                  {t(`nav.${l.key}`)}
                 </Link>
               </li>
             ))}
@@ -47,7 +48,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="mb-5 font-display text-lg font-bold text-navy-900">مشاريعنا</h4>
+          <h4 className="mb-5 font-display text-lg font-bold text-navy-900">{t('footer.ourProjects')}</h4>
           <ul className="flex flex-col gap-3 text-sm">
             {projectCategories.slice(1, 7).map((c) => (
               <li key={c.id}>
@@ -55,7 +56,7 @@ export default function Footer() {
                   to="/projects"
                   className="text-navy-700 transition-colors hover:text-primary-600"
                 >
-                  {c.name}
+                  {L(c.name, lang)}
                 </Link>
               </li>
             ))}
@@ -63,13 +64,13 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="mb-5 font-display text-lg font-bold text-navy-900">تواصل معنا</h4>
+          <h4 className="mb-5 font-display text-lg font-bold text-navy-900">{t('footer.contact')}</h4>
           <ul className="flex flex-col gap-4 text-sm">
             <li className="flex items-start gap-3 text-navy-700">
               <IconWrap>
                 <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
               </IconWrap>
-              <span className="leading-relaxed">{company.address}</span>
+              <span className="leading-relaxed">{L(company.address, lang)}</span>
             </li>
             <li>
               <a
@@ -98,13 +99,11 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-navy-200">
-        <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-center text-xs text-navy-600 sm:flex-row sm:text-right">
+        <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-center text-xs text-navy-600 sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {company.name}. جميع الحقوق محفوظة.
+            © {new Date().getFullYear()} {L(company.name, lang)}. {t('footer.rights')}
           </p>
-          <p>
-            تطوير عقاري بخبرة منذ عام {company.since} — القاهرة الجديدة
-          </p>
+          <p>{t('footer.devLine').replace('{year}', company.since)}</p>
         </div>
       </div>
     </footer>

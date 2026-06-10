@@ -3,9 +3,11 @@ import SectionHeading from '../components/SectionHeading'
 import ProjectCard from '../components/ProjectCard'
 import Reveal from '../components/Reveal'
 import { projects } from '../data/projects'
+import { useLang } from '../i18n'
 
 export default function FeaturedProjects() {
   const featured = projects.slice(0, 3)
+  const { t } = useLang()
 
   return (
     <section className="section-pad relative">
@@ -14,13 +16,13 @@ export default function FeaturedProjects() {
         <div className="flex flex-col items-end justify-between gap-6 sm:flex-row sm:items-center">
           <SectionHeading
             align="right"
-            eyebrow="مشاريعنا"
-            title="نماذج من إبداعاتنا"
-            description="نقدم مجموعة من المشروعات السكنية المتميزة في بيت الوطن بالقاهرة الجديدة، إحدى أسرع المناطق نمواً وأكثرها جذباً للاستثمار"
+            eyebrow={t('featured.eyebrow')}
+            title={t('featured.title')}
+            description={t('featured.description')}
           />
           <Reveal direction="left" className="hidden flex-shrink-0 sm:block">
             <Link to="/projects" className="btn-outline">
-            عرض جميع المشاريع
+            {t('featured.viewAll')}
               <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                 <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -36,7 +38,7 @@ export default function FeaturedProjects() {
 
         <div className="mt-10 text-center sm:hidden">
           <Link to="/projects" className="btn-outline w-full">
-            كل المشاريع
+            {t('featured.allShort')}
           </Link>
         </div>
       </div>

@@ -2,10 +2,13 @@ import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import PageHeader from '../components/PageHeader'
 import ProjectCard from '../components/ProjectCard'
+import SectionReveal from '../components/SectionReveal'
 import { projects, projectCategories } from '../data/projects'
+import { useLang, L } from '../i18n'
 
 export default function Projects() {
   const [active, setActive] = useState('all')
+  const { t, lang } = useLang()
 
   const filtered = useMemo(
     () => (active === 'all' ? projects : projects.filter((p) => p.category === active)),
@@ -15,12 +18,13 @@ export default function Projects() {
   return (
     <>
       <PageHeader
-        eyebrow="مشاريعنا"
-        title="مشاريع تصنع قيمة حقيقية"
-        description="اكتشف محفظتنا المتنوعة من المشاريع العقارية المتميزة في أرقى مناطق القاهرة الجديدة."
-        breadcrumb={[{ label: 'الرئيسية', to: '/' }, { label: 'المشاريع' }]}
+        eyebrow={t('projectsPage.eyebrow')}
+        title={t('projectsPage.title')}
+        description={t('projectsPage.desc')}
+        breadcrumb={[{ label: t('project.breadcrumbHome'), to: '/' }, { label: t('project.breadcrumbProjects') }]}
       />
 
+      <SectionReveal from="left">
       <section className="section-pad pt-10">
         <div className="container-x">
           {/* الفلاتر */}
@@ -45,7 +49,7 @@ export default function Projects() {
                 {active !== cat.id && (
                   <span className="absolute inset-0 -z-10 rounded-full border border-navy-300 bg-navy-50/50" />
                 )}
-                {cat.name}
+                {L(cat.name, lang)}
               </button>
             ))}
           </div>
@@ -69,10 +73,11 @@ export default function Projects() {
           </motion.div>
 
           {filtered.length === 0 && (
-            <p className="py-20 text-center text-navy-300">لا توجد مشاريع في هذا التصنيف حالياً.</p>
+            <p className="py-20 text-center text-navy-300">{t('projectsPage.empty')}</p>
           )}
         </div>
       </section>
+      </SectionReveal>
     </>
   )
 }

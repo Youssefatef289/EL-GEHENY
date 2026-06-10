@@ -2,31 +2,44 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { company } from '../data/site'
+import { useLang, L } from '../i18n'
 
-const motionCards = [
-  {
-    title: 'حركة سلسة',
-    text: 'انتقال ناعم مع التمرير يمنح الصفحة إحساساً حيّاً ومريحاً.',
-  },
-  {
-    title: 'عمق بصري',
-    text: 'طبقات الضوء والظل تصنع بعداً ثلاثيّاً بدون ازدحام بصري.',
-  },
-  {
-    title: 'هوية راقية',
-    text: 'ألوان ذهبية ونفَس معماري يواكب طابع العلامة التجارية.',
-  },
-]
+const motionCardsData = {
+  ar: [
+    { title: 'حركة سلسة', text: 'انتقال ناعم مع التمرير يمنح الصفحة إحساساً حيّاً ومريحاً.' },
+    { title: 'عمق بصري', text: 'طبقات الضوء والظل تصنع بعداً ثلاثيّاً بدون ازدحام بصري.' },
+    { title: 'هوية راقية', text: 'ألوان ذهبية ونفَس معماري يواكب طابع العلامة التجارية.' },
+  ],
+  en: [
+    { title: 'Smooth motion', text: 'A gentle transition on scroll gives the page a lively, comfortable feel.' },
+    { title: 'Visual depth', text: 'Layers of light and shadow create a three-dimensional feel without visual clutter.' },
+    { title: 'Refined identity', text: 'Golden tones and an architectural touch that match the brand’s character.' },
+  ],
+}
 
-const heroPills = [
-  { label: 'منذ', value: `${company.since}` },
-  { label: 'الهوية', value: company.nameShort },
-  { label: 'الحركة', value: 'Scroll 3D' },
-]
+const bottomPillsData = {
+  ar: [
+    { label: 'ثقة', value: '01' },
+    { label: 'تفاصيل', value: '02' },
+    { label: 'رؤية', value: '03' },
+  ],
+  en: [
+    { label: 'Trust', value: '01' },
+    { label: 'Detail', value: '02' },
+    { label: 'Vision', value: '03' },
+  ],
+}
 
 export default function PageHeader({ eyebrow, title, description, breadcrumb = [], image, imageAlt, fullImage = false }) {
   const sectionRef = useRef(null)
   const reduceMotion = useReducedMotion()
+  const { t, lang } = useLang()
+  const motionCards = motionCardsData[lang]
+  const heroPills = [
+    { label: t('pageHeader.pillSince'), value: `${company.since}` },
+    { label: t('pageHeader.pillIdentity'), value: L(company.nameShort, lang) },
+    { label: t('pageHeader.pillMotion'), value: 'Scroll 3D' },
+  ]
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -144,7 +157,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
       className="perspective relative isolate flex h-[100svh] min-h-[100svh] flex-col overflow-hidden pt-24 pb-6 sm:pt-28 sm:pb-8"
     >
       <div className="absolute inset-0 bg-white-gradient" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,195,77,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)]" />
       <motion.div
         style={glowStyle}
         className="pointer-events-none absolute -right-24 top-8 h-80 w-80 rounded-full bg-primary-400/20 blur-[140px]"
@@ -257,7 +270,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
 
           {image ? (
             <div className="glass-primary card-3d relative overflow-hidden rounded-[2rem] border border-primary-200/60 p-3 shadow-[0_24px_90px_-40px_rgba(15,23,34,0.25)] sm:rounded-[2.5rem] sm:p-4">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,195,77,0.22),transparent_38%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.22),transparent_38%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
               <div className="relative overflow-hidden rounded-[1.6rem] sm:rounded-[2rem]">
                 <img
                   src={image}
@@ -270,7 +283,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
             </div>
           ) : (
           <div className="glass-primary card-3d relative overflow-hidden rounded-[2rem] border border-primary-200/60 p-4 shadow-[0_24px_90px_-40px_rgba(15,23,34,0.25)] sm:rounded-[2.5rem] sm:p-6">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,195,77,0.2),transparent_35%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.2),transparent_35%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
             <div className="relative flex min-h-[18rem] flex-col justify-between sm:min-h-[24rem] lg:min-h-[28rem]">
               <div className="flex items-center justify-between gap-4">
                 <span className="eyebrow border-primary-200 bg-primary-100 text-primary-600">
@@ -304,11 +317,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               </div>
 
               <div className="mt-6 grid grid-cols-3 gap-3">
-                {[
-                  { label: 'ثقة', value: '01' },
-                  { label: 'تفاصيل', value: '02' },
-                  { label: 'رؤية', value: '03' },
-                ].map((item) => (
+                {bottomPillsData[lang].map((item) => (
                   <div
                     key={item.label}
                     className="rounded-[1.1rem] border border-navy-200/80 bg-white/70 px-3 py-3 text-center"
@@ -332,14 +341,14 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
           >
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-navy-500">
-                {company.nameShort}
+                {L(company.nameShort, lang)}
               </p>
               <p className="mt-1 font-display text-lg font-bold text-navy-900">
-                منذ {company.since}
+                {t('pageHeader.pillSince')} {company.since}
               </p>
             </div>
             <div className="flex items-center gap-2 text-right">
-              <span className="flex h-3.5 w-3.5 rounded-full bg-primary-400 shadow-[0_0_0_6px_rgba(255,195,77,0.12)]" />
+              <span className="flex h-3.5 w-3.5 rounded-full bg-primary-400 shadow-[0_0_0_6px_rgba(189,154,104,0.12)]" />
               <span className="text-sm font-semibold text-navy-600">Scroll-ready hero</span>
             </div>
           </motion.div>
@@ -354,7 +363,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
       >
         <div className="flex flex-col items-center gap-2 text-navy-600">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.35em]">
-            مرر لأسفل
+            {t('common.scrollDown')}
           </span>
           <div className="flex h-10 w-6 items-start justify-center rounded-full border border-primary-300/70 bg-white/70 p-1.5 backdrop-blur-md">
             <motion.span

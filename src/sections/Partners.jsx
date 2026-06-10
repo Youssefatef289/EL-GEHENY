@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import SectionHeading from '../components/SectionHeading'
+import { useLang } from '../i18n'
 
 import alJarhi from '../../images/Partners in Success/Al-Jarhi Iron.jpeg'
 import bitunil from '../../images/Partners in Success/bitunil.png'
@@ -55,6 +56,7 @@ function PartnerCard({ partner }) {
 
 export default function Partners() {
   const reduceMotion = useReducedMotion()
+  const { t } = useLang()
   const loop = [...partners, ...partners]
 
   return (
@@ -63,9 +65,9 @@ export default function Partners() {
 
       <div className="container-x relative">
         <SectionHeading
-          eyebrow="شركاء النجاح"
-          title="نفخر بثقة شركائنا وموردينا"
-          description="نتعاون مع نخبة من كبرى الشركات والعلامات الرائدة لضمان أعلى معايير الجودة في كل مشروع."
+          eyebrow={t('partners.eyebrow')}
+          title={t('partners.title')}
+          description={t('partners.description')}
         />
       </div>
 

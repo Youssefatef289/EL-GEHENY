@@ -8,14 +8,16 @@ import ScrollToTopButton from './components/ScrollToTopButton'
 import WhatsAppButton from './components/WhatsAppButton'
 import Loader from './components/Loader'
 import ErrorBoundary from './components/ErrorBoundary'
+import { useLang } from './i18n'
 
 function AppErrorFallback() {
+  const { t } = useLang()
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 px-6 text-center">
-      <p className="font-display text-2xl font-bold text-navy-900">حدث خطأ غير متوقع</p>
-      <p className="text-navy-700">يرجى إعادة تحميل الصفحة للمتابعة.</p>
+      <p className="font-display text-2xl font-bold text-navy-900">{t('error.title')}</p>
+      <p className="text-navy-700">{t('error.desc')}</p>
       <button onClick={() => window.location.reload()} className="btn-primary mt-2">
-        إعادة التحميل
+        {t('error.reload')}
       </button>
     </div>
   )

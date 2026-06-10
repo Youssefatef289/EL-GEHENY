@@ -3,10 +3,12 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Logo from './Logo'
 import { navLinks, company } from '../data/site'
+import { useLang } from '../i18n'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [openKey, setOpenKey] = useState(null)
+  const { t, toggleLang } = useLang()
   const location = useLocation()
   const open = openKey === location.key
   const isHomeHero = location.pathname === '/' && !scrolled
@@ -59,7 +61,7 @@ export default function Navbar() {
               >
                 {({ isActive }) => (
                   <>
-                    {link.label}
+                    {t(`nav.${link.key}`)}
                     <span
                       className={`pointer-events-none absolute inset-x-3 -bottom-1 h-0.5 origin-center scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100 ${
                         isHomeHero ? 'bg-white' : 'bg-primary-500'
@@ -82,23 +84,48 @@ export default function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-3 lg:flex">
+          <button
+            onClick={toggleLang}
+            aria-label={t('common.langLabel')}
+            className={`flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-bold transition-colors duration-300 ${
+              isHomeHero
+                ? 'border-white/25 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20'
+                : 'border-primary-300 bg-primary-50 text-primary-700 hover:bg-primary-100'
+            }`}
+          >
+            <GlobeIcon />
+            {t('common.langButton')}
+          </button>
           <a href={`tel:${company.phone}`} className="btn-primary !py-2.5 !px-5 text-xs">
             <PhoneIcon />
-            {company.phone}
+            {t('common.contactUs')}
           </a>
         </div>
 
-        <button
-          onClick={() =>
-            setOpenKey((currentKey) => (currentKey === location.key ? null : location.key))
-          }
-          className={`relative z-50 flex h-11 w-11 items-center justify-center rounded-xl border lg:hidden ${
-            isHomeHero
-              ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
-              : 'border-navy-300 bg-navy-100 text-navy-900'
-          }`}
-          aria-label="القائمة"
-        >
+        <div className="flex items-center gap-2 lg:hidden">
+          <button
+            onClick={toggleLang}
+            aria-label={t('common.langLabel')}
+            className={`flex h-11 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold ${
+              isHomeHero
+                ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
+                : 'border-navy-300 bg-navy-100 text-navy-900'
+            }`}
+          >
+            <GlobeIcon />
+            {t('common.langButton')}
+          </button>
+          <button
+            onClick={() =>
+              setOpenKey((currentKey) => (currentKey === location.key ? null : location.key))
+            }
+            className={`relative z-50 flex h-11 w-11 items-center justify-center rounded-xl border ${
+              isHomeHero
+                ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
+                : 'border-navy-300 bg-navy-100 text-navy-900'
+            }`}
+            aria-label={t('common.menu')}
+          >
           <div className="flex w-5 flex-col gap-1.5">
             <motion.span
               animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
@@ -113,7 +140,8 @@ export default function Navbar() {
               className="block h-0.5 w-full bg-current"
             />
           </div>
-        </button>
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>
@@ -151,7 +179,7 @@ export default function Navbar() {
                       }`
                     }
                   >
-                    {link.label}
+                    {t(`nav.${link.key}`)}
                   </NavLink>
                 </motion.li>
               ))}
@@ -164,7 +192,7 @@ export default function Navbar() {
               >
                 <a href={`tel:${company.phone}`} className="btn-primary w-full">
                   <PhoneIcon />
-                  اتصل بنا: {company.phone}
+                  {t('common.callUs')}: {company.phone}
                 </a>
               </motion.li>
             </motion.ul>
@@ -181,6 +209,20 @@ function PhoneIcon() {
       <path
         d="M3 5.5C3 4.12 4.12 3 5.5 3H7c.6 0 1.1.4 1.3 1l.9 3.2c.1.5 0 1-.4 1.4l-1.3 1.3a13 13 0 005.6 5.6l1.3-1.3c.4-.4.9-.5 1.4-.4l3.2.9c.6.2 1 .7 1 1.3v1.5c0 1.4-1.1 2.5-2.5 2.5C10.5 21 3 13.5 3 5.5z"
         fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+function GlobeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+      <path
+        d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
       />
     </svg>
   )

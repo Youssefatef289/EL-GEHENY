@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useLang } from '../i18n'
 
 export default function ScrollToTopButton() {
   const [visible, setVisible] = useState(false)
+  const { t } = useLang()
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 500)
@@ -18,7 +20,7 @@ export default function ScrollToTopButton() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="العودة لأعلى"
+          aria-label={t('common.backToTop')}
           className="fixed bottom-6 left-6 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-navy-300 bg-primary-50 text-primary-600 shadow-md backdrop-blur-xl transition-colors hover:bg-primary-100"
         >
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">

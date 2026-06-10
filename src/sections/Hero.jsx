@@ -2,12 +2,14 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { company } from '../data/site'
+import { useLang, L } from '../i18n'
 
 import heroVideo from '../../images/website_2.mp4'
 
 export default function Hero() {
   const sectionRef = useRef(null)
   const reduceMotion = useReducedMotion()
+  const { t, lang } = useLang()
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -57,7 +59,7 @@ export default function Hero() {
             className="eyebrow mb-6 border-white/15 bg-white/10 text-white"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-primary-300" />
-            منذ عام {company.since} - {company.nameShort}
+            {t('hero.badgeSince')} {company.since} - {L(company.nameShort, lang)}
           </motion.span>
 
           <motion.h1
@@ -66,7 +68,7 @@ export default function Hero() {
             transition={{ delay: 0.28, duration: 0.7 }}
             className="heading-xl max-w-3xl text-white"
           >
-            قوة الخبرة... <span className="text-gradient-primary">برؤية جديدة</span>
+            {t('hero.titleA')} <span className="text-gradient-primary">{t('hero.titleB')}</span>
           </motion.h1>
 
           <motion.p
@@ -75,8 +77,7 @@ export default function Hero() {
             transition={{ delay: 0.42, duration: 0.7 }}
             className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg lg:mx-0"
           >
-            رحلة بصرية تكشف مشاريعنا وخبرتنا الممتدة في التطوير العقاري، بحضور سينمائي
-            يجمع بين أصالة العلامة وطموح المستقبل.
+            {t('hero.subtitle')}
           </motion.p>
 
           <motion.div
@@ -86,14 +87,14 @@ export default function Hero() {
             className="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:items-start"
           >
             <Link to="/projects" className="btn-primary w-full sm:w-auto">
-              استعرض المشاريع
+              {t('hero.btnProjects')}
               <ArrowIcon />
             </Link>
             <Link
               to="/contact"
               className="btn btn-shine w-full border border-white/15 bg-white/10 text-white backdrop-blur-xl hover:scale-[1.03] hover:border-white/40 hover:bg-white/20 sm:w-auto"
             >
-              تواصل معنا
+              {t('hero.btnContact')}
             </Link>
           </motion.div>
         </motion.div>
@@ -107,7 +108,7 @@ export default function Hero() {
       >
         <div className="flex flex-col items-center gap-2 text-white/75">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.35em]">
-            مرر لأسفل
+            {t('common.scrollDown')}
           </span>
           <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/20 bg-white/10 p-1.5 backdrop-blur-md">
             <motion.span
