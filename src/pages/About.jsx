@@ -5,7 +5,7 @@ import Vision from '../sections/Vision'
 import CTA from '../sections/CTA'
 import { useLang, L } from '../i18n'
 
-import aboutVideo from '../../images/WhatsApp Video 2026-06-10 at 3.58.20 PM.mp4'
+import aboutHero from '../../images/projects/j290/00.jpg'
 
 const whyReasons = [
   {
@@ -51,14 +51,10 @@ function VideoHero() {
   const { t } = useLang()
   return (
     <section className="relative isolate flex min-h-[72svh] flex-col justify-end overflow-hidden pt-28 pb-14 sm:min-h-[82svh]">
-      <video
+      <img
         className="absolute inset-0 -z-20 h-full w-full object-cover"
-        src={aboutVideo}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
+        src={aboutHero}
+        alt=""
         aria-hidden="true"
       />
       <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/60 to-ink/35" />

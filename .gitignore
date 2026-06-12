@@ -16,6 +16,9 @@ dist-ssr
 images/slider hero (1).png
 images/slider hero (2).png
 
+# Large unused video (About hero now uses a project image)
+images/WhatsApp Video 2026-06-10 at 3.58.20 PM.mp4
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
