@@ -85,20 +85,20 @@ export default function Vision() {
         </div>
 
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* الصورة */}
-          <div className="relative order-1 lg:order-2">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] border border-primary-200/70 shadow-[0_40px_120px_-50px_rgba(189,154,104,0.5)] lg:aspect-[5/4]">
-              <AnimatePresence mode="wait">
+          {/* الصورة - سلايدر ينزلق من الجانب */}
+          <div className="relative order-1 lg:order-2 lg:-mx-8">
+            <div className="relative aspect-square w-full overflow-hidden">
+              <AnimatePresence initial={false}>
                 <motion.img
                   key={slide.key}
                   src={slide.image}
                   alt={L(slide.eyebrow, lang)}
                   loading="lazy"
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.02 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0 h-full w-full object-cover"
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '-100%' }}
+                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                  className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(189,154,104,0.25)]"
                 />
               </AnimatePresence>
             </div>

@@ -1,24 +1,41 @@
 import { motion } from 'framer-motion'
+import { useLang } from '../i18n'
+import logoImage from '../../images/Logo.png'
 
-// شاشة تحميل تظهر أثناء تحميل الصفحات المؤجلة (lazy)
+// شاشة تحميل عصرية: اللوجو في المنتصف مع لودر المكعّبات المتحركة
 export default function Loader() {
+  const { t } = useLang()
+
   return (
-    <div className="flex min-h-[70vh] items-center justify-center">
-      <div className="flex flex-col items-center gap-6">
-        <div className="relative h-16 w-16">
-          <motion.span
-            className="absolute inset-0 rounded-full border-2 border-primary-400/20"
-          />
-          <motion.span
-            className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary-500"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-          />
-          <span className="absolute inset-0 flex items-center justify-center font-display text-lg font-bold text-gradient-primary">
-            ج
-          </span>
+    <div className="relative flex min-h-[70vh] items-center justify-center overflow-hidden px-6">
+      {/* توهّج خلفي ناعم */}
+      <div className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary-500/15 blur-[120px]" />
+
+      <div className="relative flex flex-col items-center gap-10">
+        {/* اللوجو في المنتصف */}
+        <motion.img
+          src={logoImage}
+          alt="الجهيني للتطوير العقاري"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="h-20 w-auto max-w-[260px] object-contain drop-shadow-[0_8px_28px_rgba(189,154,104,0.28)] sm:h-24"
+        />
+
+        {/* لودر المكعّبات المتحركة */}
+        <div className="brand-loader" aria-hidden="true">
+          <div className="brand-loader-square" />
+          <div className="brand-loader-square" />
+          <div className="brand-loader-square" />
+          <div className="brand-loader-square" />
+          <div className="brand-loader-square" />
+          <div className="brand-loader-square" />
+          <div className="brand-loader-square" />
         </div>
-        <p className="text-sm tracking-widest text-navy-600">جارِ التحميل...</p>
+
+        <p className="text-sm font-semibold tracking-[0.35em] text-navy-600">
+          {t('common.loading')}
+        </p>
       </div>
     </div>
   )

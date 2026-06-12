@@ -86,8 +86,8 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
           alt={imageAlt || title}
           className="absolute inset-0 -z-20 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-white/92 via-white/55 to-white/25 sm:from-navy-950/92 sm:via-navy-950/55 sm:to-navy-950/25" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-b from-white/70 to-transparent sm:from-navy-950/70" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-canvas/92 via-canvas/55 to-canvas/25 sm:from-ink/92 sm:via-ink/55 sm:to-ink/25" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-b from-canvas/70 to-transparent sm:from-ink/70" />
 
         <div className="container-x relative">
           {breadcrumb.length > 0 && (
@@ -95,19 +95,22 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="mb-6 flex items-center gap-2 text-sm text-navy-700 sm:text-white/80"
+              className="mb-6 flex items-center gap-2 text-sm text-navy-700 dark:text-white/80"
             >
               {breadcrumb.map((item, i) => (
                 <span key={i} className="flex items-center gap-2">
                   {item.to ? (
-                    <Link to={item.to} className="transition-colors hover:text-primary-600 sm:hover:text-primary-300">
+                    <Link
+                      to={item.to}
+                      className="transition-colors hover:text-primary-600 dark:hover:text-primary-300"
+                    >
                       {item.label}
                     </Link>
                   ) : (
-                    <span className="text-primary-600 sm:text-primary-300">{item.label}</span>
+                    <span className="text-primary-600 dark:text-primary-300">{item.label}</span>
                   )}
                   {i < breadcrumb.length - 1 && (
-                    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-navy-400 sm:text-white/40">
+                    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-navy-400 dark:text-white/40">
                       <path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   )}
@@ -121,7 +124,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.05 }}
-              className="eyebrow mb-5 border-primary-200 bg-primary-100 text-primary-700 sm:border-white/25 sm:bg-white/10 sm:text-white"
+              className="eyebrow mb-5 border-primary-200 bg-primary-100 text-primary-700 dark:border-white/25 dark:bg-white/10 dark:text-white"
             >
               {eyebrow}
             </motion.span>
@@ -131,7 +134,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12 }}
-            className="heading-xl max-w-4xl text-black sm:text-white"
+            className="heading-xl max-w-4xl text-navy-900 dark:text-white"
           >
             {title}
           </motion.h1>
@@ -141,7 +144,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.22 }}
-              className="mt-6 max-w-2xl text-base leading-relaxed text-navy-800 sm:text-lg sm:text-white/85"
+              className="mt-6 max-w-2xl text-base leading-relaxed text-navy-800 dark:text-navy-100 sm:text-lg dark:sm:text-white/85"
             >
               {description}
             </motion.p>
@@ -157,7 +160,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
       className="perspective relative isolate flex h-[100svh] min-h-[100svh] flex-col overflow-hidden pt-24 pb-6 sm:pt-28 sm:pb-8"
     >
       <div className="absolute inset-0 bg-white-gradient" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.18),transparent_30%),linear-gradient(180deg,rgba(11,18,29,0.4)_0%,rgba(8,13,21,0.7)_100%)]" />
       <motion.div
         style={glowStyle}
         className="pointer-events-none absolute -right-24 top-8 h-80 w-80 rounded-full bg-primary-400/20 blur-[140px]"
@@ -224,7 +227,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.12 }}
-            className="heading-xl mx-auto max-w-4xl text-navy-900 lg:mx-0"
+            className="heading-xl max-w-4xl text-navy-950 dark:text-white"
           >
             {title}
           </motion.h1>
@@ -234,7 +237,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.22 }}
-              className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-navy-700 sm:text-lg lg:mx-0"
+              className="mt-6 max-w-2xl text-base leading-relaxed text-navy-800 dark:text-navy-100 sm:text-lg sm:text-white/85"
             >
               {description}
             </motion.p>
@@ -249,9 +252,9 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
             {heroPills.map((pill) => (
               <span
                 key={pill.label}
-                className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-white/75 px-4 py-2 text-sm font-semibold text-navy-700 shadow-sm backdrop-blur-md"
+                className="inline-flex items-center gap-2 rounded-full border border-primary-200 bg-surface/75 px-4 py-2 text-sm font-semibold text-navy-700 shadow-sm backdrop-blur-md dark:bg-navy-900/65 dark:text-navy-100"
               >
-                <span className="text-primary-600">{pill.label}</span>
+                <span className="text-primary-600 dark:text-primary-300">{pill.label}</span>
                 <span className="h-1.5 w-1.5 rounded-full bg-primary-400" />
                 {pill.value}
               </span>
@@ -277,7 +280,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
                   alt={imageAlt || title}
                   className="aspect-square w-full object-cover"
                 />
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/85 via-white/20 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/85 via-white/20 to-transparent dark:from-navy-950/70 dark:via-navy-950/40 dark:to-navy-950/10" />
                 <div className="pointer-events-none absolute inset-0 rounded-[1.6rem] ring-1 ring-inset ring-white/40 sm:rounded-[2rem]" />
               </div>
             </div>
@@ -289,7 +292,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
                 <span className="eyebrow border-primary-200 bg-primary-100 text-primary-600">
                   3D Hero
                 </span>
-                <span className="rounded-full border border-navy-200 bg-white/75 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-navy-600">
+                <span className="rounded-full border border-navy-200 bg-surface/75 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-navy-600 dark:bg-navy-900/65 dark:text-navy-100">
                   Scroll Motion
                 </span>
               </div>
@@ -301,12 +304,12 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.55, delay: 0.15 + index * 0.1 }}
-                    className="rounded-[1.35rem] border border-white/70 bg-white/80 p-4 shadow-sm backdrop-blur-md"
+                    className="rounded-[1.35rem] border border-primary-100/70 bg-surface/80 p-4 shadow-sm backdrop-blur-md dark:border-navy-200/60"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="font-display text-xl font-bold text-navy-900">{card.title}</p>
-                        <p className="mt-2 text-sm leading-relaxed text-navy-600">{card.text}</p>
+                        <p className="font-display text-xl font-bold text-navy-900 dark:text-white">{card.title}</p>
+                        <p className="mt-2 text-sm leading-relaxed text-navy-600 dark:text-navy-200">{card.text}</p>
                       </div>
                       <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-gradient text-sm font-extrabold text-white shadow-gold">
                         0{index + 1}
@@ -320,10 +323,10 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
                 {bottomPillsData[lang].map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[1.1rem] border border-navy-200/80 bg-white/70 px-3 py-3 text-center"
+                    className="rounded-[1.1rem] border border-navy-200/80 bg-surface/70 px-3 py-3 text-center dark:bg-navy-900/65"
                   >
-                    <p className="font-display text-lg font-bold text-navy-900">{item.value}</p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-navy-500">
+                    <p className="font-display text-lg font-bold text-navy-900 dark:text-white">{item.value}</p>
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-navy-500 dark:text-navy-200">
                       {item.label}
                     </p>
                   </div>
@@ -337,7 +340,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.42 }}
-            className="mt-3 hidden items-center justify-between rounded-[1.35rem] border border-primary-200 bg-white/80 px-4 py-3 backdrop-blur-md sm:mt-5 sm:flex"
+            className="mt-3 hidden items-center justify-between rounded-[1.35rem] border border-primary-200 bg-surface/80 px-4 py-3 backdrop-blur-md sm:mt-5 sm:flex"
           >
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-navy-500">
@@ -365,7 +368,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.35em]">
             {t('common.scrollDown')}
           </span>
-          <div className="flex h-10 w-6 items-start justify-center rounded-full border border-primary-300/70 bg-white/70 p-1.5 backdrop-blur-md">
+          <div className="flex h-10 w-6 items-start justify-center rounded-full border border-primary-300/70 bg-surface/70 p-1.5 backdrop-blur-md">
             <motion.span
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}

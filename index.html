@@ -23,6 +23,18 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // تطبيق الثيم قبل عرض الصفحة لتفادي وميض الوضع الفاتح
+      (function () {
+        try {
+          var saved = localStorage.getItem('elgeheny-theme')
+          var dark = saved
+            ? saved === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (e) {}
+      })()
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

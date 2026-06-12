@@ -15,6 +15,10 @@ export const translations = {
       menu: 'القائمة',
       langButton: 'EN',
       langLabel: 'English',
+      themeToDark: 'الوضع الداكن',
+      themeToLight: 'الوضع الفاتح',
+      loading: 'جارِ التحميل...',
+      close: 'إغلاق',
     },
     nav: {
       home: 'الرئيسية',
@@ -125,7 +129,7 @@ export const translations = {
     projectsPage: {
       eyebrow: 'مشاريعنا',
       title: 'مشاريع تصنع قيمة حقيقية',
-      desc: 'اكتشف محفظتنا المتنوعة من المشاريع العقارية المتميزة في أرقى مناطق القاهرة الجديدة.',
+      desc: 'نطوّر مشروعات سكنية واستثمارية في مواقع استراتيجية بالقاهرة الجديدة، مع التركيز على الجودة، والخصوصية، والقيمة الاستثمارية طويلة الأجل.',
       empty: 'لا توجد مشاريع في هذا التصنيف حالياً.',
     },
     project: {
@@ -139,6 +143,9 @@ export const translations = {
       deliveryYear: 'سنة التسليم',
       about: 'عن المشروع',
       featuresTitle: 'مميزات المشروع',
+      unitsTitle: 'تقسيمة الوحدات الداخلية',
+      deliveryTitle: 'مواصفات التسليم',
+      locationTitle: 'مميزات الموقع',
       galleryTitle: 'صور المشروع والمخططات',
       paymentTitle: 'طرق السداد',
       bookTitle: 'احجز أو استفسر',
@@ -218,6 +225,10 @@ export const translations = {
       menu: 'Menu',
       langButton: 'ع',
       langLabel: 'العربية',
+      themeToDark: 'Dark mode',
+      themeToLight: 'Light mode',
+      loading: 'Loading...',
+      close: 'Close',
     },
     nav: {
       home: 'Home',
@@ -328,7 +339,7 @@ export const translations = {
     projectsPage: {
       eyebrow: 'Our Projects',
       title: 'Projects that create real value',
-      desc: 'Discover our diverse portfolio of distinguished real estate projects in the finest areas of New Cairo.',
+      desc: 'We develop residential and investment projects in strategic locations in New Cairo, focusing on quality, privacy, and long-term investment value.',
       empty: 'There are no projects in this category at the moment.',
     },
     project: {
@@ -342,6 +353,9 @@ export const translations = {
       deliveryYear: 'Delivery year',
       about: 'About the project',
       featuresTitle: 'Project features',
+      unitsTitle: 'Internal unit layouts',
+      deliveryTitle: 'Delivery specifications',
+      locationTitle: 'Location advantages',
       galleryTitle: 'Project images & plans',
       paymentTitle: 'Payment plans',
       bookTitle: 'Book or inquire',

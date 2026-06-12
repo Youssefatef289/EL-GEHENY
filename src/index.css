@@ -3,8 +3,44 @@
 @tailwind utilities;
 
 @layer base {
+  /* الوضع الفاتح (الافتراضي) */
   :root {
     color-scheme: light;
+
+    --navy-50: 246 248 251;
+    --navy-100: 232 237 245;
+    --navy-200: 215 223 235;
+    --navy-300: 181 194 212;
+    --navy-400: 138 154 176;
+    --navy-500: 98 116 140;
+    --navy-600: 69 84 105;
+    --navy-700: 47 61 79;
+    --navy-800: 28 36 50;
+    --navy-900: 15 23 34;
+    --navy-950: 9 15 24;
+
+    --canvas: 252 251 247;
+    --surface: 255 255 255;
+  }
+
+  /* الوضع الداكن — يُعكس تدرّج navy فيتحول النص إلى فاتح والأسطح إلى داكنة */
+  .dark {
+    color-scheme: dark;
+
+    --navy-50: 12 18 27;
+    --navy-100: 18 26 38;
+    --navy-200: 32 42 58;
+    --navy-300: 52 66 86;
+    --navy-400: 96 112 135;
+    --navy-500: 130 146 168;
+    --navy-600: 158 173 193;
+    --navy-700: 188 200 216;
+    --navy-800: 214 223 235;
+    --navy-900: 233 238 246;
+    --navy-950: 247 249 252;
+
+    --canvas: 8 13 21;
+    --surface: 19 27 40;
   }
 
   * {
@@ -16,8 +52,9 @@
   }
 
   body {
-    @apply bg-[#fcfbf7] text-navy-900 font-sans antialiased;
+    @apply bg-canvas text-navy-900 font-sans antialiased;
     overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   ::selection {
@@ -33,7 +70,7 @@
   }
   ::-webkit-scrollbar-thumb {
     @apply bg-navy-300 rounded-full;
-    border: 2px solid #f6f8fb;
+    border: 2px solid rgb(var(--canvas));
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-primary-500;
@@ -46,12 +83,19 @@
   }
 
   .glass {
-    @apply bg-navy-50/50 backdrop-blur-xl border border-navy-200;
+    @apply bg-surface/60 backdrop-blur-xl border border-navy-200;
+  }
+  .dark .glass {
+    @apply border-navy-700/50;
   }
 
   .glass-primary {
     background: linear-gradient(135deg, rgba(189, 154, 104, 0.14), rgba(189, 154, 104, 0.05));
     @apply backdrop-blur-xl border border-primary-200;
+  }
+  .dark .glass-primary {
+    background: linear-gradient(135deg, rgba(189, 154, 104, 0.1), rgba(189, 154, 104, 0.03));
+    @apply border-primary-500/30;
   }
 
   .text-gradient-primary {
@@ -80,11 +124,14 @@
   }
 
   .btn-primary {
-    @apply btn btn-shine bg-primary-gradient text-white shadow-lg hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-[0_18px_55px_-10px_rgba(189,154,104,0.7)];
+    @apply btn btn-shine bg-primary-gradient text-ink shadow-lg hover:-translate-y-0.5 hover:scale-[1.03] hover:shadow-[0_18px_55px_-10px_rgba(212,175,55,0.7)];
   }
 
   .btn-outline {
-    @apply btn btn-shine border border-primary-300 bg-white/60 text-navy-900 backdrop-blur-md hover:-translate-y-0.5 hover:scale-[1.03] hover:border-primary-500 hover:bg-primary-50 hover:text-primary-700 hover:shadow-[0_16px_45px_-12px_rgba(189,154,104,0.45)];
+    @apply btn btn-shine border border-primary-300 bg-surface/60 text-navy-900 backdrop-blur-md hover:-translate-y-0.5 hover:scale-[1.03] hover:border-primary-500 hover:bg-primary-50 hover:text-primary-700 hover:shadow-[0_16px_45px_-12px_rgba(212,175,55,0.45)];
+  }
+  .dark .btn-outline:hover {
+    @apply bg-primary-500/15 text-primary-300;
   }
 
   .section-pad {
@@ -93,6 +140,9 @@
 
   .eyebrow {
     @apply inline-flex items-center gap-2 rounded-full border border-primary-300 bg-primary-100 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary-600;
+  }
+  .dark .eyebrow {
+    @apply border-primary-500/40 bg-primary-500/10 text-primary-300;
   }
 
   .heading-xl {
@@ -110,6 +160,11 @@
 }
 
 @layer utilities {
+  /* خلفية ترويسة الصفحات في الوضع الداكن */
+  .dark .bg-white-gradient {
+    background-image: linear-gradient(160deg, #0b121d 0%, #0a0f18 60%, #070c14 100%);
+  }
+
   .text-shadow-lg {
     text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   }
@@ -130,3 +185,54 @@
     mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   }
 }
+
+/* =========================================================
+   شاشة التحميل — مكعّبات متحركة بألوان العلامة (مقتبس من Uiverse)
+   ========================================================= */
+@keyframes square-animation {
+  0%   { left: 0;    top: 0; }
+  10.5%{ left: 0;    top: 0; }
+  12.5%{ left: 32px; top: 0; }
+  23%  { left: 32px; top: 0; }
+  25%  { left: 64px; top: 0; }
+  35.5%{ left: 64px; top: 0; }
+  37.5%{ left: 64px; top: 32px; }
+  48%  { left: 64px; top: 32px; }
+  50%  { left: 32px; top: 32px; }
+  60.5%{ left: 32px; top: 32px; }
+  62.5%{ left: 32px; top: 64px; }
+  73%  { left: 32px; top: 64px; }
+  75%  { left: 0;    top: 64px; }
+  85.5%{ left: 0;    top: 64px; }
+  87.5%{ left: 0;    top: 32px; }
+  98%  { left: 0;    top: 32px; }
+  100% { left: 0;    top: 0; }
+}
+
+.brand-loader {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  transform: rotate(45deg);
+}
+
+.brand-loader-square {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  margin: 2px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #d6c096 0%, #bd9a68 55%, #a07c45 100%);
+  box-shadow: 0 8px 22px -8px rgba(189, 154, 104, 0.65);
+  animation: square-animation 10s ease-in-out infinite both;
+}
+
+.brand-loader-square:nth-of-type(1) { animation-delay: -1.4285714286s; }
+.brand-loader-square:nth-of-type(2) { animation-delay: -2.8571428571s; }
+.brand-loader-square:nth-of-type(3) { animation-delay: -4.2857142857s; }
+.brand-loader-square:nth-of-type(4) { animation-delay: -5.7142857143s; }
+.brand-loader-square:nth-of-type(5) { animation-delay: -7.1428571429s; }
+.brand-loader-square:nth-of-type(6) { animation-delay: -8.5714285714s; }
+.brand-loader-square:nth-of-type(7) { animation-delay: -10s; }

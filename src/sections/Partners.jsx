@@ -40,7 +40,7 @@ const partners = [
 
 function PartnerCard({ partner }) {
   return (
-    <div className="card-3d group relative mr-5 flex h-28 w-48 flex-shrink-0 items-center justify-center rounded-2xl border border-primary-200/60 bg-white/85 p-5 shadow-[0_24px_60px_-45px_rgba(15,23,34,0.5)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1.5 hover:scale-[1.05] sm:mr-6 sm:h-32 sm:w-56">
+    <div className="card-3d group relative mr-5 flex h-28 w-48 flex-shrink-0 items-center justify-center rounded-2xl border border-primary-200/60 bg-surface/85 p-5 shadow-[0_24px_60px_-45px_rgba(15,23,34,0.5)] backdrop-blur-md transition-transform duration-300 hover:-translate-y-1.5 hover:scale-[1.05] sm:mr-6 sm:h-32 sm:w-56">
       <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-400/60 to-transparent" />
       <img
         src={partner.src}

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import PageHeader from '../components/PageHeader'
 import ProjectCard from '../components/ProjectCard'
+import Reveal from '../components/Reveal'
 import SectionReveal from '../components/SectionReveal'
 import { projects, projectCategories } from '../data/projects'
 import { useLang, L } from '../i18n'
@@ -17,12 +17,25 @@ export default function Projects() {
 
   return (
     <>
-      <PageHeader
-        eyebrow={t('projectsPage.eyebrow')}
-        title={t('projectsPage.title')}
-        description={t('projectsPage.desc')}
-        breadcrumb={[{ label: t('project.breadcrumbHome'), to: '/' }, { label: t('project.breadcrumbProjects') }]}
-      />
+      {/* ترويسة مبسّطة */}
+      <section className="relative overflow-hidden pt-32 pb-6 sm:pt-36">
+        <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
+        <div className="container-x relative text-center">
+          <Reveal>
+            <span className="eyebrow mb-5">{t('projectsPage.eyebrow')}</span>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="heading-lg mx-auto max-w-3xl text-navy-900">
+              {t('projectsPage.title')}
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
+              {t('projectsPage.desc')}
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
       <SectionReveal from="left">
       <section className="section-pad pt-10">

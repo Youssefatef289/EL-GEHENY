@@ -1,220 +1,135 @@
-import PageHeader from '../components/PageHeader'
-import SectionHeading from '../components/SectionHeading'
 import Reveal from '../components/Reveal'
 import SectionReveal from '../components/SectionReveal'
+import AboutGeheny from '../sections/AboutGeheny'
+import Vision from '../sections/Vision'
 import CTA from '../sections/CTA'
-import aboutHero from '../../images/about-hero-banner.png'
 import { useLang, L } from '../i18n'
 
-const quickValues = {
-  ar: [
-    'الجودة في كل تفصيلة',
-    'الالتزام والشفافية',
-    'احترام استثمارات العملاء',
-    'الابتكار والتطوير المستمر',
-    'بناء مجتمعات مستدامة',
-  ],
-  en: [
-    'Quality in every detail',
-    'Commitment and transparency',
-    'Respect for clients’ investments',
-    'Continuous innovation and development',
-    'Building sustainable communities',
-  ],
-}
+import aboutVideo from '../../images/WhatsApp Video 2026-06-10 at 3.58.20 PM.mp4'
 
-const coreValues = [
+const whyReasons = [
   {
-    title: { ar: 'التميّز', en: 'Excellence' },
+    title: { ar: 'خبرة حقيقية', en: 'Real experience' },
     text: {
-      ar: 'نسعى دائماً إلى تقديم أعلى مستويات الجودة في التصميم والتنفيذ والخدمات.',
-      en: 'We always strive to deliver the highest levels of quality in design, execution, and services.',
+      ar: 'خبرة متراكمة بدأت منذ عام 1990 في تنفيذ وتطوير مشروعات متنوعة داخل مصر.',
+      en: 'Accumulated experience since 1990 in executing and developing diverse projects across Egypt.',
     },
     icon: <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6L12 2z" />,
   },
   {
-    title: { ar: 'النزاهة', en: 'Integrity' },
+    title: { ar: 'مواقع واعدة', en: 'Promising locations' },
     text: {
-      ar: 'نعمل بشفافية كاملة ونبني علاقات طويلة الأمد قائمة على الثقة.',
-      en: 'We work with full transparency and build long-term relationships based on trust.',
+      ar: 'نختار مواقع مشروعاتنا بعناية لضمان أعلى قيمة سكنية واستثمارية.',
+      en: 'We carefully choose our project locations to ensure the highest residential and investment value.',
     },
-    icon: <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 12.5a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z" />,
+    icon: <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />,
   },
   {
-    title: { ar: 'الالتزام', en: 'Commitment' },
+    title: { ar: 'جودة تنفيذ', en: 'Quality execution' },
     text: {
-      ar: 'نحترم تعهداتنا ونضع رضا العميل في مقدمة أولوياتنا.',
-      en: 'We honor our commitments and put client satisfaction at the top of our priorities.',
+      ar: 'نلتزم باستخدام أفضل الخامات ومعايير البناء الحديثة لتحقيق أعلى مستويات الجودة.',
+      en: 'We commit to the best materials and modern building standards to achieve the highest quality.',
     },
     icon: <path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z" />,
   },
   {
-    title: { ar: 'الابتكار', en: 'Innovation' },
+    title: { ar: 'ثقة تُبنى على الالتزام', en: 'Trust built on commitment' },
     text: {
-      ar: 'نبحث باستمرار عن حلول أكثر ذكاءً وكفاءة في التطوير العقاري.',
-      en: 'We constantly seek smarter and more efficient solutions in real estate development.',
+      ar: 'نؤمن أن الثقة تُكتسب بالإنجاز، لذلك نلتزم بالشفافية وجودة التنفيذ واحترام مواعيد التسليم.',
+      en: 'We believe trust is earned through achievement, so we commit to transparency, quality, and on-time delivery.',
     },
-    icon: <path d="M12 2a7 7 0 00-4 12.7V17a1 1 0 001 1h6a1 1 0 001-1v-2.3A7 7 0 0012 2zM9 20a1 1 0 001 1h4a1 1 0 001-1v-1H9v1z" />,
-  },
-  {
-    title: { ar: 'الاستدامة', en: 'Sustainability' },
-    text: {
-      ar: 'نؤمن بأهمية بناء مجتمعات قادرة على النمو والاستمرار للأجيال القادمة.',
-      en: 'We believe in building communities capable of growing and lasting for future generations.',
-    },
-    icon: <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11zm0 17a4 4 0 01-4-4c0-2 1-4 4-7 3 3 4 5 4 7a4 4 0 01-4 4z" />,
+    icon: <path d="M12 1l9 4v6c0 5-3.8 9.4-9 11-5.2-1.6-9-6-9-11V5l9-4zm0 2.2L5 6.3V11c0 3.9 2.9 7.4 7 8.9 4.1-1.5 7-5 7-8.9V6.3L12 3.2z" />,
   },
 ]
 
+const whyHeading = {
+  eyebrow: { ar: 'لماذا الجهيني؟', en: 'Why El-Geheny?' },
+  title: { ar: 'أسباب تجعلنا خيارك الأول', en: 'Reasons that make us your first choice' },
+}
+
+function VideoHero() {
+  const { t } = useLang()
+  return (
+    <section className="relative isolate flex min-h-[72svh] flex-col justify-end overflow-hidden pt-28 pb-14 sm:min-h-[82svh]">
+      <video
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        src={aboutVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/60 to-ink/35" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-ink/70 to-transparent" />
+
+      <div className="container-x relative">
+        <Reveal>
+          <span className="eyebrow mb-5 border-white/20 bg-white/10 text-white">{t('about.heroEyebrow')}</span>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h1 className="heading-xl max-w-4xl text-white">{t('about.heroTitle')}</h1>
+        </Reveal>
+        <Reveal delay={0.16}>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+            {t('about.heroDesc')}
+          </p>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
 export default function About() {
-  const { t, lang } = useLang()
+  const { lang } = useLang()
+
   return (
     <>
-      <PageHeader
-        eyebrow={t('about.heroEyebrow')}
-        title={t('about.heroTitle')}
-        description={t('about.heroDesc')}
-        breadcrumb={[{ label: t('project.breadcrumbHome'), to: '/' }, { label: t('about.heroEyebrow') }]}
-        image={aboutHero}
-        imageAlt={t('about.heroTitle')}
-        fullImage
-      />
+      <VideoHero />
 
-      {/* نبذة عن الشركة */}
+      {/* نبذة عن الجهيني */}
       <SectionReveal from="left">
-      <section className="section-pad">
-        <div className="container-x grid items-center gap-12 lg:grid-cols-2">
-          <Reveal direction="right">
-            <div className="relative overflow-hidden rounded-3xl border border-primary-200/70">
-              <img
-                src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1200&q=80"
-                alt={t('about.heroTitle')}
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-100/60 to-transparent" />
-              <div className="absolute bottom-6 right-6 glass-primary rounded-2xl px-6 py-4">
-                <p className="font-display text-3xl font-extrabold text-gradient-primary">+35</p>
-                <p className="text-sm text-navy-700">{t('about.yearsBadge')}</p>
-              </div>
+        <AboutGeheny />
+      </SectionReveal>
+
+      {/* لماذا الجهيني */}
+      <SectionReveal from="right">
+        <section className="section-pad bg-navy-50/40">
+          <div className="container-x">
+            <div className="text-center">
+              <Reveal>
+                <span className="eyebrow mb-4">{L(whyHeading.eyebrow, lang)}</span>
+              </Reveal>
+              <Reveal delay={0.05}>
+                <h2 className="heading-lg mx-auto max-w-3xl text-navy-900">{L(whyHeading.title, lang)}</h2>
+              </Reveal>
             </div>
-          </Reveal>
 
-          <div className="space-y-6">
-            <Reveal>
-              <span className="eyebrow">{t('about.introEyebrow')}</span>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <h2 className="heading-lg text-navy-900">
-                {t('about.introTitleA')} <span className="text-gradient-primary">{t('about.introTitleB')}</span>
-              </h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="leading-relaxed text-navy-700">{t('about.introP1')}</p>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <p className="leading-relaxed text-navy-700">{t('about.introP2')}</p>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
-                {quickValues[lang].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-navy-800">
-                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-white">
-                      <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
-                        <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+            <div className="mt-14 grid gap-6 sm:grid-cols-2">
+              {whyReasons.map((reason, i) => (
+                <Reveal key={i} delay={i * 0.08}>
+                  <div className="group flex h-full items-start gap-5 rounded-3xl border border-primary-200/70 bg-surface/85 p-7 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(189,154,104,0.4)]">
+                    <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300 transition-colors group-hover:bg-primary-gradient group-hover:text-white">
+                      <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
+                        {reason.icon}
                       </svg>
                     </span>
-                    <span className="text-sm font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        </div>
-
-        {/* وعدنا */}
-        <div className="container-x mt-12">
-          <Reveal>
-            <div className="glass-primary relative overflow-hidden rounded-3xl p-8 sm:p-10">
-              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary-500/20 blur-3xl" />
-              <span className="eyebrow border-primary-200 bg-primary-100 text-primary-600">{t('about.promiseLabel')}</span>
-              <p className="mt-4 max-w-3xl text-lg leading-relaxed text-navy-800">
-                {t('about.promiseText')}
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-      </SectionReveal>
-
-      {/* قيمنا الأساسية */}
-      <SectionReveal from="right">
-      <section className="section-pad bg-navy-50/40">
-        <div className="container-x">
-          <SectionHeading
-            eyebrow={t('about.valuesEyebrow')}
-            title={t('about.valuesTitle')}
-            description={t('about.valuesDesc')}
-          />
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {coreValues.map((value, i) => (
-              <Reveal key={i} delay={i * 0.08}>
-                <div className="group h-full rounded-3xl border border-primary-200/70 bg-white/85 p-8 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(189,154,104,0.4)]">
-                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300 transition-colors group-hover:bg-primary-gradient group-hover:text-white">
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
-                      {value.icon}
-                    </svg>
+                    <div>
+                      <h3 className="mb-2 font-display text-xl font-bold text-navy-900">{L(reason.title, lang)}</h3>
+                      <p className="text-sm leading-relaxed text-navy-700">{L(reason.text, lang)}</p>
+                    </div>
                   </div>
-                  <h3 className="mb-2 font-display text-xl font-bold text-navy-900">{L(value.title, lang)}</h3>
-                  <p className="text-sm leading-relaxed text-navy-700">{L(value.text, lang)}</p>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-
+        </section>
       </SectionReveal>
 
-      {/* الرؤية والرسالة */}
+      {/* رؤيتنا للمستقبل */}
       <SectionReveal from="left">
-      <section className="section-pad">
-        <div className="container-x">
-          <SectionHeading
-            eyebrow={t('about.vmEyebrow')}
-            title={t('about.vmTitle')}
-            description={t('about.vmDesc')}
-          />
-          <div className="mt-14 grid gap-6 lg:grid-cols-2">
-            <Reveal direction="right">
-              <div className="glass-primary relative h-full overflow-hidden rounded-3xl p-10">
-                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary-500/20 blur-3xl" />
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-gradient text-white">
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
-                    <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zm0 12.5a5 5 0 110-10 5 5 0 010 10zm0-8a3 3 0 100 6 3 3 0 000-6z" />
-                  </svg>
-                </div>
-                <h3 className="mb-3 font-display text-2xl font-bold text-navy-900">{t('about.visionTitle')}</h3>
-                <p className="leading-relaxed text-navy-700">{t('about.visionText')}</p>
-              </div>
-            </Reveal>
-
-            <Reveal direction="left">
-              <div className="glass relative h-full overflow-hidden rounded-3xl p-10">
-                <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-primary-400/20 blur-3xl" />
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300">
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
-                    <path d="M3 13h2l3 7 4-16 3 9h6v2h-7l-2-6-4 14L6 15H3z" />
-                  </svg>
-                </div>
-                <h3 className="mb-3 font-display text-2xl font-bold text-navy-900">{t('about.missionTitle')}</h3>
-                <p className="leading-relaxed text-navy-700">{t('about.missionText')}</p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+        <Vision />
       </SectionReveal>
 
       <SectionReveal from="right">

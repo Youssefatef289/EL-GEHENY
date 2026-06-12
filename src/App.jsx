@@ -7,6 +7,7 @@ import ScrollToTop from './components/ScrollToTop'
 import ScrollToTopButton from './components/ScrollToTopButton'
 import WhatsAppButton from './components/WhatsAppButton'
 import Loader from './components/Loader'
+import IntroLoader from './components/IntroLoader'
 import ErrorBoundary from './components/ErrorBoundary'
 import { useLang } from './i18n'
 
@@ -50,6 +51,7 @@ export default function App() {
 
   return (
     <div className="relative flex min-h-screen flex-col">
+      <IntroLoader />
       <ScrollToTop />
       <Navbar />
 

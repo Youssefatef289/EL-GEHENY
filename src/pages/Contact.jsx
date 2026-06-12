@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import PageHeader from '../components/PageHeader'
 import Reveal from '../components/Reveal'
 import SectionReveal from '../components/SectionReveal'
 import { company } from '../data/site'
@@ -45,12 +44,23 @@ export default function Contact() {
 
   return (
     <>
-      <PageHeader
-        eyebrow={t('contact.eyebrow')}
-        title={t('contact.title')}
-        description={t('contact.desc')}
-        breadcrumb={[{ label: t('project.breadcrumbHome'), to: '/' }, { label: t('contact.eyebrow') }]}
-      />
+      {/* ترويسة مبسّطة */}
+      <section className="relative overflow-hidden pt-32 pb-6 sm:pt-36">
+        <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
+        <div className="container-x relative text-center">
+          <Reveal>
+            <span className="eyebrow mb-5">{t('contact.eyebrow')}</span>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="heading-lg mx-auto max-w-3xl text-navy-900">{t('contact.title')}</h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
+              {t('contact.desc')}
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
       <SectionReveal from="left">
       <section className="section-pad pt-10">
@@ -63,7 +73,7 @@ export default function Contact() {
                   href={item.href}
                   target={item.isAddress ? '_blank' : undefined}
                   rel="noreferrer"
-                  className="group flex items-start gap-4 rounded-3xl border border-navy-200 bg-navy-50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/40"
+                  className="group flex items-start gap-4 rounded-3xl border border-navy-200 bg-navy-50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/40 dark:border-navy-700/50 dark:bg-navy-900/60"
                 >
                   <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300 transition-colors group-hover:bg-primary-gradient group-hover:text-white">
                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
@@ -71,8 +81,8 @@ export default function Contact() {
                     </svg>
                   </span>
                   <div>
-                    <p className="text-sm text-navy-600">{item.label}</p>
-                    <p className="mt-1 font-semibold text-navy-900" dir={item.dir}>
+                    <p className="text-sm text-navy-600 dark:text-navy-300">{item.label}</p>
+                    <p className="mt-1 font-semibold text-navy-900 dark:text-navy-100" dir={item.dir}>
                       {item.value}
                     </p>
                   </div>

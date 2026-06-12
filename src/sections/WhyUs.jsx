@@ -75,7 +75,7 @@ function FeatureCard({ feature, index }) {
         onMouseMove={handleMove}
         onMouseLeave={reset}
         style={{ transform }}
-        className="card-3d group relative h-full overflow-hidden rounded-3xl border border-primary-200/70 bg-white/85 p-8 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-xl transition-[transform,border-color,box-shadow] duration-200 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(189,154,104,0.4)]"
+        className="card-3d group relative h-full overflow-hidden rounded-3xl border border-primary-200/70 bg-surface/85 p-8 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-xl transition-[transform,border-color,box-shadow] duration-200 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(189,154,104,0.4)]"
       >
         <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-400/70 to-transparent" />
         <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-primary-500/0 blur-3xl transition-all duration-500 group-hover:bg-primary-500/20" />

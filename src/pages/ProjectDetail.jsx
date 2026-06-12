@@ -29,65 +29,74 @@ export default function ProjectDetail() {
   return (
     <>
       {/* رأس الصفحة مع صورة الغلاف */}
-      <section className="relative pt-32 sm:pt-40">
-        <div className="absolute inset-0 h-[60vh]">
-          <LazyImage src={project.cover} alt={title} className="h-full w-full" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-white/40" />
-        </div>
+      <section className="relative pt-28 sm:pt-32">
+        <div className="container-x">
+          <div className="relative overflow-hidden rounded-[1.75rem] shadow-[0_45px_110px_-50px_rgba(0,0,0,0.65)] sm:rounded-[2.25rem]">
+            <LazyImage
+              src={project.cover}
+              alt={title}
+              className="h-[56vh] min-h-[380px] w-full sm:h-[64vh]"
+              imgClassName="object-cover object-center"
+            />
+            {/* تدرّج داكن ثابت لإبراز النص */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/10" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/40 to-transparent" />
 
-        <div className="container-x relative z-10 flex min-h-[40vh] flex-col justify-end pb-10">
-          <motion.nav
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-5 flex items-center gap-2 text-sm text-navy-600"
-          >
-            <Link to="/" className="hover:text-primary-600">{t('project.breadcrumbHome')}</Link>
-            <span>/</span>
-            <Link to="/projects" className="hover:text-primary-600">{t('project.breadcrumbProjects')}</Link>
-            <span>/</span>
-            <span className="text-primary-600">{title}</span>
-          </motion.nav>
+            <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 sm:p-10">
+              <motion.nav
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 flex flex-wrap items-center gap-2 text-sm text-white/70"
+              >
+                <Link to="/" className="transition-colors hover:text-primary-300">{t('project.breadcrumbHome')}</Link>
+                <span className="text-white/40">/</span>
+                <Link to="/projects" className="transition-colors hover:text-primary-300">{t('project.breadcrumbProjects')}</Link>
+                <span className="text-white/40">/</span>
+                <span className="text-primary-300">{title}</span>
+              </motion.nav>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-wrap items-center gap-3"
-          >
-            <span className="rounded-full bg-primary-400/15 px-4 py-1.5 text-sm font-semibold text-primary-600 ring-1 ring-primary-400/30">
-              {L(project.categoryName, lang)}
-            </span>
-            <span
-              className={`rounded-full px-4 py-1.5 text-sm font-semibold ${
-                delivered
-                  ? 'bg-emerald-500/20 text-emerald-300'
-                  : 'bg-amber-500/20 text-amber-200'
-              }`}
-            >
-              {delivered ? t('project.delivered') : t('project.inProgress')}
-            </span>
-          </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-wrap items-center gap-3"
+              >
+                <span className="rounded-full bg-primary-500/25 px-4 py-1.5 text-sm font-semibold text-primary-100 ring-1 ring-primary-300/40 backdrop-blur-md">
+                  {L(project.categoryName, lang)}
+                </span>
+                <span
+                  className={`rounded-full px-4 py-1.5 text-sm font-semibold backdrop-blur-md ${
+                    delivered
+                      ? 'bg-emerald-500/25 text-emerald-100 ring-1 ring-emerald-400/40'
+                      : 'bg-amber-500/25 text-amber-100 ring-1 ring-amber-400/40'
+                  }`}
+                >
+                  {delivered ? t('project.delivered') : t('project.inProgress')}
+                </span>
+              </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="heading-lg mt-4 text-navy-900"
-          >
-            {title}
-          </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="heading-lg mt-4 text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]"
+              >
+                {title}
+              </motion.h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-3 flex items-center gap-2 text-navy-600"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-primary-400">
-              <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
-            </svg>
-            {L(project.location, lang)}
-          </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mt-3 flex items-center gap-2 text-white/85"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-primary-300">
+                  <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+                </svg>
+                {L(project.location, lang)}
+              </motion.p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -102,7 +111,10 @@ export default function ProjectDetail() {
                 <InfoBox label={t('project.type')} value={L(project.type, lang)} />
                 <InfoBox label={t('project.areaFrom')} value={L(project.area, lang)} />
                 <InfoBox label={t('project.units')} value={L(project.units, lang)} />
-                <InfoBox label={t('project.deliveryYear')} value={project.deliveryYear} />
+                <InfoBox
+                  label={t('project.deliveryYear')}
+                  value={typeof project.deliveryYear === 'object' ? L(project.deliveryYear, lang) : project.deliveryYear}
+                />
               </div>
             </Reveal>
 
@@ -340,7 +352,7 @@ function RelatedCard({ project, index, lang }) {
             className="h-full w-full"
             imgClassName="transition-transform duration-700 group-hover:scale-110"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent dark:from-navy-950 dark:to-transparent" />
         </div>
         <div className="p-5">
           <h3 className="font-display text-lg font-bold text-navy-900 group-hover:text-primary-600">

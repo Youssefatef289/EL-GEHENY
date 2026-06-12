@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { useCountUp } from '../hooks/useCountUp'
 import { stats } from '../data/site'
 import Reveal from '../components/Reveal'
@@ -19,6 +20,14 @@ const achievements = {
   ],
 }
 
+// حدود الفواصل بين الخلايا: شبكة 2×2 على الموبايل وصف واحد على الشاشات الأكبر
+const cellBorder = [
+  '',
+  'border-s border-navy-200/50',
+  'border-t border-navy-200/50 sm:border-t-0 sm:border-s',
+  'border-s border-t border-navy-200/50 sm:border-t-0',
+]
+
 function StatItem({ stat, index }) {
   const { lang } = useLang()
   const { ref, formatted } = useCountUp(stat.value, {
@@ -28,20 +37,23 @@ function StatItem({ stat, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group relative overflow-hidden rounded-3xl border border-primary-200/70 bg-white/85 p-7 text-center shadow-[0_24px_70px_-45px_rgba(15,23,34,0.45)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-300 hover:shadow-[0_32px_80px_-40px_rgba(189,154,104,0.45)] sm:p-8"
+      transition={{ duration: 0.55, delay: index * 0.1 }}
+      className={`px-5 py-7 text-center sm:px-6 sm:py-9 ${cellBorder[index] || ''}`}
     >
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-400/70 to-transparent" />
-      <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-primary-500/10 blur-2xl transition-opacity duration-300 group-hover:bg-primary-500/20" />
-      <div ref={ref} className="font-display text-4xl font-extrabold text-gradient-primary sm:text-5xl">
+      <div
+        ref={ref}
+        className="font-display text-4xl font-extrabold tracking-tight text-gradient-primary sm:text-5xl"
+      >
         {stat.prefix}
         {formatted}
         {L(stat.suffix, lang)}
       </div>
-      <p className="mt-3 text-sm font-semibold text-navy-700 sm:text-base">{L(stat.label, lang)}</p>
+      <p className="mt-2.5 text-xs font-semibold uppercase tracking-[0.15em] text-navy-500 sm:text-sm">
+        {L(stat.label, lang)}
+      </p>
     </motion.div>
   )
 }
@@ -62,17 +74,41 @@ function CheckIcon() {
 
 export default function Stats() {
   const { t, lang } = useLang()
+  const sectionRef = useRef(null)
+  const reduceMotion = useReducedMotion()
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  })
+
+  // بارالاكس: حركة عمودية معاكسة لطبقات السكشن أثناء التمرير
+  const cardsY = useTransform(scrollYProgress, [0, 1], [50, -50])
+  const contentY = useTransform(scrollYProgress, [0, 1], [30, -30])
+  const glowY = useTransform(scrollYProgress, [0, 1], [-30, 80])
+
+  const cardsStyle = reduceMotion ? undefined : { y: cardsY }
+  const contentStyle = reduceMotion ? undefined : { y: contentY }
+  const glowStyle = reduceMotion ? undefined : { y: glowY }
+
   return (
-    <section className="relative z-30">
-      <div className="container-x -mt-24 sm:-mt-28">
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+    <section ref={sectionRef} className="relative pt-20 sm:pt-28">
+      <motion.div
+        style={glowStyle}
+        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-primary-500/10 blur-[130px]"
+      />
+
+      {/* شريط الإحصائيات الموحّد */}
+      <motion.div style={cardsStyle} className="container-x">
+        <div className="grid grid-cols-2 overflow-hidden rounded-[1.75rem] border border-navy-200/70 bg-surface/80 shadow-[0_30px_80px_-50px_rgba(15,23,34,0.5)] backdrop-blur-xl sm:grid-cols-4">
           {stats.map((stat, i) => (
             <StatItem key={i} stat={stat} index={i} />
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="container-x pt-16 sm:pt-24">
+      {/* المحتوى السفلي */}
+      <motion.div style={contentStyle} className="container-x pt-16 sm:pt-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="text-center lg:text-start">
             <Reveal>
@@ -84,17 +120,21 @@ export default function Stats() {
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-5 text-base leading-relaxed text-navy-700 sm:text-lg">
+              <p className="mt-5 text-base leading-relaxed text-navy-600 sm:text-lg">
                 {t('stats.p2')}
               </p>
             </Reveal>
           </div>
 
-          <ul className="grid gap-4 sm:grid-cols-2">
+          <ul className="overflow-hidden rounded-2xl border border-navy-200/60 bg-surface/50 backdrop-blur-md">
             {achievements[lang].map((item, i) => (
-              <Reveal key={item} delay={0.1 + i * 0.08} direction="left">
-                <li className="flex h-full items-start gap-3 rounded-2xl border border-primary-200/70 bg-white/80 p-4 shadow-[0_18px_50px_-40px_rgba(15,23,34,0.5)] backdrop-blur-md transition-colors hover:border-primary-300">
-                  <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-white shadow-gold">
+              <Reveal key={item} delay={0.08 + i * 0.07} direction="left">
+                <li
+                  className={`flex items-center gap-3.5 px-5 py-4 transition-colors hover:bg-primary-500/5 ${
+                    i < achievements[lang].length - 1 ? 'border-b border-navy-200/40' : ''
+                  }`}
+                >
+                  <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-ink shadow-gold">
                     <CheckIcon />
                   </span>
                   <span className="text-sm font-semibold text-navy-800 sm:text-base">{item}</span>
@@ -103,7 +143,7 @@ export default function Stats() {
             ))}
           </ul>
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

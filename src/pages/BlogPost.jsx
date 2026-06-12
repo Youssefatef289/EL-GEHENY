@@ -24,35 +24,49 @@ export default function BlogPost() {
 
   return (
     <>
-      <section className="relative pt-32 sm:pt-40">
-        <div className="absolute inset-0 h-[55vh]">
-          <LazyImage src={post.cover} alt={L(post.title, lang)} className="h-full w-full" />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-white/40" />
-        </div>
-
-        <div className="container-x relative z-10 mx-auto flex min-h-[35vh] max-w-3xl flex-col justify-end pb-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+      {/* ترويسة مبسّطة */}
+      <section className="relative overflow-hidden pt-32 pb-4 sm:pt-36">
+        <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
+        <div className="container-x relative mx-auto max-w-3xl text-center">
+          <motion.nav
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            className="mb-6 flex items-center justify-center gap-2 text-sm text-navy-600"
           >
+            <Link to="/" className="transition-colors hover:text-primary-600">{t('project.breadcrumbHome')}</Link>
+            <span className="text-navy-400">/</span>
+            <Link to="/blog" className="transition-colors hover:text-primary-600">{t('blog.eyebrow')}</Link>
+          </motion.nav>
+
+          <Reveal>
             <span className="eyebrow mb-5">{L(post.category, lang)}</span>
-            <h1 className="heading-lg mt-2 text-navy-900">{L(post.title, lang)}</h1>
-            <div className="mt-5 flex items-center justify-center gap-4 text-sm text-navy-700">
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h1 className="heading-lg mx-auto max-w-3xl text-navy-900">{L(post.title, lang)}</h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-sm text-navy-600">
               <span>{L(post.author, lang)}</span>
               <span className="h-1 w-1 rounded-full bg-navy-400" />
               <span>{formatDate(post.date, t('blog.locale'))}</span>
               <span className="h-1 w-1 rounded-full bg-navy-400" />
               <span>{L(post.readTime, lang)}</span>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
 
-      <article className="section-pad pt-12">
+      <article className="section-pad pt-8">
         <div className="container-x mx-auto max-w-3xl">
+          {/* صورة الغلاف */}
           <Reveal>
-            <p className="mb-8 border-r-4 border-primary-400 pr-5 text-lg font-medium leading-relaxed text-navy-700">
+            <div className="mb-10 overflow-hidden rounded-3xl border border-navy-200 shadow-[0_30px_80px_-50px_rgba(15,23,34,0.5)]">
+              <LazyImage src={post.cover} alt={L(post.title, lang)} className="aspect-video w-full" imgClassName="object-cover" />
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <p className="mb-8 border-e-4 border-primary-400 pe-5 text-lg font-medium leading-relaxed text-navy-700">
               {L(post.excerpt, lang)}
             </p>
           </Reveal>

@@ -4,7 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
-import heroVideo from '../../images/website_2.mp4'
+import heroVideo from '../../images/Hero.mp4'
 
 export default function Hero() {
   const sectionRef = useRef(null)
@@ -29,7 +29,7 @@ export default function Hero() {
       ref={sectionRef}
       className="perspective relative isolate flex h-[100svh] min-h-[100svh] flex-col overflow-hidden"
     >
-      <motion.div style={bgStyle} className="absolute inset-0 -z-10 overflow-hidden bg-navy-950">
+      <motion.div style={bgStyle} className="absolute inset-0 -z-10 overflow-hidden bg-ink">
         <video
           className="h-full w-full object-cover"
           src={heroVideo}
@@ -43,9 +43,9 @@ export default function Hero() {
       </motion.div>
 
       {/* تدرّج علوي لإبراز النافبار المدمج فوق الفيديو */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-navy-950/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink/70 to-transparent" />
       {/* تدرّج سفلي ليبقى النص مقروءاً */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-950/60 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/60 to-transparent" />
 
       <div className="container-x relative z-10 flex flex-1 flex-col items-center justify-center pb-20 pt-32 text-center lg:items-start lg:text-start">
         <motion.div
@@ -56,7 +56,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.55 }}
-            className="eyebrow mb-6 border-white/15 bg-white/10 text-white"
+            className="eyebrow mb-6 border-white/15 bg-white/10 text-white dark:border-navy-200/60 dark:bg-navy-900/30 dark:text-navy-100"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-primary-300" />
             {t('hero.badgeSince')} {company.since} - {L(company.nameShort, lang)}
@@ -92,7 +92,7 @@ export default function Hero() {
             </Link>
             <Link
               to="/contact"
-              className="btn btn-shine w-full border border-white/15 bg-white/10 text-white backdrop-blur-xl hover:scale-[1.03] hover:border-white/40 hover:bg-white/20 sm:w-auto"
+              className="btn btn-shine w-full border border-white/15 bg-white/10 text-white backdrop-blur-xl hover:scale-[1.03] hover:border-white/40 hover:bg-white/20 dark:border-navy-300 dark:bg-navy-900/30 dark:text-navy-100 dark:hover:border-navy-400/40 dark:hover:bg-navy-900/40 sm:w-auto"
             >
               {t('hero.btnContact')}
             </Link>
@@ -110,7 +110,7 @@ export default function Hero() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.35em]">
             {t('common.scrollDown')}
           </span>
-          <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/20 bg-white/10 p-1.5 backdrop-blur-md">
+          <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/20 bg-white/10 p-1.5 backdrop-blur-md dark:border-navy-700/50 dark:bg-navy-900/30">
             <motion.span
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}

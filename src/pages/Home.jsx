@@ -1,5 +1,5 @@
 import Hero from '../sections/Hero'
-import Stats from '../sections/Stats'
+import AboutGeheny from '../sections/AboutGeheny'
 import WhyUs from '../sections/WhyUs'
 import Vision from '../sections/Vision'
 import FeaturedProjects from '../sections/FeaturedProjects'
@@ -10,7 +10,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Stats />
+      <SectionReveal from="right">
+        <AboutGeheny />
+      </SectionReveal>
       <SectionReveal from="left">
         <WhyUs />
       </SectionReveal>
