@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import logoImage from '../../images/logo.png'
+import logoImage from '../../images/Logo.png'
 
 export default function Logo({ onClick }) {
   return (
