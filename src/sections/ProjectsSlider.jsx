@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { projects } from '../data/projects'
 import { useLang, L } from '../i18n'
+import { useMobileProfile } from '../hooks/useMobileProfile'
 
 import logoImage from '../../images/Logo.png'
 import slideJ290 from '../../images/projects/j290/00.jpg'
@@ -46,6 +47,7 @@ const sliderSlides = [
 
 export default function ProjectsSlider() {
   const { lang, t } = useLang()
+  const { isMobile } = useMobileProfile()
   const [active, setActive] = useState(0)
   const [progress, setProgress] = useState(0)
   const progressRef = useRef(null)
@@ -67,6 +69,8 @@ export default function ProjectsSlider() {
   const prev = useCallback(() => goTo(active - 1), [active, goTo])
 
   useEffect(() => {
+    if (isMobile) return undefined
+
     tweenRef.current?.kill()
     setProgress(0)
 
@@ -80,7 +84,9 @@ export default function ProjectsSlider() {
     })
 
     return () => tweenRef.current?.kill()
-  }, [active, goTo])
+  }, [active, goTo, isMobile, total])
+
+  if (isMobile) return null
 
   const slideNum = String(active + 1).padStart(2, '0')
   const totalNum = String(total).padStart(2, '0')
@@ -101,6 +107,8 @@ export default function ProjectsSlider() {
             src={current.image}
             alt={L(current.nameLine2, lang)}
             className="h-full w-full object-cover"
+            loading={active === 0 ? 'eager' : 'lazy'}
+            decoding="async"
           />
         </motion.div>
       </AnimatePresence>

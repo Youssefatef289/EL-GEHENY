@@ -52,7 +52,7 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${headerClassName}`}
       >
-        <nav className="container-x flex min-w-0 items-center justify-between gap-2 sm:gap-3">
+        <nav className="container-x flex min-w-0 items-center justify-between gap-1 sm:gap-3">
           <div className="min-w-0 shrink">
             <Logo onClick={closeMenu} compact />
           </div>
@@ -131,13 +131,13 @@ export default function Navbar() {
           </div>
 
           {/* Mobile — theme, lang, phone, menu */}
-          <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 lg:hidden">
+          <div className="flex shrink-0 items-center gap-0.5 max-[380px]:gap-0 sm:gap-1.5 lg:hidden">
             <button
               type="button"
               onClick={toggleTheme}
               aria-label={isDark ? t('common.themeToLight') : t('common.themeToDark')}
               title={isDark ? t('common.themeToLight') : t('common.themeToDark')}
-              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:h-10 sm:w-10 ${mobileBtnClass}`}
+              className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-colors sm:h-10 sm:w-10 sm:rounded-xl ${mobileBtnClass}`}
             >
               <ThemeIcon isDark={isDark} />
             </button>
@@ -146,14 +146,14 @@ export default function Navbar() {
               onClick={toggleLang}
               aria-label={t('common.langLabel')}
               title={t('common.langLabel')}
-              className={`flex h-9 min-w-9 items-center justify-center rounded-xl border px-2 text-xs font-bold transition-colors sm:h-10 sm:min-w-10 sm:px-2.5 sm:text-sm ${mobileBtnClass}`}
+              className={`flex h-8 min-w-8 items-center justify-center rounded-lg border px-1.5 text-[0.65rem] font-bold transition-colors sm:h-10 sm:min-w-10 sm:rounded-xl sm:px-2.5 sm:text-sm ${mobileBtnClass}`}
             >
               {t('common.langButton')}
             </button>
             <a
               href={`tel:${company.phone}`}
               aria-label={t('common.callUs')}
-              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:h-10 sm:w-10 ${mobileBtnClass}`}
+              className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-colors sm:h-10 sm:w-10 sm:rounded-xl ${mobileBtnClass}`}
             >
               <PhoneIcon />
             </a>
@@ -162,7 +162,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen((v) => !v)}
               aria-expanded={mobileOpen}
               aria-label={mobileOpen ? t('common.close') : t('common.menu')}
-              className={`relative flex h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:h-10 sm:w-10 ${mobileBtnClass}`}
+              className={`relative flex h-8 w-8 items-center justify-center rounded-lg border transition-colors sm:h-10 sm:w-10 sm:rounded-xl ${mobileBtnClass}`}
             >
               <div className="flex w-5 flex-col gap-1.5">
                 <motion.span
