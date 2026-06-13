@@ -236,3 +236,17 @@
 .brand-loader-square:nth-of-type(5) { animation-delay: -7.1428571429s; }
 .brand-loader-square:nth-of-type(6) { animation-delay: -8.5714285714s; }
 .brand-loader-square:nth-of-type(7) { animation-delay: -10s; }
+
+/* =========================================================
+   Projects Slider — El Attal style cinematic section
+   ========================================================= */
+.projects-slider-pattern {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent,
+    transparent 8px,
+    rgba(255, 255, 255, 0.06) 8px,
+    rgba(255, 255, 255, 0.06) 9px
+  );
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.08);
+}

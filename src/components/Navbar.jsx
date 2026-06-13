@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Logo from './Logo'
 import { navLinks, company } from '../data/site'
-import { useLang } from '../i18n'
+import { useLang, L } from '../i18n'
 import { useTheme } from '../theme'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [openKey, setOpenKey] = useState(null)
-  const { t, toggleLang } = useLang()
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const { t, toggleLang, lang } = useLang()
   const { isDark, toggleTheme } = useTheme()
   const location = useLocation()
-  const open = openKey === location.key
   const isHomeHero = location.pathname === '/' && !scrolled
 
   useEffect(() => {
@@ -22,209 +22,275 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // منع التمرير عند فتح قائمة الموبايل
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
+    setMobileOpen(false)
+  }, [location.pathname])
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [open])
+  }, [mobileOpen])
 
-  const headerClassName = scrolled
+  const headerClassName = scrolled || mobileOpen
     ? 'border-b border-primary-200/70 dark:border-navy-700/50 bg-canvas/95 py-3 backdrop-blur-xl shadow-lg'
-    : 'border-b border-transparent bg-transparent py-6'
+    : 'border-b border-transparent bg-transparent py-4 sm:py-5'
+
+  const closeMenu = () => setMobileOpen(false)
+
+  const mobileBtnClass =
+    isHomeHero && !mobileOpen
+      ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
+      : 'border-primary-300 bg-primary-50 text-primary-700 dark:border-primary-500/40 dark:bg-primary-500/10 dark:text-primary-300'
 
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${headerClassName}`}
-    >
-      <nav className="container-x flex items-center justify-between">
-        <Logo />
+    <>
+      <motion.header
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${headerClassName}`}
+      >
+        <nav className="container-x flex min-w-0 items-center justify-between gap-2 sm:gap-3">
+          <div className="min-w-0 shrink">
+            <Logo onClick={closeMenu} compact />
+          </div>
 
-        <ul className="hidden items-center gap-2 lg:flex">
-          {navLinks.map((link) => (
-            <li key={link.to}>
-              <NavLink
-                to={link.to}
-                className={({ isActive }) =>
-                  `group relative px-4 py-2 text-[0.95rem] font-semibold transition-colors duration-300 ${
-                    isActive
-                      ? isHomeHero
-                        ? 'text-white'
-                        : 'text-primary-600'
-                      : isHomeHero
-                        ? 'text-white/80 hover:text-white'
-                        : 'text-navy-700 hover:text-navy-900'
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {t(`nav.${link.key}`)}
-                    <span
-                      className={`pointer-events-none absolute inset-x-3 -bottom-1 h-0.5 origin-center scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100 ${
-                        isHomeHero ? 'bg-white' : 'bg-primary-500'
-                      }`}
-                    />
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-active"
-                        className={`absolute inset-x-3 -bottom-1 h-0.5 rounded-full ${
+          {/* Desktop navigation */}
+          <ul className="hidden items-center gap-1 lg:flex">
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <NavLink
+                  to={link.to}
+                  end={link.to === '/'}
+                  className={({ isActive }) =>
+                    `group relative px-4 py-2 text-[0.95rem] font-semibold transition-colors duration-300 ${
+                      isActive
+                        ? isHomeHero
+                          ? 'text-white'
+                          : 'text-primary-600'
+                        : isHomeHero
+                          ? 'text-white/80 hover:text-white'
+                          : 'text-navy-700 hover:text-navy-900'
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {t(`nav.${link.key}`)}
+                      <span
+                        className={`pointer-events-none absolute inset-x-3 -bottom-1 h-0.5 origin-center scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100 ${
                           isHomeHero ? 'bg-white' : 'bg-primary-500'
                         }`}
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
-                    )}
-                  </>
-                )}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-active"
+                          className={`absolute inset-x-3 -bottom-1 h-0.5 rounded-full ${
+                            isHomeHero ? 'bg-white' : 'bg-primary-500'
+                          }`}
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <button
-            onClick={toggleTheme}
-            aria-label={isDark ? t('common.themeToLight') : t('common.themeToDark')}
-            title={isDark ? t('common.themeToLight') : t('common.themeToDark')}
-            className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 ${
-              isHomeHero
-                ? 'border-white/25 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20'
-                : 'border-primary-300 bg-primary-50 text-primary-700 hover:bg-primary-100 dark:border-primary-500/40 dark:bg-primary-500/10 dark:text-primary-300 dark:hover:bg-primary-500/20'
-            }`}
-          >
-            <ThemeIcon isDark={isDark} />
-          </button>
-          <button
-            onClick={toggleLang}
-            aria-label={t('common.langLabel')}
-            className={`flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-bold transition-colors duration-300 ${
-              isHomeHero
-                ? 'border-white/25 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20'
-                : 'border-primary-300 bg-primary-50 text-primary-700 hover:bg-primary-100 dark:border-primary-500/40 dark:bg-primary-500/10 dark:text-primary-300 dark:hover:bg-primary-500/20'
-            }`}
-          >
-            <GlobeIcon />
-            {t('common.langButton')}
-          </button>
-          <a href={`tel:${company.phone}`} className="btn-primary !py-2.5 !px-5 text-xs">
-            <PhoneIcon />
-            {t('common.contactUs')}
-          </a>
-        </div>
-
-        <div className="flex items-center gap-2 lg:hidden">
-          <button
-            onClick={toggleTheme}
-            aria-label={isDark ? t('common.themeToLight') : t('common.themeToDark')}
-            className={`flex h-11 w-11 items-center justify-center rounded-xl border ${
-              isHomeHero
-                ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
-                : 'border-navy-300 bg-navy-100 text-navy-900 dark:border-navy-700 dark:bg-navy-900/60 dark:text-navy-100'
-            }`}
-          >
-            <ThemeIcon isDark={isDark} />
-          </button>
-          <button
-            onClick={toggleLang}
-            aria-label={t('common.langLabel')}
-            className={`flex h-11 items-center gap-1.5 rounded-xl border px-3 text-sm font-bold ${
-              isHomeHero
-                ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
-                : 'border-navy-300 bg-navy-100 text-navy-900 dark:border-navy-700 dark:bg-navy-900/60 dark:text-navy-100'
-            }`}
-          >
-            <GlobeIcon />
-            {t('common.langButton')}
-          </button>
-          <button
-            onClick={() =>
-              setOpenKey((currentKey) => (currentKey === location.key ? null : location.key))
-            }
-            className={`relative z-50 flex h-11 w-11 items-center justify-center rounded-xl border ${
-              isHomeHero
-                ? 'border-white/15 bg-white/10 text-white backdrop-blur-xl'
-                : 'border-navy-300 bg-navy-100 text-navy-900 dark:border-navy-700 dark:bg-navy-900/60 dark:text-navy-100'
-            }`}
-            aria-label={t('common.menu')}
-          >
-          <div className="flex w-5 flex-col gap-1.5">
-            <motion.span
-              animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-full bg-current"
-            />
-            <motion.span
-              animate={open ? { opacity: 0 } : { opacity: 1 }}
-              className="block h-0.5 w-full bg-current"
-            />
-            <motion.span
-              animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-              className="block h-0.5 w-full bg-current"
-            />
-          </div>
-          </button>
-        </div>
-      </nav>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 top-0 z-40 bg-canvas/95 dark:bg-navy-950/95 backdrop-blur-xl lg:hidden"
-          >
-            <motion.ul
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } },
-              }}
-              className="container-x flex h-full flex-col justify-center gap-3"
+          <div className="hidden items-center gap-3 lg:flex">
+            <button
+              onClick={toggleTheme}
+              aria-label={isDark ? t('common.themeToLight') : t('common.themeToDark')}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 ${
+                isHomeHero
+                  ? 'border-white/25 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20'
+                  : 'border-primary-300 bg-primary-50 text-primary-700 hover:bg-primary-100 dark:border-primary-500/40 dark:bg-primary-500/10 dark:text-primary-300 dark:hover:bg-primary-500/20'
+              }`}
             >
-              {navLinks.map((link) => (
-                <motion.li
-                  key={link.to}
-                  variants={{
-                    hidden: { opacity: 0, x: 30 },
-                    show: { opacity: 1, x: 0 },
-                  }}
-                >
-                  <NavLink
-                    to={link.to}
-                    className={({ isActive }) =>
-                      `block rounded-2xl px-6 py-4 text-2xl font-bold transition-colors ${
-                        isActive
-                          ? 'bg-primary-100 text-primary-600'
-                          : 'text-navy-900 hover:bg-navy-100'
-                      }`
-                    }
-                  >
-                    {t(`nav.${link.key}`)}
-                  </NavLink>
-                </motion.li>
-              ))}
-              <motion.li
-                variants={{
-                  hidden: { opacity: 0, x: 30 },
-                  show: { opacity: 1, x: 0 },
-                }}
-                className="mt-4"
+              <ThemeIcon isDark={isDark} />
+            </button>
+            <button
+              onClick={toggleLang}
+              aria-label={t('common.langLabel')}
+              className={`flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-bold transition-colors duration-300 ${
+                isHomeHero
+                  ? 'border-white/25 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20'
+                  : 'border-primary-300 bg-primary-50 text-primary-700 hover:bg-primary-100 dark:border-primary-500/40 dark:bg-primary-500/10 dark:text-primary-300 dark:hover:bg-primary-500/20'
+              }`}
+            >
+              <GlobeIcon />
+              {t('common.langButton')}
+            </button>
+            <a href={`tel:${company.phone}`} className="btn-primary !px-5 !py-2.5 text-xs">
+              <PhoneIcon />
+              {t('common.contactUs')}
+            </a>
+          </div>
+
+          {/* Mobile — theme, lang, phone, menu */}
+          <div className="flex shrink-0 items-center gap-1 sm:gap-1.5 lg:hidden">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isDark ? t('common.themeToLight') : t('common.themeToDark')}
+              title={isDark ? t('common.themeToLight') : t('common.themeToDark')}
+              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:h-10 sm:w-10 ${mobileBtnClass}`}
+            >
+              <ThemeIcon isDark={isDark} />
+            </button>
+            <button
+              type="button"
+              onClick={toggleLang}
+              aria-label={t('common.langLabel')}
+              title={t('common.langLabel')}
+              className={`flex h-9 min-w-9 items-center justify-center rounded-xl border px-2 text-xs font-bold transition-colors sm:h-10 sm:min-w-10 sm:px-2.5 sm:text-sm ${mobileBtnClass}`}
+            >
+              {t('common.langButton')}
+            </button>
+            <a
+              href={`tel:${company.phone}`}
+              aria-label={t('common.callUs')}
+              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:h-10 sm:w-10 ${mobileBtnClass}`}
+            >
+              <PhoneIcon />
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-expanded={mobileOpen}
+              aria-label={mobileOpen ? t('common.close') : t('common.menu')}
+              className={`relative flex h-9 w-9 items-center justify-center rounded-xl border transition-colors sm:h-10 sm:w-10 ${mobileBtnClass}`}
+            >
+              <div className="flex w-5 flex-col gap-1.5">
+                <motion.span
+                  animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+                  className="block h-0.5 w-full bg-current"
+                />
+                <motion.span
+                  animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                  className="block h-0.5 w-full bg-current"
+                />
+                <motion.span
+                  animate={mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+                  className="block h-0.5 w-full bg-current"
+                />
+              </div>
+            </button>
+          </div>
+        </nav>
+      </motion.header>
+
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {mobileOpen && (
+              <motion.div
+                role="dialog"
+                aria-modal="true"
+                aria-label={t('common.menu')}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="fixed inset-0 z-[200] lg:hidden"
               >
-                <a href={`tel:${company.phone}`} className="btn-primary w-full">
-                  <PhoneIcon />
-                  {t('common.callUs')}: {company.phone}
-                </a>
-              </motion.li>
-            </motion.ul>
-          </motion.div>
+                <motion.button
+                  type="button"
+                  aria-label={t('common.close')}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={closeMenu}
+                  className="absolute inset-0 bg-ink/60 backdrop-blur-sm"
+                />
+
+                <motion.div
+                  initial={{ x: lang === 'ar' ? '100%' : '-100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: lang === 'ar' ? '100%' : '-100%' }}
+                  transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+                  className="absolute inset-y-0 start-0 flex w-full max-w-sm flex-col bg-canvas shadow-2xl dark:bg-navy-950"
+                >
+                  {/* Modal header */}
+                  <div className="flex items-center justify-between border-b border-navy-200/70 px-5 py-4 dark:border-navy-700/50">
+                    <div>
+                      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-primary-600 dark:text-primary-400">
+                        {t('navMenu.eyebrow')}
+                      </p>
+                      <p className="font-display text-lg font-bold text-navy-900 dark:text-white">
+                        {L(company.nameShort, lang)}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={closeMenu}
+                      aria-label={t('common.close')}
+                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-navy-200 bg-surface text-navy-700 dark:border-navy-700 dark:bg-navy-900 dark:text-navy-100"
+                    >
+                      <CloseIcon />
+                    </button>
+                  </div>
+
+                  {/* Nav links */}
+                  <nav className="flex-1 overflow-y-auto px-4 py-5">
+                    <ul className="space-y-1">
+                      {navLinks.map((link, i) => (
+                        <li key={link.to}>
+                          <NavLink
+                            to={link.to}
+                            end={link.to === '/'}
+                            onClick={closeMenu}
+                            className={({ isActive }) =>
+                              `flex items-center gap-4 rounded-2xl px-4 py-3.5 transition-colors ${
+                                isActive
+                                  ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/15 dark:text-primary-300'
+                                  : 'text-navy-800 hover:bg-navy-100 dark:text-navy-100 dark:hover:bg-navy-900/60'
+                              }`
+                            }
+                          >
+                            {({ isActive }) => (
+                              <>
+                                <span
+                                  className={`font-display text-sm font-extrabold tabular-nums ${
+                                    isActive ? 'text-primary-500' : 'text-navy-400 dark:text-navy-500'
+                                  }`}
+                                >
+                                  {String(i + 1).padStart(2, '0')}
+                                </span>
+                                <span className="text-lg font-bold">{t(`nav.${link.key}`)}</span>
+                              </>
+                            )}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+
+                  {/* Modal footer */}
+                  <div className="space-y-3 border-t border-navy-200/70 px-4 py-5 dark:border-navy-700/50">
+                    <a href={`tel:${company.phone}`} className="btn-primary w-full" dir="ltr">
+                      <PhoneIcon />
+                      {company.phone}
+                    </a>
+                    <a
+                      href={`https://wa.me/${company.whatsapp}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-outline w-full"
+                    >
+                      {t('common.contactWhatsapp')}
+                    </a>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
-    </motion.header>
+    </>
   )
 }
 
@@ -239,9 +305,16 @@ function PhoneIcon() {
   )
 }
 
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 function ThemeIcon({ isDark }) {
   if (isDark) {
-    // أيقونة الشمس (للتبديل إلى الوضع الفاتح)
     return (
       <svg viewBox="0 0 24 24" fill="none" className="h-[1.15rem] w-[1.15rem]">
         <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.8" />
@@ -254,7 +327,6 @@ function ThemeIcon({ isDark }) {
       </svg>
     )
   }
-  // أيقونة القمر (للتبديل إلى الوضع الداكن)
   return (
     <svg viewBox="0 0 24 24" fill="none" className="h-[1.15rem] w-[1.15rem]">
       <path

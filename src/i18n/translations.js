@@ -27,6 +27,9 @@ export const translations = {
       blog: 'المدونة',
       contact: 'تواصل معنا',
     },
+    navMenu: {
+      eyebrow: 'القائمة',
+    },
     error: {
       title: 'حدث خطأ غير متوقع',
       desc: 'يرجى إعادة تحميل الصفحة للمتابعة.',
@@ -67,6 +70,23 @@ export const translations = {
         'نقدم مجموعة من المشروعات السكنية المتميزة في بيت الوطن بالقاهرة الجديدة، إحدى أسرع المناطق نمواً وأكثرها جذباً للاستثمار',
       viewAll: 'عرض جميع المشاريع',
       allShort: 'كل المشاريع',
+    },
+    projectsSlider: {
+      label: 'مشاريعنا',
+      title: 'توقيعات عقارية فريدة',
+      sectionName: 'Projects',
+      prev: 'السابق',
+      next: 'التالي',
+      viewProject: 'استكشف المشروع',
+    },
+    services: {
+      title: 'خدماتنا',
+    },
+    projectsShowcase: {
+      eyebrow: 'مشاريعنا',
+      title: 'استكشف مشروعاتنا',
+      viewDetails: 'عرض التفاصيل',
+      view: 'عرض',
     },
     partners: {
       eyebrow: 'شركاء النجاح',
@@ -237,6 +257,9 @@ export const translations = {
       blog: 'Blog',
       contact: 'Contact',
     },
+    navMenu: {
+      eyebrow: 'Menu',
+    },
     error: {
       title: 'Something went wrong',
       desc: 'Please reload the page to continue.',
@@ -277,6 +300,23 @@ export const translations = {
         'We offer a collection of distinguished residential projects in Beit El-Watan, New Cairo, one of the fastest-growing and most attractive areas for investment.',
       viewAll: 'View All Projects',
       allShort: 'All Projects',
+    },
+    projectsSlider: {
+      label: 'Our Projects',
+      title: 'Unique Real Estate Signatures',
+      sectionName: 'Projects',
+      prev: 'Previous',
+      next: 'Next',
+      viewProject: 'Explore project',
+    },
+    services: {
+      title: 'Our Services',
+    },
+    projectsShowcase: {
+      eyebrow: 'Our Projects',
+      title: 'Explore our projects',
+      viewDetails: 'View Details',
+      view: 'View',
     },
     partners: {
       eyebrow: 'Partners in Success',

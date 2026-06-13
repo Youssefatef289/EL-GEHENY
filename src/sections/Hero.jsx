@@ -47,10 +47,10 @@ export default function Hero() {
       {/* تدرّج سفلي ليبقى النص مقروءاً */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/60 to-transparent" />
 
-      <div className="container-x relative z-10 flex flex-1 flex-col items-center justify-center pb-20 pt-32 text-center lg:items-start lg:text-start">
+      <div className="container-x relative z-10 flex flex-1 flex-col items-center justify-center px-5 pb-20 pt-28 text-center sm:pt-32">
         <motion.div
           style={contentStyle}
-          className="relative flex max-w-2xl flex-col items-center lg:items-start"
+          className="relative flex w-full max-w-3xl flex-col items-center"
         >
           <motion.span
             initial={{ opacity: 0, y: 18 }}
@@ -66,7 +66,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.28, duration: 0.7 }}
-            className="heading-xl max-w-3xl text-white"
+            className="heading-xl mx-auto max-w-3xl text-white"
           >
             {t('hero.titleA')} <span className="text-gradient-primary">{t('hero.titleB')}</span>
           </motion.h1>
@@ -75,7 +75,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.7 }}
-            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg lg:mx-0"
+            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg"
           >
             {t('hero.subtitle')}
           </motion.p>
@@ -84,7 +84,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.58, duration: 0.7 }}
-            className="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:items-start"
+            className="mt-10 flex w-full flex-col items-center justify-center gap-4 sm:flex-row"
           >
             <Link to="/projects" className="btn-primary w-full sm:w-auto">
               {t('hero.btnProjects')}
@@ -104,7 +104,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.1, duration: 0.6 }}
-        className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden -translate-x-1/2 lg:flex"
+        className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2"
       >
         <div className="flex flex-col items-center gap-2 text-white/75">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.35em]">
