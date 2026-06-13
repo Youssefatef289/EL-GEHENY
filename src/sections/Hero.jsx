@@ -37,27 +37,17 @@ export default function Hero() {
         style={bgStyle}
         className="absolute inset-0 -z-10 overflow-hidden bg-ink"
       >
-        {isMobile ? (
-          <img
-            src={heroPoster}
-            alt=""
-            className="h-full w-full object-cover"
-            fetchPriority="high"
-            decoding="async"
-          />
-        ) : (
-          <video
-            className="h-full w-full object-cover"
-            src={heroVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={heroPoster}
-            aria-hidden="true"
-          />
-        )}
+        <video
+          className="h-full w-full object-cover"
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={heroPoster}
+          aria-hidden="true"
+        />
       </motion.div>
 
       <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink/70 to-transparent sm:h-40" />
