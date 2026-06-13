@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import Reveal from '../components/Reveal'
 import { useLang, L } from '../i18n'
-import { useMobileProfile } from '../hooks/useMobileProfile'
 
 import bgTexture from '../../images/imgi_99_MMG-Re-Brand-Presentation_pages-to-jpg-0015-scaled-e1748253692652.jpg'
 import iconDeveloper from '../../images/imgi_41_developer.png'
@@ -37,17 +36,15 @@ const services = [
 
 export default function Services() {
   const { lang, t } = useLang()
-  const { prefersLightAnim } = useMobileProfile()
 
   return (
-    <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24">
+    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+      {/* Textured dark background */}
       <div className="absolute inset-0">
         <img
           src={bgTexture}
           alt=""
           className="h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-ink/75" />
@@ -56,35 +53,33 @@ export default function Services() {
 
       <div className="container-x relative">
         <Reveal>
-          <h2 className="text-center font-display text-2xl font-extrabold text-primary-400 sm:text-4xl lg:text-5xl">
+          <h2 className="text-center font-display text-3xl font-extrabold text-primary-400 sm:text-4xl lg:text-5xl">
             {t('services.title')}
           </h2>
         </Reveal>
 
-        <div className="mt-8 grid gap-4 sm:mt-14 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
+        <div className="mt-12 grid gap-6 sm:mt-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {services.map((service, i) => (
             <motion.article
               key={L(service.title, lang)}
-              initial={prefersLightAnim ? { opacity: 1, y: 0 } : { opacity: 0, y: 36 }}
+              initial={{ opacity: 0, y: 36 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: prefersLightAnim ? 0.3 : 0.65, delay: prefersLightAnim ? 0 : i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="group flex flex-col items-center rounded-2xl bg-surface px-5 py-8 text-center shadow-[0_24px_70px_-40px_rgba(0,0,0,0.55)] sm:rounded-none sm:px-8 sm:py-12 sm:hover:-translate-y-2 sm:transition-all sm:duration-500 sm:hover:shadow-[0_34px_90px_-40px_rgba(189,154,104,0.35)]"
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.65, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="group flex flex-col items-center bg-surface px-6 py-10 text-center shadow-[0_24px_70px_-40px_rgba(0,0,0,0.55)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_34px_90px_-40px_rgba(189,154,104,0.35)] sm:px-8 sm:py-12"
             >
-              <div className="mb-5 flex h-20 w-20 items-center justify-center sm:mb-6 sm:h-28 sm:w-28 sm:transition-transform sm:duration-500 sm:group-hover:scale-110">
+              <div className="mb-6 flex h-24 w-24 items-center justify-center transition-transform duration-500 group-hover:scale-110 sm:h-28 sm:w-28">
                 <img
                   src={service.icon}
                   alt=""
                   className="h-full w-full object-contain"
-                  loading="lazy"
-                  decoding="async"
                   aria-hidden="true"
                 />
               </div>
-              <h3 className="font-display text-lg font-extrabold text-navy-900 sm:text-2xl">
+              <h3 className="font-display text-xl font-extrabold text-navy-900 sm:text-2xl">
                 {L(service.title, lang)}
               </h3>
-              <p className="mt-3 max-w-xs text-sm leading-relaxed text-navy-600 sm:mt-4 sm:text-base">
+              <p className="mt-4 max-w-xs text-sm leading-relaxed text-navy-600 sm:text-base">
                 {L(service.description, lang)}
               </p>
             </motion.article>

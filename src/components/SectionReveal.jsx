@@ -1,23 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { useMobileProfile } from '../hooks/useMobileProfile'
 
+// يجعل القسم بأكمله يظهر منزلقاً من الجانب مع ميل ثلاثي الأبعاد بسيط عند التمرير
 export default function SectionReveal({ children, from = 'left', delay = 0, className = '' }) {
   const reduceMotion = useReducedMotion()
-  const { prefersLightAnim } = useMobileProfile()
   const dir = from === 'right' ? 1 : -1
 
-  if (reduceMotion || prefersLightAnim) {
-    return (
-      <motion.div
-        className={className}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '0px 0px -8% 0px' }}
-        transition={{ duration: 0.45, delay, ease: 'easeOut' }}
-      >
-        {children}
-      </motion.div>
-    )
+  if (reduceMotion) {
+    return <div className={className}>{children}</div>
   }
 
   return (
