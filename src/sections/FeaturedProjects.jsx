@@ -15,7 +15,6 @@ export default function FeaturedProjects() {
       <div className="container-x relative">
         <div className="flex flex-col items-end justify-between gap-6 sm:flex-row sm:items-center">
           <SectionHeading
-            align="right"
             eyebrow={t('featured.eyebrow')}
             title={t('featured.title')}
             description={t('featured.description')}

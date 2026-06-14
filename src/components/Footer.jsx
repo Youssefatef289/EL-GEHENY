@@ -15,20 +15,6 @@ export default function Footer() {
           <p className="max-w-xs text-sm leading-relaxed text-navy-700">
             {t('footer.aboutSince')} {company.since} — {t('footer.about')}
           </p>
-          <div className="flex gap-3">
-            <Social href={company.social.facebook} label="Facebook">
-              <path d="M13 22v-8h2.7l.4-3H13V9c0-.9.2-1.5 1.5-1.5H16V4.9c-.3 0-1.2-.1-2.2-.1-2.2 0-3.8 1.3-3.8 3.8V11H7.5v3H10v8h3z" />
-            </Social>
-            <Social href={company.social.instagram} label="انستجرام">
-              <path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4a3.9 3.9 0 01-1.4-.9 3.9 3.9 0 01-.9-1.4c-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1C2.6 9.9 2.6 10.3 2.6 12s0 2.1.1 3.3c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-3.3s0-2.1-.1-3.3c-.1-1.1-.2-1.7-.4-2.1a3.5 3.5 0 00-.8-1.3 3.5 3.5 0 00-1.3-.8c-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.9 4.9 0 110 9.8 4.9 4.9 0 010-9.8zm0 8a3.1 3.1 0 100-6.2 3.1 3.1 0 000 6.2zm6.3-8.2a1.1 1.1 0 11-2.3 0 1.1 1.1 0 012.3 0z" />
-            </Social>
-            <Social href={company.social.linkedin} label="لينكدإن">
-              <path d="M6.5 8.5a2 2 0 100-4 2 2 0 000 4zM4.8 20h3.4V9.7H4.8V20zM10.3 9.7h3.3v1.4h.1c.5-.9 1.6-1.7 3.2-1.7 3.4 0 4 2.2 4 5.1V20h-3.4v-4.6c0-1.1 0-2.5-1.5-2.5s-1.8 1.2-1.8 2.4V20h-3.4V9.7z" />
-            </Social>
-            <Social href={company.social.youtube} label="يوتيوب">
-              <path d="M21.6 7.2a2.6 2.6 0 00-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 002.4 7.2 27 27 0 002 12a27 27 0 00.4 4.8 2.6 2.6 0 001.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 001.8-1.8A27 27 0 0022 12a27 27 0 00-.4-4.8zM10 15V9l5.2 3L10 15z" />
-            </Social>
-          </div>
         </div>
 
         <div>
@@ -107,22 +93,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
-}
-
-function Social({ href, label, children }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={label}
-      className="flex h-10 w-10 items-center justify-center rounded-xl border border-navy-300 bg-navy-50 text-navy-700 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/40 hover:text-primary-600"
-    >
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-        {children}
-      </svg>
-    </a>
   )
 }
 

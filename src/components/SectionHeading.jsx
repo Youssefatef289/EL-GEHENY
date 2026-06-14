@@ -1,19 +1,28 @@
 import Reveal from './Reveal'
+import SectionTitle from './SectionTitle'
 
-export default function SectionHeading({ eyebrow, title, description, align = 'center', className = '' }) {
-  const alignment =
-    align === 'center' ? 'text-center items-center mx-auto' : 'text-right items-start'
+export default function SectionHeading({
+  eyebrow,
+  title,
+  description,
+  tone = 'gold',
+  className = '',
+}) {
+  const label = eyebrow || title
+  const subtitle = eyebrow && title && eyebrow !== title ? title : null
+
+  if (!label) return null
 
   return (
-    <div className={`flex flex-col gap-4 ${alignment} ${align === 'center' ? 'max-w-3xl' : ''} ${className}`}>
-      {eyebrow && (
-        <Reveal direction="up">
-          <span className="eyebrow">{eyebrow}</span>
+    <div className={`section-heading flex w-full flex-col gap-4 ${className}`}>
+      <SectionTitle tone={tone}>{label}</SectionTitle>
+
+      {subtitle && (
+        <Reveal direction="up" delay={0.05}>
+          <h3 className="heading-lg max-w-3xl text-navy-900">{subtitle}</h3>
         </Reveal>
       )}
-      <Reveal direction="up" delay={0.05}>
-        <h2 className="heading-lg text-navy-900">{title}</h2>
-      </Reveal>
+
       {description && (
         <Reveal direction="up" delay={0.1}>
           <p className="max-w-2xl text-base leading-relaxed text-navy-700 sm:text-lg">

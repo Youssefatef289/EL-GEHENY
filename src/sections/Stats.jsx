@@ -3,6 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { useCountUp } from '../hooks/useCountUp'
 import { stats } from '../data/site'
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 
 const achievements = {
@@ -111,9 +112,7 @@ export default function Stats() {
       <motion.div style={contentStyle} className="container-x pt-16 sm:pt-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div className="text-center lg:text-start">
-            <Reveal>
-              <span className="eyebrow mb-5">{t('stats.eyebrow')}</span>
-            </Reveal>
+            <SectionTitle className="mb-5">{t('stats.eyebrow')}</SectionTitle>
             <Reveal delay={0.05}>
               <p className="font-display text-xl font-bold leading-relaxed text-navy-900 sm:text-2xl">
                 {t('stats.p1')}
@@ -134,7 +133,7 @@ export default function Stats() {
                     i < achievements[lang].length - 1 ? 'border-b border-navy-200/40' : ''
                   }`}
                 >
-                  <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-ink shadow-gold">
+                  <span className="gold-check h-7 w-7 flex-shrink-0 shadow-gold-sm">
                     <CheckIcon />
                   </span>
                   <span className="text-sm font-semibold text-navy-800 sm:text-base">{item}</span>

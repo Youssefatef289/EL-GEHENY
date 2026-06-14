@@ -23,18 +23,18 @@ export default {
         canvas: 'rgb(var(--canvas) / <alpha-value>)',
         surface: 'rgb(var(--surface) / <alpha-value>)',
         // لون داكن ثابت لطبقات التغميق فوق الفيديو/الصور (لا ينقلب في الوضع الداكن)
-        ink: '#070d16',
+        ink: '#1D1D1B',
         primary: {
-          50: '#f8f4ec',
-          100: '#efe7d6',
-          200: '#e1d2b4',
-          300: '#d0ba8e',
-          400: '#c5aa78',
-          500: '#bd9a68',
-          600: '#a88552',
-          700: '#8a6c42',
-          800: '#6d5635',
-          900: '#4c3c25',
+          50: '#faf6ec',
+          100: '#f4ebd2',
+          200: '#e9d5a5',
+          300: '#dec07f',
+          400: '#d4ad58',
+          500: '#CAA13F',
+          600: '#ad8833',
+          700: '#8f6f28',
+          800: '#71561f',
+          900: '#543f16',
         },
         accent: {
           50: '#eff4fb',
@@ -54,15 +54,20 @@ export default {
         display: ['Tajawal', 'Cairo', 'serif'],
       },
       boxShadow: {
-        gold: '0 10px 40px -10px rgba(212, 175, 55, 0.5)',
+        gold: '0 8px 24px -6px rgba(202, 161, 63, 0.55), inset 0 1px 0 rgba(255, 246, 213, 0.35)',
+        'gold-sm': '0 4px 14px -4px rgba(202, 161, 63, 0.5), inset 0 1px 0 rgba(255, 246, 213, 0.4)',
         glass: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
       },
       backgroundImage: {
-        // تدرّج ذهبي معدني فاخر
+        // تدرّج ذهبي معدني — highlight أعلى يسار + bronze أسفل يمين
+        'gold-metallic':
+          'linear-gradient(145deg, #FFF6D5 0%, #F0D078 14%, #CAA13F 46%, #A67C22 78%, #7A5C18 100%)',
         'primary-gradient':
-          'linear-gradient(135deg, #7A5C00 0%, #A67C00 15%, #C89B3C 30%, #F9E27D 45%, #FFF6C5 50%, #D4AF37 65%, #C89B3C 80%, #7A5C00 100%)',
+          'linear-gradient(145deg, #FFF6D5 0%, #F0D078 14%, #CAA13F 46%, #A67C22 78%, #7A5C18 100%)',
+        'gold-text':
+          'linear-gradient(145deg, #FFF6D5 0%, #F0D078 24%, #CAA13F 52%, #E8C56A 76%, #CAA13F 100%)',
         'accent-gradient': 'linear-gradient(135deg, #121c2b 0%, #213143 50%, #3f627f 100%)',
-        'white-gradient': 'linear-gradient(160deg, #fffdf8 0%, #f8f2e7 60%, #f1e8d8 100%)',
+        'white-gradient': 'linear-gradient(160deg, #1d1d1b 0%, #1a1a18 60%, #161614 100%)',
       },
       keyframes: {
         float: {

@@ -1,4 +1,5 @@
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import { useCountUp } from '../hooks/useCountUp'
 import { useLang, L } from '../i18n'
 
@@ -90,9 +91,7 @@ export default function AboutGeheny() {
 
           {/* النص والإحصائيات */}
           <div className="order-2 text-center lg:text-start">
-            <Reveal>
-              <span className="eyebrow mb-5">{L(content.eyebrow, lang)}</span>
-            </Reveal>
+            <SectionTitle className="mb-5">{L(content.eyebrow, lang)}</SectionTitle>
             <Reveal delay={0.05}>
               <h2 className="heading-lg text-navy-900">
                 {L(content.titleA, lang)}{' '}
@@ -114,7 +113,7 @@ export default function AboutGeheny() {
               <ul className="mx-auto mt-7 grid max-w-xl gap-3 text-start sm:grid-cols-2 lg:mx-0">
                 {achievements[lang].map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
-                    <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-ink shadow-gold">
+                    <span className="mt-0.5 gold-check h-6 w-6 flex-shrink-0 shadow-gold">
                       <CheckIcon />
                     </span>
                     <span className="text-sm font-semibold text-navy-800">{item}</span>

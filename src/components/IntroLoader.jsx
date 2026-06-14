@@ -1,53 +1,94 @@
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import logoImage from '../../images/Logo.png'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import BrandLoaderContent from './BrandLoaderContent'
 
-// شاشة افتتاحية: يظهر اللوجو ثم تختفي الشاشة (تظهر مرة واحدة لكل جلسة)
+const MIN_DISPLAY_MS = 1800
+
 export default function IntroLoader() {
-  const [visible, setVisible] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return !sessionStorage.getItem('elgeheny-intro-seen')
-  })
+  const [visible, setVisible] = useState(true)
+  const [progress, setProgress] = useState(0)
+  const reduceMotion = useReducedMotion()
+  const finishedRef = useRef(false)
 
   useEffect(() => {
-    if (!visible) return
     document.body.style.overflow = 'hidden'
-    const timer = setTimeout(() => {
-      sessionStorage.setItem('elgeheny-intro-seen', '1')
-      setVisible(false)
-    }, 1900)
-    return () => {
-      clearTimeout(timer)
-      document.body.style.overflow = ''
+
+    let loadComplete = document.readyState === 'complete'
+    const start = performance.now()
+    let rafId = 0
+
+    const finish = () => {
+      if (finishedRef.current) return
+      finishedRef.current = true
+      setProgress(100)
+      window.setTimeout(() => setVisible(false), reduceMotion ? 120 : 380)
     }
-  }, [visible])
+
+    const onLoad = () => {
+      loadComplete = true
+    }
+
+    if (!loadComplete) {
+      window.addEventListener('load', onLoad, { once: true })
+    }
+
+    const tick = (now) => {
+      const elapsed = now - start
+
+      setProgress((prev) => {
+        let target
+        if (loadComplete && elapsed >= MIN_DISPLAY_MS) {
+          target = 100
+        } else if (loadComplete) {
+          const blend = Math.min(1, elapsed / MIN_DISPLAY_MS)
+          target = 88 + blend * 12
+        } else {
+          const phase = Math.min(1, elapsed / (MIN_DISPLAY_MS * 0.95))
+          target = 8 + phase * 78
+        }
+
+        const next = prev + (target - prev) * 0.12
+        const value = Math.min(100, next)
+
+        if (value >= 99.5 && loadComplete && elapsed >= MIN_DISPLAY_MS) {
+          finish()
+          return 100
+        }
+
+        return value
+      })
+
+      if (!finishedRef.current) {
+        rafId = requestAnimationFrame(tick)
+      }
+    }
+
+    rafId = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('load', onLoad)
+    }
+  }, [reduceMotion])
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => { document.body.style.overflow = '' }}>
       {visible && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-canvas"
+          className="fixed inset-0 z-[100]"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.7, ease: 'easeInOut' }}
-          onAnimationComplete={() => {
-            document.body.style.overflow = ''
-          }}
+          exit={
+            reduceMotion
+              ? { opacity: 0 }
+              : { y: '-100%' }
+          }
+          transition={
+            reduceMotion
+              ? { duration: 0.35, ease: 'easeInOut' }
+              : { duration: 0.85, ease: [0.76, 0, 0.24, 1] }
+          }
         >
-          <div className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary-500/15 blur-[120px]" />
-
-          <motion.img
-            src={logoImage}
-            alt="الجهيني للتطوير العقاري"
-            initial={{ opacity: 0, scale: 0.85, y: 12 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              scale: [0.85, 1, 1, 1.05],
-              y: [12, 0, 0, -8],
-            }}
-            transition={{ duration: 1.9, times: [0, 0.3, 0.75, 1], ease: 'easeInOut' }}
-            className="relative h-24 w-auto max-w-[280px] object-contain drop-shadow-[0_10px_34px_rgba(189,154,104,0.3)] sm:h-28"
-          />
+          <BrandLoaderContent progress={progress} />
         </motion.div>
       )}
     </AnimatePresence>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 
 import visionImage from '../../images/Our vision.png'
@@ -73,14 +74,12 @@ export default function Vision() {
       <div className="pointer-events-none absolute -left-10 top-1/4 h-40 w-40 rounded-full bg-primary-500/20 blur-[80px]" />
 
       <div className="container-x">
-        <div className="mb-12 text-center">
-          <Reveal>
-            <span className="eyebrow">{t('vision.eyebrow')}</span>
-          </Reveal>
+        <div className="mb-12">
+          <SectionTitle className="mb-4">{t('vision.eyebrow')}</SectionTitle>
           <Reveal delay={0.05}>
-            <h2 className="heading-lg mt-4 text-navy-900">
+            <h3 className="heading-lg text-navy-900">
               {t('vision.titleA')} <span className="text-gradient-primary">{t('vision.titleB')}</span>
-            </h2>
+            </h3>
           </Reveal>
         </div>
 
@@ -98,7 +97,7 @@ export default function Vision() {
                   animate={{ x: 0 }}
                   exit={{ x: '-100%' }}
                   transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                  className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(189,154,104,0.25)]"
+                  className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(202,161,63,0.25)]"
                 />
               </AnimatePresence>
             </div>
@@ -115,10 +114,12 @@ export default function Vision() {
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="space-y-5"
               >
-                <span className="eyebrow">{L(slide.eyebrow, lang)}</span>
-                <h3 className="font-display text-2xl font-bold text-navy-900 sm:text-3xl">
+                <SectionTitle as="h3" className="mb-1" reveal={false}>
+                  {L(slide.eyebrow, lang)}
+                </SectionTitle>
+                <h4 className="font-display text-2xl font-bold text-navy-900 sm:text-3xl">
                   {L(slide.title, lang)}
-                </h3>
+                </h4>
 
                 {slide.text && (
                   <p className="text-base leading-relaxed text-navy-700 sm:text-lg">
@@ -130,7 +131,7 @@ export default function Vision() {
                   <ul className="space-y-3">
                     {L(slide.points, lang).map((point) => (
                       <li key={point} className="flex items-start gap-3">
-                        <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-white">
+                        <span className="mt-1 gold-check h-6 w-6 flex-shrink-0 shadow-gold-sm">
                           <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
                             <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>

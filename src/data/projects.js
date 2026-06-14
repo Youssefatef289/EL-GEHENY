@@ -43,8 +43,13 @@ const defaultFeatures = [
 const defaultPayment = [
   { label: { ar: 'مقدم تعاقد', en: 'Down payment' }, value: { ar: '10%', en: '10%' } },
   { label: { ar: 'فترة السداد', en: 'Payment period' }, value: { ar: 'حتى 8 سنوات', en: 'Up to 8 years' } },
-  { label: { ar: 'الاستلام', en: 'Delivery' }, value: { ar: 'نصف تشطيب', en: 'Semi-finished' } },
+  { label: { ar: 'التشطيب', en: 'Finishing' }, value: { ar: 'نصف تشطيب', en: 'Semi-finished' } },
 ]
+
+export const defaultUnitTypes = {
+  ar: 'أرضي بحديقة · متكرر · روف',
+  en: 'Ground with garden · Repeated · Roof',
+}
 
 // مواصفات التسليم المعتمدة لشركة الجهيني (موحّدة لجميع المشاريع)
 const defaultDeliverySpecs = [
@@ -116,7 +121,8 @@ export const projects = [
     units: { ar: 'وحدات متنوعة', en: 'Various units' },
     progress: 90,
     statusKey: 'in-progress',
-    deliveryYear: '2026',
+    deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
+    unitTypes: defaultUnitTypes,
     cover: galleryFor('j290')[0],
     gallery: galleryFor('j290'),
     shortDescription: {
@@ -288,7 +294,8 @@ export const projects = [
     units: { ar: 'وحدات متنوعة', en: 'Various units' },
     progress: 75,
     statusKey: 'in-progress',
-    deliveryYear: '2026',
+    deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
+    unitTypes: defaultUnitTypes,
     cover: galleryFor('m75')[0],
     gallery: galleryFor('m75'),
     unitDetails: [
@@ -345,7 +352,8 @@ export const projects = [
     units: { ar: 'وحدات متنوعة', en: 'Various units' },
     progress: 100,
     statusKey: 'delivered',
-    deliveryYear: { ar: 'استلام فوري', en: 'Immediate' },
+    deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
+    unitTypes: defaultUnitTypes,
     cover: galleryFor('e80')[0],
     gallery: galleryFor('e80'),
     shortDescription: {
@@ -443,7 +451,8 @@ export const projects = [
     units: { ar: 'وحدات متنوعة', en: 'Various units' },
     progress: 100,
     statusKey: 'delivered',
-    deliveryYear: { ar: 'استلام فوري', en: 'Immediate' },
+    deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
+    unitTypes: defaultUnitTypes,
     cover: galleryFor('m36')[0],
     gallery: galleryFor('m36'),
     shortDescription: {
@@ -513,7 +522,8 @@ export const projects = [
     units: { ar: 'وحدات متنوعة', en: 'Various units' },
     progress: 100,
     statusKey: 'delivered',
-    deliveryYear: { ar: 'استلام فوري', en: 'Immediate' },
+    deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
+    unitTypes: defaultUnitTypes,
     cover: galleryFor('a149')[0],
     gallery: galleryFor('a149'),
     shortDescription: {
@@ -631,7 +641,8 @@ export const projects = [
     units: { ar: 'وحدات متنوعة', en: 'Various units' },
     progress: 45,
     statusKey: 'in-progress',
-    deliveryYear: '2028',
+    deliveryStatus: { ar: 'تحت الإنشاء', en: 'Under construction' },
+    unitTypes: defaultUnitTypes,
     cover: galleryFor('orchid179')[0],
     gallery: galleryFor('orchid179'),
     shortDescription: {

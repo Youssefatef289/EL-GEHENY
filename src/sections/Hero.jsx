@@ -4,7 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
-import heroVideo from '../../images/Hero.mp4'
+import heroVideo from '../../images/Home page Hero.mp4'
 
 export default function Hero() {
   const sectionRef = useRef(null)
@@ -58,7 +58,7 @@ export default function Hero() {
             transition={{ delay: 0.15, duration: 0.55 }}
             className="eyebrow mb-6 border-white/15 bg-white/10 text-white dark:border-navy-200/60 dark:bg-navy-900/30 dark:text-navy-100"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary-300" />
+            <span className="h-1.5 w-1.5 rounded-full gold-metallic shadow-gold-sm" />
             {t('hero.badgeSince')} {company.since} - {L(company.nameShort, lang)}
           </motion.span>
 
@@ -114,7 +114,7 @@ export default function Hero() {
             <motion.span
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-              className="h-2 w-1 rounded-full bg-primary-300"
+              className="h-2 w-1 rounded-full gold-metallic shadow-gold-sm"
             />
           </div>
         </div>

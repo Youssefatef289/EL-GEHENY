@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import LazyImage from './LazyImage'
 import { company } from '../data/site'
+import { defaultUnitTypes } from '../data/projects'
 import { useLang, L } from '../i18n'
 
 function Arrow({ dir = 'next' }) {
@@ -129,6 +130,8 @@ export default function ProjectModal({ project, open, onClose }) {
   if (!project) return null
 
   const delivered = project.statusKey === 'delivered'
+  const deliveryLabel = L(project.deliveryStatus, lang)
+  const unitTypesLabel = L(project.unitTypes || defaultUnitTypes, lang)
   const title = L(project.title, lang)
   const images = project.gallery?.length ? project.gallery : project.cover ? [project.cover] : []
   const waMessage = encodeURIComponent(
@@ -183,7 +186,7 @@ export default function ProjectModal({ project, open, onClose }) {
                       : 'bg-amber-500/15 text-amber-600 ring-1 ring-amber-400/30 dark:text-amber-300'
                   }`}
                 >
-                  {delivered ? t('project.delivered') : t('project.inProgress')}
+                  {deliveryLabel}
                 </span>
               </div>
 
@@ -197,13 +200,10 @@ export default function ProjectModal({ project, open, onClose }) {
 
               {/* معلومات سريعة */}
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <Info label={t('project.type')} value={L(project.type, lang)} />
+                <Info label={t('project.unitTypes')} value={unitTypesLabel} />
                 <Info label={t('project.areaFrom')} value={L(project.area, lang)} />
                 <Info label={t('project.units')} value={L(project.units, lang)} />
-                <Info
-                  label={t('project.deliveryYear')}
-                  value={typeof project.deliveryYear === 'object' ? L(project.deliveryYear, lang) : project.deliveryYear}
-                />
+                <Info label={t('project.deliveryStatus')} value={deliveryLabel} />
               </div>
 
               {/* الوصف */}
@@ -239,7 +239,7 @@ export default function ProjectModal({ project, open, onClose }) {
                   <div className="grid gap-2 sm:grid-cols-2">
                     {project.features.map((f, fi) => (
                       <div key={fi} className="flex items-center gap-2.5 rounded-xl border border-navy-200 bg-navy-50 p-3">
-                        <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-white">
+                        <span className="gold-check h-6 w-6 flex-shrink-0 shadow-gold-sm">
                           <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
                             <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -265,7 +265,7 @@ export default function ProjectModal({ project, open, onClose }) {
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <h4 className="font-display text-base font-bold text-navy-900">{L(unit.name, lang)}</h4>
                             <div className="flex flex-wrap items-center gap-1.5">
-                              <span className="rounded-full bg-primary-gradient px-3 py-1 text-xs font-bold text-ink">
+                              <span className="rounded-full gold-metallic px-3 py-1 text-xs font-bold text-ink shadow-gold-sm">
                                 {L(unit.area, lang)}
                               </span>
                               {unit.extra && (
@@ -315,7 +315,7 @@ export default function ProjectModal({ project, open, onClose }) {
                         key={si}
                         className="flex items-center gap-2.5 rounded-xl border border-navy-200 bg-navy-50 p-3"
                       >
-                        <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-primary-gradient text-white">
+                        <span className="gold-metallic flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-ink shadow-gold-sm">
                           <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                             <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
@@ -333,7 +333,7 @@ export default function ProjectModal({ project, open, onClose }) {
                   <h3 className="mb-3 font-display text-lg font-bold text-navy-900">{t('project.locationTitle')}</h3>
                   <div className="rounded-2xl border border-primary-200/60 bg-surface p-5 dark:border-primary-400/20">
                     {project.locationFeatures.tagline && (
-                      <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary-gradient px-3 py-1 text-xs font-bold text-ink">
+                      <span className="mb-3 inline-flex items-center gap-1.5 rounded-full gold-metallic px-3 py-1 text-xs font-bold text-ink shadow-gold-sm">
                         {L(project.locationFeatures.tagline, lang)}
                       </span>
                     )}
@@ -360,7 +360,7 @@ export default function ProjectModal({ project, open, onClose }) {
                         {project.locationFeatures.highlights.map((h, hi) => (
                           <div key={hi}>
                             <h4 className="flex items-center gap-2 font-display text-sm font-bold text-navy-900">
-                              <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-[10px] font-bold text-ink">
+                              <span className="gold-check h-5 w-5 flex-shrink-0 text-[10px] font-bold shadow-gold-sm">
                                 {hi + 1}
                               </span>
                               {L(h.title, lang)}

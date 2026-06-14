@@ -160,7 +160,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
       className="perspective relative isolate flex h-[100svh] min-h-[100svh] flex-col overflow-hidden pt-24 pb-6 sm:pt-28 sm:pb-8"
     >
       <div className="absolute inset-0 bg-white-gradient" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.18),transparent_30%),linear-gradient(180deg,rgba(11,18,29,0.4)_0%,rgba(8,13,21,0.7)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.18),transparent_30%),linear-gradient(180deg,rgba(11,18,29,0.4)_0%,rgba(8,13,21,0.7)_100%)]" />
       <motion.div
         style={glowStyle}
         className="pointer-events-none absolute -right-24 top-8 h-80 w-80 rounded-full bg-primary-400/20 blur-[140px]"
@@ -273,7 +273,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
 
           {image ? (
             <div className="glass-primary card-3d relative overflow-hidden rounded-[2rem] border border-primary-200/60 p-3 shadow-[0_24px_90px_-40px_rgba(15,23,34,0.25)] sm:rounded-[2.5rem] sm:p-4">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.22),transparent_38%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.22),transparent_38%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
               <div className="relative overflow-hidden rounded-[1.6rem] sm:rounded-[2rem]">
                 <img
                   src={image}
@@ -286,7 +286,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
             </div>
           ) : (
           <div className="glass-primary card-3d relative overflow-hidden rounded-[2rem] border border-primary-200/60 p-4 shadow-[0_24px_90px_-40px_rgba(15,23,34,0.25)] sm:rounded-[2.5rem] sm:p-6">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(189,154,104,0.2),transparent_35%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.2),transparent_35%),radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.9),transparent_28%)]" />
             <div className="relative flex min-h-[18rem] flex-col justify-between sm:min-h-[24rem] lg:min-h-[28rem]">
               <div className="flex items-center justify-between gap-4">
                 <span className="eyebrow border-primary-200 bg-primary-100 text-primary-600">
@@ -311,7 +311,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
                         <p className="font-display text-xl font-bold text-navy-900 dark:text-white">{card.title}</p>
                         <p className="mt-2 text-sm leading-relaxed text-navy-600 dark:text-navy-200">{card.text}</p>
                       </div>
-                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-gradient text-sm font-extrabold text-white shadow-gold">
+                      <span className="gold-metallic flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl text-sm font-extrabold text-ink shadow-gold">
                         0{index + 1}
                       </span>
                     </div>
@@ -351,7 +351,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               </p>
             </div>
             <div className="flex items-center gap-2 text-right">
-              <span className="flex h-3.5 w-3.5 rounded-full bg-primary-400 shadow-[0_0_0_6px_rgba(189,154,104,0.12)]" />
+              <span className="flex h-3.5 w-3.5 rounded-full bg-primary-400 shadow-[0_0_0_6px_rgba(202,161,63,0.12)]" />
               <span className="text-sm font-semibold text-navy-600">Scroll-ready hero</span>
             </div>
           </motion.div>

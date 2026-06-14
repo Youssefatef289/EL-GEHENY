@@ -3,7 +3,7 @@ import { Link, useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
 import Reveal from '../components/Reveal'
-import { getProjectById, projects } from '../data/projects'
+import { getProjectById, projects, defaultUnitTypes } from '../data/projects'
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
@@ -19,6 +19,8 @@ export default function ProjectDetail() {
 
   const related = projects.filter((p) => p.id !== project.id).slice(0, 3)
   const delivered = project.statusKey === 'delivered'
+  const deliveryLabel = L(project.deliveryStatus, lang)
+  const unitTypesLabel = L(project.unitTypes || defaultUnitTypes, lang)
   const title = L(project.title, lang)
 
   const handleSubmit = (e) => {
@@ -71,7 +73,7 @@ export default function ProjectDetail() {
                       : 'bg-amber-500/25 text-amber-100 ring-1 ring-amber-400/40'
                   }`}
                 >
-                  {delivered ? t('project.delivered') : t('project.inProgress')}
+                  {deliveryLabel}
                 </span>
               </motion.div>
 
@@ -108,13 +110,10 @@ export default function ProjectDetail() {
             {/* معلومات سريعة */}
             <Reveal>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <InfoBox label={t('project.type')} value={L(project.type, lang)} />
+                <InfoBox label={t('project.unitTypes')} value={unitTypesLabel} />
                 <InfoBox label={t('project.areaFrom')} value={L(project.area, lang)} />
                 <InfoBox label={t('project.units')} value={L(project.units, lang)} />
-                <InfoBox
-                  label={t('project.deliveryYear')}
-                  value={typeof project.deliveryYear === 'object' ? L(project.deliveryYear, lang) : project.deliveryYear}
-                />
+                <InfoBox label={t('project.deliveryStatus')} value={deliveryLabel} />
               </div>
             </Reveal>
 
@@ -157,7 +156,7 @@ export default function ProjectDetail() {
                       key={fi}
                       className="flex items-center gap-3 rounded-2xl border border-navy-200 bg-navy-50 p-4"
                     >
-                      <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-gradient text-white">
+                      <span className="gold-check h-7 w-7 flex-shrink-0 shadow-gold-sm">
                         <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
                           <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>

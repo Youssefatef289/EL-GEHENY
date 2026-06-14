@@ -1,4 +1,5 @@
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
 import AboutGeheny from '../sections/AboutGeheny'
 import Vision from '../sections/Vision'
@@ -93,20 +94,16 @@ export default function About() {
       <SectionReveal from="right">
         <section className="section-pad bg-navy-50/40">
           <div className="container-x">
-            <div className="text-center">
-              <Reveal>
-                <span className="eyebrow mb-4">{L(whyHeading.eyebrow, lang)}</span>
-              </Reveal>
-              <Reveal delay={0.05}>
-                <h2 className="heading-lg mx-auto max-w-3xl text-navy-900">{L(whyHeading.title, lang)}</h2>
-              </Reveal>
-            </div>
+            <SectionTitle className="mb-4">{L(whyHeading.eyebrow, lang)}</SectionTitle>
+            <Reveal delay={0.05}>
+              <h2 className="heading-lg max-w-3xl text-navy-900">{L(whyHeading.title, lang)}</h2>
+            </Reveal>
 
             <div className="mt-14 grid gap-6 sm:grid-cols-2">
               {whyReasons.map((reason, i) => (
                 <Reveal key={i} delay={i * 0.08}>
-                  <div className="group flex h-full items-start gap-5 rounded-3xl border border-primary-200/70 bg-surface/85 p-7 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(189,154,104,0.4)]">
-                    <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300 transition-colors group-hover:bg-primary-gradient group-hover:text-white">
+                  <div className="group flex h-full items-start gap-5 rounded-3xl border border-primary-200/70 bg-surface/85 p-7 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(202,161,63,0.4)]">
+                    <span className="hover-gold-metallic flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-500/10 text-primary-500 ring-1 ring-primary-500/25 transition-all duration-300">
                       <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
                         {reason.icon}
                       </svg>

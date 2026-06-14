@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
 import { blogPosts } from '../data/blog'
 import { useLang, L } from '../i18n'
@@ -78,15 +79,13 @@ export default function Blog() {
       {/* ترويسة مبسّطة */}
       <section className="relative overflow-hidden pt-32 pb-6 sm:pt-36">
         <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
-        <div className="container-x relative text-center">
-          <Reveal>
-            <span className="eyebrow mb-5">{t('blog.eyebrow')}</span>
-          </Reveal>
+        <div className="container-x relative">
+          <SectionTitle as="h1">{t('blog.eyebrow')}</SectionTitle>
           <Reveal delay={0.05}>
-            <h1 className="heading-lg mx-auto max-w-3xl text-navy-900">{t('blog.title')}</h1>
+            <h2 className="heading-lg mt-4 max-w-3xl text-navy-900">{t('blog.title')}</h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
               {t('blog.desc')}
             </p>
           </Reveal>

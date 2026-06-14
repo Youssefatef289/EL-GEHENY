@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import SectionTitle from '../components/SectionTitle'
+import Reveal from '../components/Reveal'
 import { gsap, ScrollTrigger, registerGsap } from '../gsap/register'
 import { projects } from '../data/projects'
 import { useLang, L } from '../i18n'
@@ -78,9 +80,11 @@ export default function ProjectsShowcase() {
 
   return (
     <section id="projects-stack" className="relative overflow-hidden bg-canvas py-24 sm:py-32">
-      <div className="container-x relative z-10 mb-14 text-center sm:mb-16">
-        <span className="eyebrow mb-4">{t('projectsShowcase.eyebrow')}</span>
-        <h2 className="heading-lg text-navy-900">{t('projectsShowcase.title')}</h2>
+      <div className="container-x relative z-10 mb-14 sm:mb-16">
+        <SectionTitle>{t('projectsShowcase.eyebrow')}</SectionTitle>
+        <Reveal delay={0.05}>
+          <h3 className="heading-lg mt-4 text-navy-900">{t('projectsShowcase.title')}</h3>
+        </Reveal>
       </div>
 
       <div

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 
 import bgTexture from '../../images/imgi_99_MMG-Re-Brand-Presentation_pages-to-jpg-0015-scaled-e1748253692652.jpg'
@@ -48,15 +49,11 @@ export default function Services() {
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-ink/75" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(189,154,104,0.12),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(202,161,63,0.12),transparent_55%)]" />
       </div>
 
       <div className="container-x relative">
-        <Reveal>
-          <h2 className="text-center font-display text-3xl font-extrabold text-primary-400 sm:text-4xl lg:text-5xl">
-            {t('services.title')}
-          </h2>
-        </Reveal>
+        <SectionTitle className="mb-12 sm:mb-14">{t('services.title')}</SectionTitle>
 
         <div className="mt-12 grid gap-6 sm:mt-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {services.map((service, i) => (
@@ -66,7 +63,7 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.65, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="group flex flex-col items-center bg-surface px-6 py-10 text-center shadow-[0_24px_70px_-40px_rgba(0,0,0,0.55)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_34px_90px_-40px_rgba(189,154,104,0.35)] sm:px-8 sm:py-12"
+              className="group flex flex-col items-center bg-surface px-6 py-10 text-center shadow-[0_24px_70px_-40px_rgba(0,0,0,0.55)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_34px_90px_-40px_rgba(202,161,63,0.35)] sm:px-8 sm:py-12"
             >
               <div className="mb-6 flex h-24 w-24 items-center justify-center transition-transform duration-500 group-hover:scale-110 sm:h-28 sm:w-28">
                 <img

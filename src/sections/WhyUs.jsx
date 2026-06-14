@@ -1,124 +1,159 @@
-import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import SectionHeading from '../components/SectionHeading'
+import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 
-const features = [
+import heritageImage from '../../images/Why.webp'
+
+const heritageProjects = [
   {
-    title: { ar: 'خبرة حقيقية', en: 'Genuine experience' },
-    description: {
-      ar: 'خبرة متراكمة بدأت منذ عام 1990 في تنفيذ وتطوير مشروعات متنوعة داخل مصر.',
-      en: 'Accumulated experience since 1990 in executing and developing diverse projects across Egypt.',
-    },
-    icon: (
-      <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6L12 2z" />
-    ),
+    ar: 'إنشاء كمبوند فلور سيتى العجمى - الإسكندرية (1، 2، 3، 4)',
+    en: 'Development of Flor City Compound, Agami — Alexandria (Phases 1, 2, 3, 4)',
   },
   {
-    title: { ar: 'مواقع واعدة', en: 'Promising locations' },
-    description: {
-      ar: 'نختار مواقع مشروعاتنا بعناية لضمان أعلى قيمة سكنية واستثمارية.',
-      en: 'We carefully select our project locations to ensure the highest residential and investment value.',
-    },
-    icon: <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />,
+    ar: 'إنشاء برج سكنى فلور سيتى 4 أكتوبر - الإسكندرية',
+    en: 'Construction of Flor City residential tower, 4 October — Alexandria',
   },
   {
-    title: { ar: 'جودة تنفيذ', en: 'Execution quality' },
-    description: {
-      ar: 'نلتزم باستخدام أفضل الخامات ومعايير البناء الحديثة لتحقيق أعلى مستويات الجودة.',
-      en: 'We are committed to using the best materials and modern building standards to achieve the highest levels of quality.',
-    },
-    icon: (
-      <path d="M3 21h18v-2H3v2zM5 17h2V9H5v8zm4 0h2V5H9v12zm4 0h2v-7h-2v7zm4 0h2V8h-2v9z" />
-    ),
+    ar: 'إنشاء فيلات سكنية بالتجمع الأول - القاهرة الجديدة',
+    en: 'Construction of residential villas in First Settlement — New Cairo',
   },
   {
-    title: { ar: 'ثقة تُبنى على الالتزام', en: 'Trust built on commitment' },
-    description: {
-      ar: 'نؤمن أن الثقة تُكتسب بالإنجاز، لذلك نلتزم بالشفافية وجودة التنفيذ واحترام مواعيد التسليم.',
-      en: 'We believe trust is earned through achievement, so we are committed to transparency, execution quality, and respecting delivery dates.',
-    },
-    icon: (
-      <path d="M12 1l9 4v6c0 5.25-3.75 9.75-9 11-5.25-1.25-9-5.75-9-11V5l9-4zm-1.2 14.2l6-6-1.4-1.4-4.6 4.6-2-2-1.4 1.4 3.4 3.4z" />
-    ),
+    ar: 'إنشاء برج سكنى فلاور تاور زهراء مدينة نصر',
+    en: 'Construction of Flower Tower residential building — Zahraa, Nasr City',
+  },
+  {
+    ar: 'إنشاء مجموعة أبراج الجهينى (1، 2، 3، 4، 5، 6، 7) - زهراء مدينة نصر',
+    en: 'Development of El-Geheny Towers Group (1–7) — Zahraa, Nasr City',
+  },
+  {
+    ar: 'إنشاء عمائر سكنية بمدينة بدر الحى المتميز 236',
+    en: 'Construction of residential buildings in Badr City — Distinguished District 236',
+  },
+  {
+    ar: 'تنفيذ وتشطيب معهد الأرقم - مدينة نصر',
+    en: 'Execution and finishing of Al-Arqam Institute — Nasr City',
+  },
+  {
+    ar: 'السوق التجارى - المنطقة 9 - مدينة نصر',
+    en: 'Commercial Market — Zone 9, Nasr City',
+  },
+  {
+    ar: 'السوق التجارى القديم - شرم الشيخ',
+    en: 'Old Commercial Market — Sharm El-Sheikh',
+  },
+  {
+    ar: 'تنفيذ وتشطيب شاليهات قرية المحروسة - رأس سدر',
+    en: 'Execution and finishing of chalets — Al-Mahrousa Village, Ras Sidr',
+  },
+  {
+    ar: 'تنفيذ محطة مياه أسيوط الجديدة',
+    en: 'Construction of New Assiut Water Station',
+  },
+  {
+    ar: 'استقطاع 2 كم بقناة السويس الجديدة',
+    en: '2 km dredging in the New Suez Canal',
+  },
+  {
+    ar: 'أعمال حفر بنهر النيل الأخضر - العاصمة الإدارية الجديدة',
+    en: 'Excavation works on the Green Nile River — New Administrative Capital',
+  },
+  {
+    ar: 'أعمال حفر أنفاق الحي الحكومي - العاصمة الإدارية الجديدة',
+    en: 'Tunnel excavation for the Government District — New Administrative Capital',
+  },
+  {
+    ar: 'أعمال حفر بكمبوند تاج سلطان - طريق السويس',
+    en: 'Excavation works at Tag Sultan Compound — Suez Road',
+  },
+  {
+    ar: 'Il Monte Galala — العين السخنة — أعمال حفر وإنشاءات بالقرية',
+    en: 'Il Monte Galala — Ain Sokhna — village excavation and construction works',
+  },
+  {
+    ar: 'Porto Sokhna Water Front — العين السخنة — أعمال تشطيبات شاليهات',
+    en: 'Porto Sokhna Water Front — Ain Sokhna — chalet finishing works',
   },
 ]
 
-function FeatureCard({ feature, index }) {
+function HeritageItem({ item, index }) {
   const { lang } = useLang()
-  const ref = useRef(null)
-  const [transform, setTransform] = useState('')
-
-  const handleMove = (e) => {
-    const el = ref.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    setTransform(
-      `perspective(900px) rotateX(${(-y * 12).toFixed(2)}deg) rotateY(${(x * 12).toFixed(2)}deg) translateY(-6px)`,
-    )
-  }
-
-  const reset = () => setTransform('perspective(900px) rotateX(0) rotateY(0) translateY(0)')
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="perspective"
+    <motion.li
+      initial={{ opacity: 0, x: lang === 'ar' ? 16 : -16 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.5, delay: (index % 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      className="flex gap-3.5 text-sm leading-relaxed text-white/90 sm:text-[0.9375rem]"
     >
-      <div
-        ref={ref}
-        onMouseMove={handleMove}
-        onMouseLeave={reset}
-        style={{ transform }}
-        className="card-3d group relative h-full overflow-hidden rounded-3xl border border-primary-200/70 bg-surface/85 p-8 shadow-[0_24px_70px_-50px_rgba(15,23,34,0.4)] backdrop-blur-xl transition-[transform,border-color,box-shadow] duration-200 hover:border-primary-300 hover:shadow-[0_32px_80px_-45px_rgba(189,154,104,0.4)]"
-      >
-        <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-400/70 to-transparent" />
-        <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-primary-500/0 blur-3xl transition-all duration-500 group-hover:bg-primary-500/20" />
-        <div
-          className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300 transition-colors group-hover:bg-primary-gradient group-hover:text-white"
-          style={{ transform: 'translateZ(40px)' }}
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8">
-            {feature.icon}
-          </svg>
-        </div>
-        <h3
-          className="mb-3 font-display text-xl font-bold text-navy-900"
-          style={{ transform: 'translateZ(30px)' }}
-        >
-          {L(feature.title, lang)}
-        </h3>
-        <p
-          className="text-sm leading-relaxed text-navy-700"
-          style={{ transform: 'translateZ(20px)' }}
-        >
-          {L(feature.description, lang)}
-        </p>
-      </div>
-    </motion.div>
+      <span className="gold-check mt-0.5 h-6 w-6 shadow-gold-sm">
+        <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3" aria-hidden="true">
+          <path
+            d="M20 6L9 17l-5-5"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <span>{L(item, lang)}</span>
+    </motion.li>
   )
 }
 
 export default function WhyUs() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
+
   return (
-    <section className="section-pad relative">
-      <div className="container-x">
-        <SectionHeading
-          eyebrow={t('whyUs.eyebrow')}
-          title={t('whyUs.title')}
-          description={t('whyUs.description')}
+    <section id="heritage" className="relative min-h-[85vh] w-full overflow-hidden">
+      {/* صورة بالعرض الكامل */}
+      <div className="absolute inset-0">
+        <img
+          src={heritageImage}
+          alt=""
+          className="h-full w-full object-cover object-center"
+          aria-hidden="true"
         />
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, i) => (
-            <FeatureCard key={i} feature={feature} index={i} />
-          ))}
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/72 to-ink/88" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(202,161,63,0.14),transparent_55%)]" />
+        <div
+          className={`absolute inset-0 ${
+            lang === 'ar'
+              ? 'bg-gradient-to-l from-ink/90 via-ink/55 to-transparent'
+              : 'bg-gradient-to-r from-ink/90 via-ink/55 to-transparent'
+          }`}
+        />
+      </div>
+
+      {/* النص فوق الصورة */}
+      <div className="container-x relative z-10 px-5 py-20 sm:py-24 lg:py-28">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto max-w-6xl"
+        >
+          <SectionTitle tone="gold" className="mb-5">
+            {t('heritage.eyebrow')}
+          </SectionTitle>
+          <Reveal delay={0.05}>
+            <h3 className="heading-lg max-w-3xl text-white">{t('heritage.title')}</h3>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+              {t('heritage.description')}
+            </p>
+          </Reveal>
+
+          <ul className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 md:gap-x-12 lg:gap-x-16">
+            {heritageProjects.map((item, i) => (
+              <HeritageItem key={i} item={item} index={i} />
+            ))}
+          </ul>
+        </motion.div>
       </div>
     </section>
   )

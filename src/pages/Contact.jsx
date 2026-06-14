@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Reveal from '../components/Reveal'
+import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
@@ -47,15 +48,13 @@ export default function Contact() {
       {/* ترويسة مبسّطة */}
       <section className="relative overflow-hidden pt-32 pb-6 sm:pt-36">
         <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
-        <div className="container-x relative text-center">
-          <Reveal>
-            <span className="eyebrow mb-5">{t('contact.eyebrow')}</span>
-          </Reveal>
+        <div className="container-x relative">
+          <SectionTitle as="h1">{t('contact.eyebrow')}</SectionTitle>
           <Reveal delay={0.05}>
-            <h1 className="heading-lg mx-auto max-w-3xl text-navy-900">{t('contact.title')}</h1>
+            <h2 className="heading-lg mt-4 max-w-3xl text-navy-900">{t('contact.title')}</h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
               {t('contact.desc')}
             </p>
           </Reveal>
@@ -75,7 +74,7 @@ export default function Contact() {
                   rel="noreferrer"
                   className="group flex items-start gap-4 rounded-3xl border border-navy-200 bg-navy-50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/40 dark:border-navy-700/50 dark:bg-navy-900/60"
                 >
-                  <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 ring-1 ring-primary-300 transition-colors group-hover:bg-primary-gradient group-hover:text-white">
+                  <span className="hover-gold-metallic flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-500/10 text-primary-500 ring-1 ring-primary-500/25 transition-all duration-300">
                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
                       {item.icon}
                     </svg>

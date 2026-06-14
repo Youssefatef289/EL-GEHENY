@@ -19,7 +19,7 @@ export default function Loader() {
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="h-20 w-auto max-w-[260px] object-contain drop-shadow-[0_8px_28px_rgba(189,154,104,0.28)] sm:h-24"
+          className="h-20 w-auto max-w-[260px] object-contain drop-shadow-[0_8px_28px_rgba(202,161,63,0.28)] sm:h-24"
         />
 
         {/* لودر المكعّبات المتحركة */}

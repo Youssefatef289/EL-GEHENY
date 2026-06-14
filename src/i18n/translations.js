@@ -55,6 +55,12 @@ export const translations = {
       description:
         'أربعة أسباب تجعل من الجهيني للتطوير العقاري الخيار الأمثل لاستثمارك العقاري الآمن.',
     },
+    heritage: {
+      eyebrow: 'إرثنا',
+      title: 'سجل من الإنجازات يمتد لأكثر من ثلاثة عقود',
+      description:
+        'منذ عام 1990، نفّذنا مشروعات سكنية وتجارية وبنية تحتية في أهم مواقع مصر — شاهد على خبرتنا وثقة عملائنا.',
+    },
     vision: {
       eyebrow: 'رؤيتنا للمستقبل',
       titleA: 'نُطوّر العقار لنُطوّر',
@@ -157,10 +163,10 @@ export const translations = {
       inProgress: 'قيد التنفيذ',
       details: 'التفاصيل',
       progress: 'نسبة الإنجاز',
-      type: 'النوع',
+      unitTypes: 'أنواع الوحدات',
+      deliveryStatus: 'حالة التسليم',
       areaFrom: 'المساحة تبدأ من',
       units: 'عدد الوحدات',
-      deliveryYear: 'سنة التسليم',
       about: 'عن المشروع',
       featuresTitle: 'مميزات المشروع',
       unitsTitle: 'تقسيمة الوحدات الداخلية',
@@ -285,6 +291,12 @@ export const translations = {
       description:
         'Four reasons that make El-Geheny Real Estate Development the ideal choice for your safe real estate investment.',
     },
+    heritage: {
+      eyebrow: 'Our Legacy',
+      title: 'A track record spanning more than three decades',
+      description:
+        'Since 1990, we have delivered residential, commercial, and infrastructure projects across Egypt’s most strategic locations — proof of our experience and our clients’ trust.',
+    },
     vision: {
       eyebrow: 'Our Vision for the Future',
       titleA: 'We develop real estate to elevate',
@@ -387,10 +399,10 @@ export const translations = {
       inProgress: 'In Progress',
       details: 'Details',
       progress: 'Progress',
-      type: 'Type',
+      unitTypes: 'Unit types',
+      deliveryStatus: 'Delivery status',
       areaFrom: 'Area starts from',
       units: 'Number of units',
-      deliveryYear: 'Delivery year',
       about: 'About the project',
       featuresTitle: 'Project features',
       unitsTitle: 'Internal unit layouts',
