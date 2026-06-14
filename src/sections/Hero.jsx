@@ -4,7 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
-import heroVideo from '../../images/Home page Hero.mp4'
+import heroVideo from '../../images/Hero.mp4'
 
 export default function Hero() {
   const sectionRef = useRef(null)
