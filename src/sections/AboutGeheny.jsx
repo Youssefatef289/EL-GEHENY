@@ -43,18 +43,11 @@ function CheckIcon() {
   )
 }
 
-// الإحصائية الكبيرة (سنوات الخبرة)
-const bigStat = {
-  value: 35,
-  suffix: '+',
-  label: { ar: 'سنة من الخبرة', en: 'Years of experience' },
-}
-
-// الإحصائيات الجانبية
-const sideStats = [
+// الإحصائيات
+const stats = [
+  { value: 35, suffix: '+', label: { ar: 'سنة من الخبرة', en: 'Years of experience' } },
   { value: 500, suffix: '+', label: { ar: 'عميل واثق', en: 'Confident clients' } },
   { value: 100, suffix: '+', label: { ar: 'مشروع منجز', en: 'Completed projects' } },
-  // { value: 0.5, suffix: { ar: ' مليار', en: 'B' }, decimals: 1, label: { ar: 'حجم استثماراتنا', en: 'Investment volume' } },
 ]
 
 function CountValue({ value, decimals = 0, className }) {
@@ -63,6 +56,26 @@ function CountValue({ value, decimals = 0, className }) {
     <span ref={ref} className={className}>
       {formatted}
     </span>
+  )
+}
+
+function StatCard({ stat, lang }) {
+  return (
+    <div className="flex min-h-[7.5rem] flex-col items-center justify-center rounded-2xl border border-navy-200/50 bg-surface/60 px-4 py-5 text-center shadow-[0_16px_40px_-30px_rgba(0,0,0,0.5)] sm:min-h-[8rem] sm:px-5 sm:py-6">
+      <div className="flex items-baseline justify-center gap-0.5">
+        <CountValue
+          value={stat.value}
+          decimals={stat.decimals || 0}
+          className="font-display text-4xl font-extrabold leading-none text-gradient-primary sm:text-5xl"
+        />
+        <span className="font-display text-xl font-extrabold text-primary-500 sm:text-2xl">
+          {stat.suffix}
+        </span>
+      </div>
+      <p className="mt-3 max-w-[9rem] body-sm font-semibold leading-snug text-subtle">
+        {L(stat.label, lang)}
+      </p>
+    </div>
   )
 }
 
@@ -123,39 +136,11 @@ export default function AboutGeheny() {
             </Reveal>
 
             {/* الإحصائيات */}
-            <Reveal delay={0.15}>
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-8 lg:justify-start">
-                {/* الرقم الكبير */}
-                <div className="flex items-baseline gap-1">
-                  <CountValue
-                    value={bigStat.value}
-                    className="font-display text-6xl font-extrabold leading-none text-gradient-primary sm:text-7xl"
-                  />
-                  <span className="font-display text-3xl font-extrabold text-gradient-primary">
-                    {bigStat.suffix}
-                  </span>
-                </div>
-                <div className="text-start">
-                  <p className="max-w-[7rem] body-sm font-semibold leading-snug text-subtle">
-                    {L(bigStat.label, lang)}
-                  </p>
-                </div>
-
-                {/* فاصل */}
-                <span className="hidden h-16 w-px bg-navy-200/70 sm:block" />
-
-                {/* الإحصائيات الجانبية */}
-                <div className="space-y-3">
-                  {sideStats.map((stat) => (
-                    <div key={L(stat.label, lang)} className="flex items-baseline gap-2">
-                      <span className="flex items-baseline font-display text-2xl font-extrabold text-navy-900">
-                        <CountValue value={stat.value} decimals={stat.decimals || 0} />
-                        <span className="text-primary-500">{L(stat.suffix, lang)}</span>
-                      </span>
-                      <span className="body-sm font-semibold text-subtle">{L(stat.label, lang)}</span>
-                    </div>
-                  ))}
-                </div>
+            <Reveal delay={0.18}>
+              <div className="mx-auto mt-10 grid max-w-xl grid-cols-1 gap-4 sm:grid-cols-3 lg:mx-0">
+                {stats.map((stat) => (
+                  <StatCard key={L(stat.label, 'ar')} stat={stat} lang={lang} />
+                ))}
               </div>
             </Reveal>
           </div>
