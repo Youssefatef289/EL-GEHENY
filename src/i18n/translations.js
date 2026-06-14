@@ -17,8 +17,11 @@ export const translations = {
       langLabel: 'English',
       themeToDark: 'الوضع الداكن',
       themeToLight: 'الوضع الفاتح',
-      loading: 'جارِ التحميل...',
+      loading: 'جارِ التحميل',
       close: 'إغلاق',
+    },
+    loader: {
+      since: 'منذ عام',
     },
     nav: {
       home: 'الرئيسية',
@@ -253,8 +256,11 @@ export const translations = {
       langLabel: 'العربية',
       themeToDark: 'Dark mode',
       themeToLight: 'Light mode',
-      loading: 'Loading...',
+      loading: 'Loading',
       close: 'Close',
+    },
+    loader: {
+      since: 'Since',
     },
     nav: {
       home: 'Home',

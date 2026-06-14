@@ -15,8 +15,8 @@ function AppErrorFallback() {
   const { t } = useLang()
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 px-6 text-center">
-      <p className="font-display text-2xl font-bold text-navy-900">{t('error.title')}</p>
-      <p className="text-navy-700">{t('error.desc')}</p>
+      <p className="heading-md text-navy-900">{t('error.title')}</p>
+      <p className="body-md text-body">{t('error.desc')}</p>
       <button onClick={() => window.location.reload()} className="btn-primary mt-2">
         {t('error.reload')}
       </button>
@@ -50,7 +50,7 @@ export default function App() {
   const location = useLocation()
 
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-ink">
       <IntroLoader />
       <ScrollToTop />
       <Navbar />

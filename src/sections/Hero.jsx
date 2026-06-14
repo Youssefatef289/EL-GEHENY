@@ -75,7 +75,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.7 }}
-            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg"
+            className="section-desc mx-auto mt-6 text-hero-body"
           >
             {t('hero.subtitle')}
           </motion.p>
@@ -106,8 +106,8 @@ export default function Hero() {
         transition={{ delay: 1.1, duration: 0.6 }}
         className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2"
       >
-        <div className="flex flex-col items-center gap-2 text-white/75">
-          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.35em]">
+        <div className="flex flex-col items-center gap-2 text-hero-muted">
+          <span className="label-caps">
             {t('common.scrollDown')}
           </span>
           <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/20 bg-white/10 p-1.5 backdrop-blur-md dark:border-navy-700/50 dark:bg-navy-900/30">

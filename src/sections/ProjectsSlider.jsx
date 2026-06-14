@@ -5,7 +5,6 @@ import { gsap } from 'gsap'
 import { projects } from '../data/projects'
 import { useLang, L } from '../i18n'
 
-import logoImage from '../../images/Logo.png'
 import slideJ290 from '../../images/projects/j290/00.jpg'
 import slideE80 from '../../images/projects/e80/00.jpg'
 import slideM75 from '../../images/projects/m75/00.jpg'
@@ -110,23 +109,20 @@ export default function ProjectsSlider() {
       <div className="pointer-events-none absolute inset-0 bg-ink/30" />
       <div className="projects-slider-pattern pointer-events-none absolute inset-y-0 start-0 w-8 opacity-30 sm:w-12" />
 
-      {/* Section header — top left */}
-      <div className="absolute start-6 top-28 z-10 sm:start-10 lg:start-16 lg:top-32">
-        <img
-          src={logoImage}
-          alt=""
-          className="mb-5 h-10 w-10 rounded-sm object-contain brightness-110 sm:h-12 sm:w-12"
-          aria-hidden="true"
-        />
-        <p className="text-[0.65rem] font-medium uppercase tracking-[0.45em] text-primary-400 sm:text-xs">
-          _ {t('projectsSlider.label')}
-        </p>
-        <h2 className="mt-3 max-w-md font-display text-3xl font-extrabold leading-[1.1] text-white sm:text-4xl lg:text-[2.75rem]">
-          {t('projectsSlider.title')}
+      {/* Section header */}
+      <div
+        className="absolute start-6 top-28 z-10 sm:start-10 lg:start-16 lg:top-32"
+        dir={lang === 'ar' ? 'rtl' : 'ltr'}
+      >
+        <h2 className="font-display text-4xl font-extrabold leading-[1.05] text-white drop-shadow-sm sm:text-5xl lg:text-[3.5rem]">
+          {t('projectsSlider.label')}
         </h2>
-        <div className="mt-5 flex items-center gap-3">
-          <span className="h-px w-10 bg-white/50 sm:w-14" />
-          <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/75">
+        <p className="mt-3 max-w-lg text-lg font-medium leading-snug text-white/90 sm:mt-4 sm:text-xl lg:text-2xl">
+          {t('projectsSlider.title')}
+        </p>
+        <div className="mt-5 flex items-center gap-3 sm:mt-6">
+          <span className="h-px w-12 bg-primary-500 sm:w-16" aria-hidden="true" />
+          <span className="text-sm font-semibold uppercase tracking-[0.22em] text-primary-300">
             {t('projectsSlider.sectionName')}
           </span>
         </div>
@@ -134,31 +130,31 @@ export default function ProjectsSlider() {
 
       {/* Slider controls — center bottom */}
       <div className="absolute bottom-[11.5rem] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center sm:bottom-[13rem] lg:bottom-[14.5rem]">
-        <div className="flex items-center gap-5 text-white">
+        <div className="flex items-center gap-6 text-white">
           <button
             type="button"
             onClick={prev}
             aria-label={t('projectsSlider.prev')}
-            className="flex h-8 w-8 items-center justify-center text-lg text-white/70 transition-colors hover:text-white"
+            className="flex h-10 w-10 items-center justify-center text-xl text-white/80 transition-colors hover:text-primary-300"
           >
             ‹
           </button>
-          <span className="min-w-[5.5rem] text-center font-display text-lg font-semibold tracking-widest">
+          <span className="min-w-[6rem] text-center font-display text-xl font-bold tracking-widest text-white sm:text-2xl">
             {slideNum} / {totalNum}
           </span>
           <button
             type="button"
             onClick={next}
             aria-label={t('projectsSlider.next')}
-            className="flex h-8 w-8 items-center justify-center text-lg text-white/70 transition-colors hover:text-white"
+            className="flex h-10 w-10 items-center justify-center text-xl text-white/80 transition-colors hover:text-primary-300"
           >
             ›
           </button>
         </div>
-        <div className="mt-3 h-px w-28 overflow-hidden bg-white/20 sm:w-36">
+        <div className="mt-4 h-0.5 w-32 overflow-hidden bg-white/25 sm:w-40">
           <div
             ref={progressRef}
-            className="h-full origin-left bg-white transition-none"
+            className="h-full origin-left bg-primary-400 transition-none"
             style={{ transform: `scaleX(${progress})` }}
           />
         </div>
@@ -178,10 +174,10 @@ export default function ProjectsSlider() {
               className="flex flex-col justify-end px-6 pb-6 pt-10 sm:px-10 sm:pb-8 lg:px-14 lg:pb-10"
             >
               <Link to={`/projects/${current.projectId}`} className="group block">
-                <span className="block font-display text-4xl font-extrabold uppercase leading-none tracking-tight text-white sm:text-5xl lg:text-6xl">
+                <span className="block font-display text-4xl font-extrabold uppercase leading-none tracking-tight text-white transition-colors group-hover:text-primary-200 sm:text-5xl lg:text-6xl">
                   {L(current.nameLine1, lang)}
                 </span>
-                <span className="mt-2 block font-display text-sm font-semibold uppercase tracking-[0.35em] text-white/75 sm:text-base lg:text-lg">
+                <span className="mt-2 block font-display text-sm font-semibold uppercase tracking-[0.3em] text-white/80 sm:text-base lg:text-lg">
                   {L(current.nameLine2, lang)}
                 </span>
               </Link>
@@ -198,15 +194,15 @@ export default function ProjectsSlider() {
               transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col justify-center border-t border-white/10 bg-ink/92 px-6 py-6 backdrop-blur-md sm:px-10 sm:py-8 lg:border-s lg:border-t-0 lg:px-14 lg:py-10"
             >
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary-400 sm:text-xs">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-300 sm:text-sm">
                 {L(current.tagline, lang)}
               </p>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-[0.95rem] lg:text-base">
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/88 sm:text-base lg:text-[1.0625rem] lg:leading-7">
                 {project ? L(project.description, lang) : ''}
               </p>
               <Link
                 to={`/projects/${current.projectId}`}
-                className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.25em] text-primary-300 transition-colors hover:text-primary-200"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.18em] text-primary-300 transition-colors hover:text-primary-200"
               >
                 {t('projectsSlider.viewProject')}
                 <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">

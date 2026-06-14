@@ -31,7 +31,7 @@ export default function ProjectDetail() {
   return (
     <>
       {/* رأس الصفحة مع صورة الغلاف */}
-      <section className="relative pt-28 sm:pt-32">
+      <section className="relative bg-ink pt-28 sm:pt-32">
         <div className="container-x">
           <div className="relative overflow-hidden rounded-[1.75rem] shadow-[0_45px_110px_-50px_rgba(0,0,0,0.65)] sm:rounded-[2.25rem]">
             <LazyImage
@@ -120,8 +120,8 @@ export default function ProjectDetail() {
             {/* الوصف */}
             <Reveal>
               <div>
-                <h2 className="mb-4 font-display text-2xl font-bold text-navy-900">{t('project.about')}</h2>
-                <p className="leading-relaxed text-navy-700">{L(project.description, lang)}</p>
+                <h2 className="heading-md mb-4 text-navy-900">{t('project.about')}</h2>
+                <p className="body-md text-body">{L(project.description, lang)}</p>
               </div>
             </Reveal>
 
@@ -149,7 +149,7 @@ export default function ProjectDetail() {
             {/* المميزات */}
             <Reveal>
               <div>
-                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">{t('project.featuresTitle')}</h2>
+                <h2 className="heading-md mb-5 text-navy-900">{t('project.featuresTitle')}</h2>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {project.features.map((f, fi) => (
                     <div
@@ -161,7 +161,7 @@ export default function ProjectDetail() {
                           <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </span>
-                      <span className="text-sm text-navy-800">{L(f, lang)}</span>
+                      <span className="body-sm text-body">{L(f, lang)}</span>
                     </div>
                   ))}
                 </div>
@@ -171,7 +171,7 @@ export default function ProjectDetail() {
             {/* معرض الصور والمخططات */}
             <Reveal>
               <div>
-                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">{t('project.galleryTitle')}</h2>
+                <h2 className="heading-md mb-5 text-navy-900">{t('project.galleryTitle')}</h2>
                 <div className="overflow-hidden rounded-3xl border border-navy-200">
                   <LazyImage
                     src={project.gallery[activeImg]}
@@ -198,14 +198,14 @@ export default function ProjectDetail() {
             {/* طرق السداد */}
             <Reveal>
               <div>
-                <h2 className="mb-5 font-display text-2xl font-bold text-navy-900">{t('project.paymentTitle')}</h2>
+                <h2 className="heading-md mb-5 text-navy-900">{t('project.paymentTitle')}</h2>
                 <div className="grid gap-4 sm:grid-cols-3">
                   {project.payment.map((p, pi) => (
                     <div key={pi} className="glass-primary rounded-2xl p-6 text-center">
                       <p className="font-display text-2xl font-extrabold text-gradient-primary">
                         {L(p.value, lang)}
                       </p>
-                      <p className="mt-2 text-sm text-navy-800">{L(p.label, lang)}</p>
+                      <p className="mt-2 body-sm text-body">{L(p.label, lang)}</p>
                     </div>
                   ))}
                 </div>
@@ -219,7 +219,7 @@ export default function ProjectDetail() {
               <Reveal direction="left">
                 <div className="glass rounded-3xl p-8">
                   <h3 className="font-display text-xl font-bold text-navy-900">{t('project.bookTitle')}</h3>
-                  <p className="mt-2 text-sm text-navy-600">
+                  <p className="mt-2 body-sm text-muted">
                     {t('project.bookDesc')}
                   </p>
 
@@ -235,7 +235,7 @@ export default function ProjectDetail() {
                         </svg>
                       </div>
                       <p className="font-semibold text-navy-900">{t('project.successTitle')}</p>
-                      <p className="mt-1 text-sm text-navy-700">{t('project.successDesc')}</p>
+                      <p className="mt-1 body-sm text-body">{t('project.successDesc')}</p>
                     </motion.div>
                   ) : (
                     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -295,7 +295,7 @@ export default function ProjectDetail() {
       {/* مشاريع مشابهة */}
       <section className="section-pad pt-0">
         <div className="container-x">
-          <h2 className="mb-8 font-display text-2xl font-bold text-navy-900">{t('project.relatedTitle')}</h2>
+          <h2 className="heading-md mb-8 text-navy-900">{t('project.relatedTitle')}</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p, i) => (
               <RelatedCard key={p.id} project={p} index={i} lang={lang} />
@@ -357,7 +357,7 @@ function RelatedCard({ project, index, lang }) {
           <h3 className="font-display text-lg font-bold text-navy-900 group-hover:text-primary-600">
             {L(project.title, lang)}
           </h3>
-          <p className="mt-1 text-sm text-navy-600">{L(project.categoryName, lang)}</p>
+          <p className="mt-1 body-sm text-muted">{L(project.categoryName, lang)}</p>
         </div>
       </Link>
     </motion.div>

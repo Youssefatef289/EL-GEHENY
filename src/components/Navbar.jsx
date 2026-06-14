@@ -32,7 +32,7 @@ export default function Navbar() {
   }, [mobileOpen])
 
   const headerClassName = scrolled || mobileOpen
-    ? 'border-b border-primary-200/70 dark:border-navy-700/50 bg-canvas/95 py-3 backdrop-blur-xl shadow-lg'
+    ? 'border-b border-primary-200/70 dark:border-navy-700/50 bg-ink/95 py-3 backdrop-blur-xl shadow-lg'
     : 'border-b border-transparent bg-transparent py-4 sm:py-5'
 
   const closeMenu = () => setMobileOpen(false)
@@ -64,30 +64,18 @@ export default function Navbar() {
                   end={link.to === '/'}
                   className={({ isActive }) =>
                     `group relative px-4 py-2 text-[0.95rem] font-semibold transition-colors duration-300 ${
-                      isActive
-                        ? isHomeHero
-                          ? 'text-white'
-                          : 'text-primary-600'
-                        : isHomeHero
-                          ? 'text-white/80 hover:text-white'
-                          : 'text-navy-700 hover:text-navy-900'
+                      isActive ? 'text-white' : 'text-white/80 hover:text-white'
                     }`
                   }
                 >
                   {({ isActive }) => (
                     <>
                       {t(`nav.${link.key}`)}
-                      <span
-                        className={`pointer-events-none absolute inset-x-3 -bottom-1 h-0.5 origin-center scale-x-0 rounded-full transition-transform duration-300 group-hover:scale-x-100 ${
-                          isHomeHero ? 'bg-white' : 'bg-primary-500'
-                        }`}
-                      />
+                      <span className="pointer-events-none absolute inset-x-3 -bottom-1 h-0.5 origin-center scale-x-0 rounded-full bg-white transition-transform duration-300 group-hover:scale-x-100" />
                       {isActive && (
                         <motion.span
                           layoutId="nav-active"
-                          className={`absolute inset-x-3 -bottom-1 h-0.5 rounded-full ${
-                            isHomeHero ? 'bg-white' : 'bg-primary-500'
-                          }`}
+                          className="absolute inset-x-3 -bottom-1 h-0.5 rounded-full bg-white"
                           transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -231,8 +219,8 @@ export default function Navbar() {
                             className={({ isActive }) =>
                               `group flex items-center justify-between rounded-2xl px-4 py-3.5 transition-all duration-300 ${
                                 isActive
-                                  ? 'bg-primary-500/10 text-primary-300'
-                                  : 'text-white/75 hover:bg-white/5 hover:text-white'
+                                  ? 'bg-white/10 text-white'
+                                  : 'text-white/80 hover:bg-white/5 hover:text-primary-500'
                               }`
                             }
                           >

@@ -45,19 +45,19 @@ function PostCard({ post, index, featured = false }) {
         </div>
 
         <div className={`flex flex-1 flex-col p-6 ${featured ? 'md:justify-center md:p-8' : ''}`}>
-          <div className="mb-3 flex items-center gap-3 text-xs text-navy-600">
+          <div className="mb-3 flex items-center gap-3 label-caps text-subtle">
             <span>{formatDate(post.date, t('blog.locale'))}</span>
             <span className="h-1 w-1 rounded-full bg-navy-400" />
             <span>{L(post.readTime, lang)}</span>
           </div>
           <h3
-            className={`font-display font-bold text-navy-900 transition-colors group-hover:text-primary-600 ${
-              featured ? 'text-2xl' : 'text-lg'
+            className={`card-title text-navy-900 transition-colors group-hover:text-primary-400 ${
+              featured ? 'text-2xl sm:text-3xl' : ''
             }`}
           >
             {L(post.title, lang)}
           </h3>
-          <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-navy-700">{L(post.excerpt, lang)}</p>
+          <p className="mt-3 line-clamp-3 body-sm text-body">{L(post.excerpt, lang)}</p>
           <span className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-primary-600">
             {t('blog.readArticle')}
             <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 transition-transform group-hover:-translate-x-1">
@@ -77,15 +77,15 @@ export default function Blog() {
   return (
     <>
       {/* ترويسة مبسّطة */}
-      <section className="relative overflow-hidden pt-32 pb-6 sm:pt-36">
+      <section className="relative overflow-hidden bg-ink pt-32 pb-6 sm:pt-36">
         <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
         <div className="container-x relative">
           <SectionTitle as="h1">{t('blog.eyebrow')}</SectionTitle>
           <Reveal delay={0.05}>
-            <h2 className="heading-lg mt-4 max-w-3xl text-navy-900">{t('blog.title')}</h2>
+            <h2 className="section-subtitle mt-4">{t('blog.title')}</h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-navy-600 sm:text-lg">
+            <p className="section-desc mt-5">
               {t('blog.desc')}
             </p>
           </Reveal>

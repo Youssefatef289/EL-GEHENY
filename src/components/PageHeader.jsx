@@ -95,7 +95,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="mb-6 flex items-center gap-2 text-sm text-navy-700 dark:text-white/80"
+              className="mb-6 flex items-center gap-2 body-sm text-body"
             >
               {breadcrumb.map((item, i) => (
                 <span key={i} className="flex items-center gap-2">
@@ -144,7 +144,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.22 }}
-              className="mt-6 max-w-2xl text-base leading-relaxed text-navy-800 dark:text-navy-100 sm:text-lg dark:sm:text-white/85"
+              className="mt-6 section-desc text-body"
             >
               {description}
             </motion.p>
@@ -159,8 +159,8 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
       ref={sectionRef}
       className="perspective relative isolate flex h-[100svh] min-h-[100svh] flex-col overflow-hidden pt-24 pb-6 sm:pt-28 sm:pb-8"
     >
-      <div className="absolute inset-0 bg-white-gradient" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.2),transparent_28%),radial-gradient(circle_at_15%_20%,rgba(255,255,255,0.7),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(248,242,231,0.92)_58%,rgba(241,232,216,0.88)_100%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.18),transparent_30%),linear-gradient(180deg,rgba(11,18,29,0.4)_0%,rgba(8,13,21,0.7)_100%)]" />
+      <div className="absolute inset-0 bg-ink" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(202,161,63,0.18),transparent_30%)]" />
       <motion.div
         style={glowStyle}
         className="pointer-events-none absolute -right-24 top-8 h-80 w-80 rounded-full bg-primary-400/20 blur-[140px]"
@@ -185,7 +185,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45 }}
-              className="mb-6 flex items-center justify-center gap-2 text-sm text-navy-700 lg:justify-start"
+              className="mb-6 flex items-center justify-center gap-2 body-sm text-body lg:justify-start"
             >
               {breadcrumb.map((item, i) => (
                 <span key={i} className="flex items-center gap-2">
@@ -237,7 +237,7 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.22 }}
-              className="mt-6 max-w-2xl text-base leading-relaxed text-navy-800 dark:text-navy-100 sm:text-lg sm:text-white/85"
+              className="mt-6 section-desc text-body sm:text-hero-body"
             >
               {description}
             </motion.p>
@@ -308,8 +308,8 @@ export default function PageHeader({ eyebrow, title, description, breadcrumb = [
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="font-display text-xl font-bold text-navy-900 dark:text-white">{card.title}</p>
-                        <p className="mt-2 text-sm leading-relaxed text-navy-600 dark:text-navy-200">{card.text}</p>
+                        <p className="card-title text-navy-900 dark:text-white">{card.title}</p>
+                        <p className="mt-2 body-sm text-muted dark:text-navy-200">{card.text}</p>
                       </div>
                       <span className="gold-metallic flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl text-sm font-extrabold text-ink shadow-gold">
                         0{index + 1}

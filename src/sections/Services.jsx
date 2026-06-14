@@ -39,7 +39,7 @@ export default function Services() {
   const { lang, t } = useLang()
 
   return (
-    <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24">
+    <section className="relative overflow-hidden bg-ink py-16 sm:py-20 lg:py-24">
       {/* Textured dark background */}
       <div className="absolute inset-0">
         <img
@@ -73,10 +73,10 @@ export default function Services() {
                   aria-hidden="true"
                 />
               </div>
-              <h3 className="font-display text-xl font-extrabold text-navy-900 sm:text-2xl">
+              <h3 className="heading-sm text-navy-900">
                 {L(service.title, lang)}
               </h3>
-              <p className="mt-4 max-w-xs text-sm leading-relaxed text-navy-600 sm:text-base">
+              <p className="mt-4 max-w-xs body-sm text-muted">
                 {L(service.description, lang)}
               </p>
             </motion.article>

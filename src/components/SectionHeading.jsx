@@ -19,15 +19,13 @@ export default function SectionHeading({
 
       {subtitle && (
         <Reveal direction="up" delay={0.05}>
-          <h3 className="heading-lg max-w-3xl text-navy-900">{subtitle}</h3>
+          <h3 className="section-subtitle">{subtitle}</h3>
         </Reveal>
       )}
 
       {description && (
         <Reveal direction="up" delay={0.1}>
-          <p className="max-w-2xl text-base leading-relaxed text-navy-700 sm:text-lg">
-            {description}
-          </p>
+          <p className="section-desc">{description}</p>
         </Reveal>
       )}
     </div>

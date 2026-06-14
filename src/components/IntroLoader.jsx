@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import BrandLoaderContent from './BrandLoaderContent'
 
-const MIN_DISPLAY_MS = 1800
+const MIN_DISPLAY_MS = 2200
 
 export default function IntroLoader() {
   const [visible, setVisible] = useState(true)

@@ -7,7 +7,7 @@ import { useLang } from '../i18n'
 export default function CTA() {
   const { t } = useLang()
   return (
-    <section className="section-pad">
+    <section className="section-pad bg-ink">
       <div className="container-x">
         <Reveal>
           <div className="glass-primary relative overflow-hidden rounded-[2.5rem] border border-primary-200/70 px-8 py-16 text-start shadow-[0_40px_120px_-55px_rgba(202,161,63,0.5)] sm:px-16">
@@ -16,10 +16,10 @@ export default function CTA() {
             <div className="pointer-events-none absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-navy-300/30 blur-[100px]" />
             <div className="relative">
               <SectionTitle className="mb-6">{t('cta.eyebrow')}</SectionTitle>
-              <h2 className="heading-lg max-w-3xl text-navy-900">
+              <h2 className="section-subtitle">
                 {t('cta.titleA')} <span className="text-gradient-primary">{t('cta.titleB')}</span>
               </h2>
-              <p className="mt-5 max-w-2xl text-navy-700">
+              <p className="section-desc mt-5 text-body">
                 {t('cta.paragraph')}
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">

@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 
-import heritageImage from '../../images/Why.webp'
+import buildingImage from '../../images/building.jpg'
 
 const heritageProjects = [
   {
@@ -85,7 +85,7 @@ function HeritageItem({ item, index }) {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.5, delay: (index % 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      className="flex gap-3.5 text-sm leading-relaxed text-white/90 sm:text-[0.9375rem]"
+      className="flex gap-3.5 body-sm text-hero-body"
     >
       <span className="gold-check mt-0.5 h-6 w-6 shadow-gold-sm">
         <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3" aria-hidden="true">
@@ -105,17 +105,24 @@ function HeritageItem({ item, index }) {
 
 export default function WhyUs() {
   const { t, lang } = useLang()
+  const reduceMotion = useReducedMotion()
 
   return (
-    <section id="heritage" className="relative min-h-[85vh] w-full overflow-hidden">
-      {/* صورة بالعرض الكامل */}
-      <div className="absolute inset-0">
-        <img
-          src={heritageImage}
-          alt=""
-          className="h-full w-full object-cover object-center"
-          aria-hidden="true"
+    <section id="heritage" className="relative min-h-[85vh] w-full overflow-hidden bg-ink">
+      {/* خلفية متحركة — zoom in بسيط */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <motion.div
+          className="heritage-bg absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${buildingImage})` }}
+          initial={reduceMotion ? false : { scale: 1 }}
+          whileInView={{ scale: reduceMotion ? 1 : 1.07 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 2.6, ease: [0.22, 1, 0.36, 1] }}
         />
+      </div>
+
+      {/* طبقات التغميق */}
+      <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/72 to-ink/88" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(202,161,63,0.14),transparent_55%)]" />
         <div
@@ -140,10 +147,10 @@ export default function WhyUs() {
             {t('heritage.eyebrow')}
           </SectionTitle>
           <Reveal delay={0.05}>
-            <h3 className="heading-lg max-w-3xl text-white">{t('heritage.title')}</h3>
+            <h3 className="section-subtitle text-white">{t('heritage.title')}</h3>
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+            <p className="section-desc mt-4 text-hero-body">
               {t('heritage.description')}
             </p>
           </Reveal>

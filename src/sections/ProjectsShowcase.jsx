@@ -79,7 +79,7 @@ export default function ProjectsShowcase() {
   }, [lang, showcase.length])
 
   return (
-    <section id="projects-stack" className="relative overflow-hidden bg-canvas py-24 sm:py-32">
+    <section id="projects-stack" className="relative overflow-hidden bg-ink py-24 sm:py-32">
       <div className="container-x relative z-10 mb-14 sm:mb-16">
         <SectionTitle>{t('projectsShowcase.eyebrow')}</SectionTitle>
         <Reveal delay={0.05}>

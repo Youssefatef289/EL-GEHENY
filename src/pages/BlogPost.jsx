@@ -25,7 +25,7 @@ export default function BlogPost() {
   return (
     <>
       {/* ترويسة مبسّطة */}
-      <section className="relative overflow-hidden pt-32 pb-4 sm:pt-36">
+      <section className="relative overflow-hidden bg-ink pt-32 pb-4 sm:pt-36">
         <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
         <div className="container-x relative mx-auto max-w-3xl text-center">
           <motion.nav

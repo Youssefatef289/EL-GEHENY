@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import LazyImage from './LazyImage'
-import ProjectModal from './ProjectModal'
 import { useLang, L } from '../i18n'
 
 function ComingSoonCard({ project, index = 0 }) {
@@ -34,8 +33,7 @@ function ComingSoonCard({ project, index = 0 }) {
 }
 
 export default function ProjectCard({ project, index = 0 }) {
-  const { t, lang } = useLang()
-  const [modalOpen, setModalOpen] = useState(false)
+  const { lang } = useLang()
 
   if (project.comingSoon) {
     return <ComingSoonCard project={project} index={index} />
@@ -46,19 +44,16 @@ export default function ProjectCard({ project, index = 0 }) {
   const title = L(project.title, lang)
 
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <Link
+        to={`/projects/${project.id}`}
+        className="group relative block w-full overflow-hidden rounded-3xl border border-primary-200/60 bg-ink text-start shadow-[0_24px_70px_-50px_rgba(15,23,34,0.5)] transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-400/60 hover:shadow-[0_34px_85px_-45px_rgba(202,161,63,0.5)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60"
       >
-        <button
-          type="button"
-          onClick={() => setModalOpen(true)}
-          aria-label={`${t('project.details')} — ${title}`}
-          className="group relative block w-full overflow-hidden rounded-3xl border border-primary-200/60 bg-ink text-start shadow-[0_24px_70px_-50px_rgba(15,23,34,0.5)] transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-400/60 hover:shadow-[0_34px_85px_-45px_rgba(202,161,63,0.5)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60"
-        >
           <div className="relative aspect-[4/5] overflow-hidden">
             <LazyImage
               src={project.cover}
@@ -81,20 +76,17 @@ export default function ProjectCard({ project, index = 0 }) {
           </div>
 
           <div className="px-5 py-4 text-center">
-            <h3 className="font-display text-lg font-bold text-white transition-colors group-hover:text-primary-300">
+            <h3 className="card-title text-white transition-colors group-hover:text-primary-300">
               {title}
             </h3>
-            <p className="mt-1 flex items-center justify-center gap-1.5 text-xs text-white/55">
+            <p className="mt-1 flex items-center justify-center gap-1.5 body-sm text-hero-muted">
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5 text-primary-400">
                 <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
               </svg>
               {L(project.categoryName, lang)}
             </p>
           </div>
-        </button>
-      </motion.div>
-
-      <ProjectModal project={project} open={modalOpen} onClose={() => setModalOpen(false)} />
-    </>
+      </Link>
+    </motion.div>
   )
 }

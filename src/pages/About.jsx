@@ -2,6 +2,7 @@ import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
 import AboutGeheny from '../sections/AboutGeheny'
+import AboutTeam from '../sections/AboutTeam'
 import Vision from '../sections/Vision'
 import CTA from '../sections/CTA'
 import { useLang, L } from '../i18n'
@@ -51,7 +52,7 @@ const whyHeading = {
 function VideoHero() {
   const { t } = useLang()
   return (
-    <section className="relative isolate flex min-h-[72svh] flex-col justify-end overflow-hidden pt-28 pb-14 sm:min-h-[82svh]">
+    <section className="relative isolate flex min-h-[72svh] flex-col justify-end overflow-hidden bg-ink pt-28 pb-14 sm:min-h-[82svh]">
       <img
         className="absolute inset-0 -z-20 h-full w-full object-cover"
         src={aboutHero}
@@ -69,7 +70,7 @@ function VideoHero() {
           <h1 className="heading-xl max-w-4xl text-white">{t('about.heroTitle')}</h1>
         </Reveal>
         <Reveal delay={0.16}>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="section-desc mt-6 text-hero-body">
             {t('about.heroDesc')}
           </p>
         </Reveal>
@@ -85,18 +86,23 @@ export default function About() {
     <>
       <VideoHero />
 
-      {/* نبذة عن الجهيني */}
+      {/* فريق القيادة */}
       <SectionReveal from="left">
+        <AboutTeam />
+      </SectionReveal>
+
+      {/* نبذة عن الجهيني */}
+      <SectionReveal from="right">
         <AboutGeheny />
       </SectionReveal>
 
       {/* لماذا الجهيني */}
       <SectionReveal from="right">
-        <section className="section-pad bg-navy-50/40">
+        <section className="section-pad">
           <div className="container-x">
             <SectionTitle className="mb-4">{L(whyHeading.eyebrow, lang)}</SectionTitle>
             <Reveal delay={0.05}>
-              <h2 className="heading-lg max-w-3xl text-navy-900">{L(whyHeading.title, lang)}</h2>
+              <h2 className="section-subtitle">{L(whyHeading.title, lang)}</h2>
             </Reveal>
 
             <div className="mt-14 grid gap-6 sm:grid-cols-2">
@@ -109,8 +115,8 @@ export default function About() {
                       </svg>
                     </span>
                     <div>
-                      <h3 className="mb-2 font-display text-xl font-bold text-navy-900">{L(reason.title, lang)}</h3>
-                      <p className="text-sm leading-relaxed text-navy-700">{L(reason.text, lang)}</p>
+                      <h3 className="card-title mb-2 text-navy-900">{L(reason.title, lang)}</h3>
+                      <p className="body-sm text-body">{L(reason.text, lang)}</p>
                     </div>
                   </div>
                 </Reveal>

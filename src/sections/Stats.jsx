@@ -52,7 +52,7 @@ function StatItem({ stat, index }) {
         {formatted}
         {L(stat.suffix, lang)}
       </div>
-      <p className="mt-2.5 text-xs font-semibold uppercase tracking-[0.15em] text-navy-500 sm:text-sm">
+      <p className="mt-2.5 label-caps text-subtle sm:text-sm">
         {L(stat.label, lang)}
       </p>
     </motion.div>
@@ -93,7 +93,7 @@ export default function Stats() {
   const glowStyle = reduceMotion ? undefined : { y: glowY }
 
   return (
-    <section ref={sectionRef} className="relative pt-20 sm:pt-28">
+    <section ref={sectionRef} className="relative bg-ink pt-20 sm:pt-28">
       <motion.div
         style={glowStyle}
         className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-80 w-80 -translate-x-1/2 rounded-full bg-primary-500/10 blur-[130px]"
@@ -114,12 +114,12 @@ export default function Stats() {
           <div className="text-center lg:text-start">
             <SectionTitle className="mb-5">{t('stats.eyebrow')}</SectionTitle>
             <Reveal delay={0.05}>
-              <p className="font-display text-xl font-bold leading-relaxed text-navy-900 sm:text-2xl">
+              <p className="heading-sm text-navy-900">
                 {t('stats.p1')}
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-5 text-base leading-relaxed text-navy-600 sm:text-lg">
+              <p className="section-desc mt-5">
                 {t('stats.p2')}
               </p>
             </Reveal>
@@ -136,7 +136,7 @@ export default function Stats() {
                   <span className="gold-check h-7 w-7 flex-shrink-0 shadow-gold-sm">
                     <CheckIcon />
                   </span>
-                  <span className="text-sm font-semibold text-navy-800 sm:text-base">{item}</span>
+                  <span className="body-sm font-semibold text-body sm:text-base">{item}</span>
                 </li>
               </Reveal>
             ))}

@@ -70,14 +70,14 @@ export default function Vision() {
   const slide = slides[index]
 
   return (
-    <section className="section-pad relative overflow-hidden">
+    <section className="section-pad relative overflow-hidden bg-ink">
       <div className="pointer-events-none absolute -left-10 top-1/4 h-40 w-40 rounded-full bg-primary-500/20 blur-[80px]" />
 
       <div className="container-x">
         <div className="mb-12">
           <SectionTitle className="mb-4">{t('vision.eyebrow')}</SectionTitle>
           <Reveal delay={0.05}>
-            <h3 className="heading-lg text-navy-900">
+            <h3 className="section-subtitle">
               {t('vision.titleA')} <span className="text-gradient-primary">{t('vision.titleB')}</span>
             </h3>
           </Reveal>
@@ -117,12 +117,12 @@ export default function Vision() {
                 <SectionTitle as="h3" className="mb-1" reveal={false}>
                   {L(slide.eyebrow, lang)}
                 </SectionTitle>
-                <h4 className="font-display text-2xl font-bold text-navy-900 sm:text-3xl">
+                <h4 className="heading-md text-navy-900">
                   {L(slide.title, lang)}
                 </h4>
 
                 {slide.text && (
-                  <p className="text-base leading-relaxed text-navy-700 sm:text-lg">
+                  <p className="body-md text-body">
                     {L(slide.text, lang)}
                   </p>
                 )}
@@ -136,7 +136,7 @@ export default function Vision() {
                             <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
-                        <span className="text-navy-700">{point}</span>
+                        <span className="body-sm text-body">{point}</span>
                       </li>
                     ))}
                   </ul>

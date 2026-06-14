@@ -54,7 +54,7 @@ const bigStat = {
 const sideStats = [
   { value: 500, suffix: '+', label: { ar: 'عميل واثق', en: 'Confident clients' } },
   { value: 100, suffix: '+', label: { ar: 'مشروع منجز', en: 'Completed projects' } },
-  { value: 0.5, suffix: { ar: ' مليار', en: 'B' }, decimals: 1, label: { ar: 'حجم استثماراتنا', en: 'Investment volume' } },
+  // { value: 0.5, suffix: { ar: ' مليار', en: 'B' }, decimals: 1, label: { ar: 'حجم استثماراتنا', en: 'Investment volume' } },
 ]
 
 function CountValue({ value, decimals = 0, className }) {
@@ -70,7 +70,7 @@ export default function AboutGeheny() {
   const { lang } = useLang()
 
   return (
-    <section className="section-pad relative overflow-hidden">
+    <section className="section-pad relative overflow-hidden bg-ink">
       <div className="pointer-events-none absolute -right-16 top-1/4 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
 
       <div className="container-x">
@@ -93,18 +93,18 @@ export default function AboutGeheny() {
           <div className="order-2 text-center lg:text-start">
             <SectionTitle className="mb-5">{L(content.eyebrow, lang)}</SectionTitle>
             <Reveal delay={0.05}>
-              <h2 className="heading-lg text-navy-900">
+              <h2 className="section-subtitle">
                 {L(content.titleA, lang)}{' '}
                 <span className="text-gradient-primary">{L(content.titleB, lang)}</span>
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-xl font-display text-lg font-bold leading-relaxed text-navy-900 sm:text-xl lg:mx-0">
+              <p className="mx-auto mt-6 max-w-xl body-lg font-display font-bold text-navy-900 lg:mx-0">
                 {L(content.p1, lang)}
               </p>
             </Reveal>
             <Reveal delay={0.13}>
-              <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-navy-600 sm:text-lg lg:mx-0">
+              <p className="mx-auto mt-4 max-w-xl section-desc lg:mx-0">
                 {L(content.p2, lang)}
               </p>
             </Reveal>
@@ -116,7 +116,7 @@ export default function AboutGeheny() {
                     <span className="mt-0.5 gold-check h-6 w-6 flex-shrink-0 shadow-gold">
                       <CheckIcon />
                     </span>
-                    <span className="text-sm font-semibold text-navy-800">{item}</span>
+                    <span className="body-sm font-semibold text-body">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -136,7 +136,7 @@ export default function AboutGeheny() {
                   </span>
                 </div>
                 <div className="text-start">
-                  <p className="max-w-[7rem] text-sm font-semibold leading-snug text-navy-500">
+                  <p className="max-w-[7rem] body-sm font-semibold leading-snug text-subtle">
                     {L(bigStat.label, lang)}
                   </p>
                 </div>
@@ -152,7 +152,7 @@ export default function AboutGeheny() {
                         <CountValue value={stat.value} decimals={stat.decimals || 0} />
                         <span className="text-primary-500">{L(stat.suffix, lang)}</span>
                       </span>
-                      <span className="text-sm font-semibold text-navy-500">{L(stat.label, lang)}</span>
+                      <span className="body-sm font-semibold text-subtle">{L(stat.label, lang)}</span>
                     </div>
                   ))}
                 </div>

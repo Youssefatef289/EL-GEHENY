@@ -52,7 +52,7 @@
   }
 
   body {
-    @apply bg-canvas text-navy-900 font-sans antialiased;
+    @apply bg-ink text-navy-900 font-sans antialiased;
     overflow-x: hidden;
     transition: background-color 0.4s ease, color 0.4s ease;
   }
@@ -66,7 +66,7 @@
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-navy-50;
+    @apply bg-ink;
   }
   ::-webkit-scrollbar-thumb {
     @apply bg-navy-300 rounded-full;
@@ -169,7 +169,7 @@
   }
 
   .section-pad {
-    @apply py-20 sm:py-28;
+    @apply bg-ink py-20 sm:py-28;
   }
 
   .eyebrow {
@@ -185,6 +185,76 @@
 
   .heading-lg {
     @apply font-display text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl;
+  }
+
+  .heading-md {
+    @apply font-display text-2xl font-bold leading-snug sm:text-3xl;
+  }
+
+  .heading-sm {
+    @apply font-display text-xl font-bold leading-snug sm:text-2xl;
+  }
+
+  .card-title {
+    @apply font-display text-lg font-bold leading-snug sm:text-xl;
+  }
+
+  .body-lg {
+    @apply text-lg leading-relaxed sm:text-xl;
+  }
+
+  .body-md {
+    @apply text-base leading-relaxed sm:text-lg;
+  }
+
+  .body-sm {
+    @apply text-sm leading-relaxed;
+  }
+
+  /* ألوان النص على الخلفية الداكنة (#1D1D1B) */
+  .text-body {
+    @apply text-navy-700;
+  }
+
+  .text-muted {
+    @apply text-navy-600;
+  }
+
+  .text-subtle {
+    @apply text-navy-500;
+  }
+
+  .text-faint {
+    @apply text-navy-400;
+  }
+
+  /* ألوان النص فوق الصور والطبقات الداكنة */
+  .text-hero {
+    @apply text-white;
+  }
+
+  .text-hero-body {
+    @apply text-white/85;
+  }
+
+  .text-hero-muted {
+    @apply text-white/70;
+  }
+
+  .label-caps {
+    @apply text-xs font-semibold uppercase tracking-[0.2em];
+  }
+
+  .link-hover {
+    @apply transition-colors hover:text-primary-400;
+  }
+
+  .section-subtitle {
+    @apply heading-lg max-w-3xl text-navy-900;
+  }
+
+  .section-desc {
+    @apply body-md max-w-2xl text-muted;
   }
 
   .section-title-line {
@@ -211,8 +281,12 @@
 
 @layer utilities {
   /* خلفية ترويسة الصفحات في الوضع الداكن */
+  .bg-white-gradient {
+    background-color: #1d1d1b;
+  }
+
   .dark .bg-white-gradient {
-    background-image: linear-gradient(160deg, #1d1d1b 0%, #1a1a18 60%, #161614 100%);
+    background-color: #1d1d1b;
   }
 
   .text-shadow-lg {
@@ -233,6 +307,11 @@
   .mask-fade-b {
     -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  }
+
+  .heritage-bg {
+    will-change: transform;
+    transform-origin: center center;
   }
 }
 
@@ -288,6 +367,61 @@
 .brand-loader-square:nth-of-type(5) { animation-delay: -7.1428571429s; }
 .brand-loader-square:nth-of-type(6) { animation-delay: -8.5714285714s; }
 .brand-loader-square:nth-of-type(7) { animation-delay: -10s; }
+
+/* =========================================================
+   Brand Loader — intro & route loading
+   ========================================================= */
+@keyframes loader-glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.88; }
+}
+
+@keyframes loader-ring-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes loader-shimmer-sweep {
+  0% { transform: translateX(-140%) skewX(-14deg); opacity: 0; }
+  18% { opacity: 0.85; }
+  100% { transform: translateX(240%) skewX(-14deg); opacity: 0; }
+}
+
+@keyframes loader-dots {
+  0%, 20% { content: ''; }
+  40% { opacity: 0.55; }
+  50% { opacity: 1; }
+  100% { opacity: 0.55; }
+}
+
+.loader-glow {
+  animation: loader-glow-pulse 3.6s ease-in-out infinite;
+}
+
+.loader-ring {
+  animation: loader-ring-spin 2.6s linear infinite;
+}
+
+.loader-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 246, 213, 0.08) 42%,
+    rgba(255, 246, 213, 0.55) 50%,
+    rgba(255, 246, 213, 0.08) 58%,
+    transparent 100%
+  );
+  animation: loader-shimmer-sweep 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.loader-dots {
+  animation: loader-dots 1.8s ease-in-out infinite;
+}
 
 /* =========================================================
    Projects Slider — El Attal style cinematic section

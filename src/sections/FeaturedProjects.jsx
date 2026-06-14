@@ -10,7 +10,7 @@ export default function FeaturedProjects() {
   const { t } = useLang()
 
   return (
-    <section className="section-pad relative">
+    <section className="section-pad relative bg-ink">
       <div className="pointer-events-none absolute left-0 top-1/3 h-72 w-72 rounded-full bg-primary-400/20 blur-[120px]" />
       <div className="container-x relative">
         <div className="flex flex-col items-end justify-between gap-6 sm:flex-row sm:items-center">

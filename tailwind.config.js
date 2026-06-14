@@ -52,6 +52,7 @@ export default {
       fontFamily: {
         sans: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
         display: ['Tajawal', 'Cairo', 'serif'],
+        signature: ['"Great Vibes"', 'cursive'],
       },
       boxShadow: {
         gold: '0 8px 24px -6px rgba(202, 161, 63, 0.55), inset 0 1px 0 rgba(255, 246, 213, 0.35)',
@@ -67,7 +68,7 @@ export default {
         'gold-text':
           'linear-gradient(145deg, #FFF6D5 0%, #F0D078 24%, #CAA13F 52%, #E8C56A 76%, #CAA13F 100%)',
         'accent-gradient': 'linear-gradient(135deg, #121c2b 0%, #213143 50%, #3f627f 100%)',
-        'white-gradient': 'linear-gradient(160deg, #1d1d1b 0%, #1a1a18 60%, #161614 100%)',
+        'white-gradient': '#1D1D1B',
       },
       keyframes: {
         float: {
