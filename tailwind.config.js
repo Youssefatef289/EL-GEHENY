@@ -25,16 +25,16 @@ export default {
         // لون داكن ثابت لطبقات التغميق فوق الفيديو/الصور (لا ينقلب في الوضع الداكن)
         ink: '#1D1D1B',
         primary: {
-          50: '#faf6ec',
-          100: '#f4ebd2',
-          200: '#e9d5a5',
-          300: '#dec07f',
-          400: '#d4ad58',
-          500: '#CAA13F',
-          600: '#ad8833',
-          700: '#8f6f28',
-          800: '#71561f',
-          900: '#543f16',
+          50: '#FFF6C5',
+          100: '#F9E27D',
+          200: '#D4AF37',
+          300: '#C89B3C',
+          400: '#D4AF37',
+          500: '#D4AF37',
+          600: '#A67C00',
+          700: '#A67C00',
+          800: '#7A5C00',
+          900: '#7A5C00',
         },
         accent: {
           50: '#eff4fb',
@@ -50,23 +50,22 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Cairo', 'Tajawal', 'system-ui', 'sans-serif'],
-        display: ['Tajawal', 'Cairo', 'serif'],
+        sans: ['Cairo', 'system-ui', 'sans-serif'],
+        display: ['Cairo', 'system-ui', 'sans-serif'],
         signature: ['"Great Vibes"', 'cursive'],
       },
       boxShadow: {
-        gold: '0 8px 24px -6px rgba(202, 161, 63, 0.55), inset 0 1px 0 rgba(255, 246, 213, 0.35)',
-        'gold-sm': '0 4px 14px -4px rgba(202, 161, 63, 0.5), inset 0 1px 0 rgba(255, 246, 213, 0.4)',
+        gold: '0 8px 24px -6px rgba(212, 175, 55, 0.45), inset 0 1px 0 rgba(255, 246, 197, 0.4)',
+        'gold-sm': '0 4px 14px -4px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255, 246, 197, 0.35)',
         glass: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
       },
       backgroundImage: {
-        // تدرّج ذهبي معدني — highlight أعلى يسار + bronze أسفل يمين
         'gold-metallic':
-          'linear-gradient(145deg, #FFF6D5 0%, #F0D078 14%, #CAA13F 46%, #A67C22 78%, #7A5C18 100%)',
+          'linear-gradient(145deg, #7A5C00 0%, #A67C00 15%, #C89B3C 30%, #F9E27D 45%, #FFF6C5 50%, #D4AF37 65%, #C89B3C 80%, #7A5C00 100%)',
         'primary-gradient':
-          'linear-gradient(145deg, #FFF6D5 0%, #F0D078 14%, #CAA13F 46%, #A67C22 78%, #7A5C18 100%)',
+          'linear-gradient(145deg, #7A5C00 0%, #A67C00 15%, #C89B3C 30%, #F9E27D 45%, #FFF6C5 50%, #D4AF37 65%, #C89B3C 80%, #7A5C00 100%)',
         'gold-text':
-          'linear-gradient(145deg, #FFF6D5 0%, #F0D078 24%, #CAA13F 52%, #E8C56A 76%, #CAA13F 100%)',
+          'linear-gradient(145deg, #FFF6C5 0%, #F9E27D 28%, #D4AF37 52%, #F9E27D 78%, #FFF6C5 100%)',
         'accent-gradient': 'linear-gradient(135deg, #121c2b 0%, #213143 50%, #3f627f 100%)',
         'white-gradient': '#1D1D1B',
       },
