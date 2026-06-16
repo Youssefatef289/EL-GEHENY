@@ -1,15 +1,30 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import emailjs from '@emailjs/browser'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
+const EGYPT_PHONE_PATTERN = /^(010|011|012|015)[0-9]{8}$/
+
+function isOfficeOpenNow() {
+  const cairo = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Cairo' }))
+  const day = cairo.getDay()
+  const hour = cairo.getHours()
+  const isOpenDay = day === 6 || (day >= 0 && day <= 4)
+  const isOpenHour = hour >= 9 && hour < 17
+  return isOpenDay && isOpenHour
+}
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
   const { t, lang } = useLang()
+  const officeOpen = isOfficeOpenNow()
 
   const contactItems = [
     {
@@ -36,9 +51,29 @@ export default function Contact() {
     },
   ]
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
+    setSending(true)
+    setError(false)
+    try {
+      await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS credentials
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS credentials
+        {
+          from_name: form.name,
+          phone: form.phone,
+          email: form.email,
+          subject: form.subject,
+          message: form.message,
+        },
+        'YOUR_PUBLIC_KEY', // Replace with your EmailJS credentials
+      )
+      setSubmitted(true)
+    } catch (err) {
+      setError(true)
+    } finally {
+      setSending(false)
+    }
   }
 
   const update = (key) => (e) => setForm({ ...form, [key]: e.target.value })
@@ -90,6 +125,42 @@ export default function Contact() {
             ))}
 
             <Reveal delay={0.24} direction="right">
+              <div className="group flex items-start gap-4 rounded-3xl border border-navy-200 bg-navy-50 p-6 dark:border-navy-700/50 dark:bg-navy-900/60">
+                <span className="hover-gold-metallic flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary-500/10 text-primary-500 ring-1 ring-primary-500/25 transition-all duration-300">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                    <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 5v5l3 3-1.5 1.5-3.5-3.5V7H12z" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-sm text-navy-600 dark:text-navy-300">
+                    {lang === 'ar' ? 'ساعات العمل' : 'Working Hours'}
+                  </p>
+                  <p className="mt-1 font-semibold text-navy-900 dark:text-navy-100">
+                    {lang === 'ar' ? 'السبت – الخميس: 9 ص – 5 م' : 'Sat – Thu: 9 AM – 5 PM'}
+                  </p>
+                  <p className="mt-0.5 text-sm text-navy-600 dark:text-navy-300">
+                    {lang === 'ar' ? 'الجمعة: مغلق' : 'Friday: Closed'}
+                  </p>
+                  <p className="mt-2 flex items-center gap-2 text-sm font-medium">
+                    <span
+                      className={`h-2.5 w-2.5 rounded-full ${officeOpen ? 'bg-emerald-400' : 'bg-red-400'}`}
+                      aria-hidden="true"
+                    />
+                    <span className={officeOpen ? 'text-emerald-400' : 'text-red-400'}>
+                      {officeOpen
+                        ? lang === 'ar'
+                          ? 'مفتوح الآن'
+                          : 'Open Now'
+                        : lang === 'ar'
+                          ? 'مغلق الآن'
+                          : 'Closed Now'}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.32} direction="right">
               <a
                 href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent(t('contact.whatsappMsg'))}`}
                 target="_blank"
@@ -129,6 +200,7 @@ export default function Contact() {
                     <button
                       onClick={() => {
                         setSubmitted(false)
+                        setError(false)
                         setForm({ name: '', email: '', phone: '', subject: '', message: '' })
                       }}
                       className="btn-outline mt-6"
@@ -138,9 +210,40 @@ export default function Contact() {
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                    {error && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="rounded-2xl bg-red-500/15 p-6 text-center ring-1 ring-red-400/30"
+                      >
+                        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20 text-red-300">
+                          <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </div>
+                        <p className="font-display text-lg font-bold text-navy-900">
+                          {lang === 'ar' ? 'تعذّر إرسال الرسالة' : 'Failed to send message'}
+                        </p>
+                        <p className="mt-1 text-sm text-red-300">
+                          {lang === 'ar'
+                            ? 'حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى أو التواصل عبر واتساب.'
+                            : 'Something went wrong while sending. Please try again or contact us on WhatsApp.'}
+                        </p>
+                      </motion.div>
+                    )}
+
                     <div className="grid gap-5 sm:grid-cols-2">
                       <Field label={t('contact.name')} value={form.name} onChange={update('name')} placeholder={t('contact.namePh')} required />
-                      <Field label={t('contact.phoneField')} type="tel" value={form.phone} onChange={update('phone')} placeholder="01xxxxxxxxx" required />
+                      <Field
+                        label={t('contact.phoneField')}
+                        type="tel"
+                        value={form.phone}
+                        onChange={update('phone')}
+                        placeholder="01xxxxxxxxx"
+                        required
+                        isPhone
+                        lang={lang}
+                      />
                     </div>
                     <div className="grid gap-5 sm:grid-cols-2">
                       <Field label={t('contact.emailField')} type="email" value={form.email} onChange={update('email')} placeholder="example@mail.com" />
@@ -157,11 +260,23 @@ export default function Contact() {
                         className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
                       />
                     </div>
-                    <button type="submit" className="btn-primary w-full sm:w-auto">
-                      {t('contact.send')}
-                      <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                    <button type="submit" disabled={sending} className="btn-primary w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-60">
+                      {sending ? (
+                        <>
+                          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                          </svg>
+                          {lang === 'ar' ? 'جارِ الإرسال...' : 'Sending...'}
+                        </>
+                      ) : (
+                        <>
+                          {t('contact.send')}
+                          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </>
+                      )}
                     </button>
                   </form>
                 )}
@@ -178,7 +293,7 @@ export default function Contact() {
                 title={t('contact.mapTitle')}
                 src={company.mapEmbed}
                 width="100%"
-                height="420"
+                height="460"
                 style={{ border: 0, filter: 'grayscale(0.3) invert(0.9) hue-rotate(180deg)' }}
                 allowFullScreen
                 loading="lazy"
@@ -193,7 +308,15 @@ export default function Contact() {
   )
 }
 
-function Field({ label, value, onChange, type = 'text', placeholder, required }) {
+function Field({ label, value, onChange, type = 'text', placeholder, required, isPhone, lang = 'ar' }) {
+  const phoneInvalid = isPhone && value.length > 0 && !EGYPT_PHONE_PATTERN.test(value)
+  const phoneTitle = lang === 'ar'
+    ? 'رقم هاتف مصري غير صحيح — يبدأ بـ 010 أو 011 أو 012 أو 015'
+    : 'Invalid Egyptian mobile number — must start with 010, 011, 012, or 015'
+  const phoneErrorMsg = lang === 'ar'
+    ? 'يجب أن يبدأ الرقم بـ 010 أو 011 أو 012 أو 015 ويتكون من 11 رقماً'
+    : 'Number must start with 010, 011, 012, or 015 and be 11 digits long'
+
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium text-navy-700">{label}</label>
@@ -203,8 +326,13 @@ function Field({ label, value, onChange, type = 'text', placeholder, required })
         onChange={onChange}
         placeholder={placeholder}
         required={required}
+        pattern={isPhone ? '^(010|011|012|015)[0-9]{8}$' : undefined}
+        title={isPhone ? phoneTitle : undefined}
         className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
       />
+      {phoneInvalid && (
+        <p className="mt-1 text-xs text-red-400">{phoneErrorMsg}</p>
+      )}
     </div>
   )
 }

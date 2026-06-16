@@ -13,8 +13,7 @@ export const company = {
     en: '22 North El-Shweifat St., Fifth Settlement, New Cairo',
   },
   whatsapp: '201070312000',
-  mapEmbed:
-    'https://www.google.com/maps?q=%D8%A7%D9%84%D8%AA%D8%AC%D9%85%D8%B9%20%D8%A7%D9%84%D8%AE%D8%A7%D9%85%D8%B5%20%D8%A7%D9%84%D9%82%D8%A7%D9%87%D8%B1%D8%A9%20%D8%A7%D9%84%D8%AC%D8%AF%D9%8A%D8%AF%D8%A9&output=embed',
+  mapEmbed: 'https://maps.google.com/maps?q=30.0131,31.4961&z=17&output=embed',
   social: {
     facebook: 'https://facebook.com',
     instagram: 'https://instagram.com',

@@ -253,6 +253,8 @@ export default function ProjectDetail() {
                         onChange={(v) => setForm({ ...form, phone: v })}
                         placeholder="01xxxxxxxxx"
                         required
+                        isPhone
+                        lang={lang}
                       />
                       <div>
                         <label className="mb-1.5 block text-sm font-medium text-navy-700">
@@ -316,7 +318,16 @@ function InfoBox({ label, value }) {
   )
 }
 
-function Field({ label, value, onChange, type = 'text', placeholder, required }) {
+function Field({ label, value, onChange, type = 'text', placeholder, required, isPhone, lang = 'ar' }) {
+  const phonePattern = /^(010|011|012|015)[0-9]{8}$/
+  const phoneInvalid = isPhone && value.length > 0 && !phonePattern.test(value)
+  const phoneTitle = lang === 'ar'
+    ? 'رقم هاتف مصري غير صحيح — يبدأ بـ 010 أو 011 أو 012 أو 015'
+    : 'Invalid Egyptian mobile number — must start with 010, 011, 012, or 015'
+  const phoneErrorMsg = lang === 'ar'
+    ? 'يجب أن يبدأ الرقم بـ 010 أو 011 أو 012 أو 015 ويتكون من 11 رقماً'
+    : 'Number must start with 010, 011, 012, or 015 and be 11 digits long'
+
   return (
     <div>
       <label className="mb-1.5 block text-sm font-medium text-navy-700">{label}</label>
@@ -326,8 +337,13 @@ function Field({ label, value, onChange, type = 'text', placeholder, required })
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
+        pattern={isPhone ? '^(010|011|012|015)[0-9]{8}$' : undefined}
+        title={isPhone ? phoneTitle : undefined}
         className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
       />
+      {phoneInvalid && (
+        <p className="mt-1 text-xs text-red-400">{phoneErrorMsg}</p>
+      )}
     </div>
   )
 }
