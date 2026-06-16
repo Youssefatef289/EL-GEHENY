@@ -63,6 +63,8 @@ export default function Contact() {
           from_name: form.name,
           phone: form.phone,
           email: form.email,
+          reply_to: form.email,
+          to_email: company.email,
           subject: form.subject,
           message: form.message,
         },
