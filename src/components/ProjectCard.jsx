@@ -2,15 +2,20 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import LazyImage from './LazyImage'
 import { useLang, L } from '../i18n'
+import { motionConfig, revealFromBottom, revealToVisible, revealTransition, revealViewport } from '../utils/motion'
+
+function cardTransition(index) {
+  return revealTransition((index % 3) * motionConfig.stagger)
+}
 
 function ComingSoonCard({ project, index = 0 }) {
   const { lang } = useLang()
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      initial={revealFromBottom()}
+      whileInView={revealToVisible}
+      viewport={revealViewport}
+      transition={cardTransition(index)}
       className="group relative flex aspect-[4/5] flex-col items-center justify-center overflow-hidden rounded-3xl border border-primary-500/30 bg-ink p-8 text-center"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(202,161,63,0.18),transparent_60%)]" />
@@ -45,10 +50,10 @@ export default function ProjectCard({ project, index = 0 }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      initial={revealFromBottom()}
+      whileInView={revealToVisible}
+      viewport={revealViewport}
+      transition={cardTransition(index)}
     >
       <Link
         to={`/projects/${project.id}`}

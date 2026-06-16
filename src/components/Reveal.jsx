@@ -1,34 +1,33 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
+import {
+  motionConfig,
+  revealFromBottom,
+  revealToVisible,
+  revealTransition,
+  revealViewport,
+} from '../utils/motion'
 
-// مكوّن يضيف أنيميشن ظهور سلس عند التمرير
-const directions = {
-  up: { y: 40, x: 0 },
-  down: { y: -40, x: 0 },
-  left: { x: 40, y: 0 },
-  right: { x: -40, y: 0 },
-  none: { x: 0, y: 0 },
-}
-
+/** ظهور سلس من الأسفل عند التمرير */
 export default function Reveal({
   children,
-  direction = 'up',
+  direction: _direction = 'up',
   delay = 0,
-  duration = 0.7,
+  duration = motionConfig.duration,
   className = '',
   once = true,
-  amount = 0.2,
+  amount = revealViewport.amount,
   as = 'div',
 }) {
-  const offset = directions[direction] ?? directions.up
+  const reduceMotion = useReducedMotion()
   const MotionTag = motion[as] ?? motion.div
 
   return (
     <MotionTag
       className={className}
-      initial={{ opacity: 0, ...offset }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      initial={revealFromBottom(reduceMotion)}
+      whileInView={revealToVisible}
       viewport={{ once, amount }}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={revealTransition(delay, duration)}
     >
       {children}
     </MotionTag>

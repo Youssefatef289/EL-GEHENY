@@ -6,9 +6,7 @@ import { useLang, L } from '../i18n'
 import aboutImage from '../../images/about-geheny.jpg'
 
 const content = {
-  eyebrow: { ar: 'نبذة عن الجهيني', en: 'About El-Geheny' },
-  titleA: { ar: 'اكتشف قصة', en: 'Discover the story' },
-  titleB: { ar: 'نجاحنا المتميّزة', en: 'of our success' },
+  eyebrow: { ar: 'من نحن', en: 'About Us' },
   p1: {
     ar: 'منذ عام 1990، تواصل الجهيني للتطوير العقاري بناء سجل من النجاحات يعتمد على الجودة، والالتزام، والثقة.',
     en: 'Since 1990, El-Geheny Real Estate Development has been building a record of success rooted in quality, commitment, and trust.',
@@ -17,9 +15,9 @@ const content = {
     ar: 'نطوّر مشروعات سكنية واستثمارية مدروسة بعناية، تجمع بين التصميم العصري، وجودة التنفيذ، والمواقع الواعدة، لنمنح عملاءنا قيمة حقيقية اليوم واستثماراً أكثر قوة للمستقبل.',
     en: 'We develop carefully studied residential and investment projects that combine modern design, quality execution, and promising locations, giving our clients real value today and a stronger investment for the future.',
   },
+ 
 }
 
-// أبرز الإنجازات
 const achievements = {
   ar: [
     'أكثر من 100 مشروع تم تطويره',
@@ -35,6 +33,14 @@ const achievements = {
   ],
 }
 
+const stats = [
+  { value: 35, suffix: '+', label: { ar: 'سنة خبرة', en: 'Years of experience' } },
+  { value: 100, suffix: '+', label: { ar: 'مشروع', en: 'Projects' } },
+  {
+    text: { ar: 'مشروعات سكنية وتجارية واستثمارية', en: 'Residential, commercial and investment projects' },
+  },
+]
+
 function CheckIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
@@ -42,13 +48,6 @@ function CheckIcon() {
     </svg>
   )
 }
-
-// الإحصائيات
-const stats = [
-  { value: 35, suffix: '+', label: { ar: 'سنة من الخبرة', en: 'Years of experience' } },
-  { value: 500, suffix: '+', label: { ar: 'عميل واثق', en: 'Confident clients' } },
-  { value: 100, suffix: '+', label: { ar: 'مشروع منجز', en: 'Completed projects' } },
-]
 
 function CountValue({ value, decimals = 0, className }) {
   const { ref, formatted } = useCountUp(value, { duration: 2200, decimals })
@@ -60,17 +59,25 @@ function CountValue({ value, decimals = 0, className }) {
 }
 
 function StatCard({ stat, lang }) {
+  if (stat.text) {
+    return (
+      <div className="flex min-h-[7.5rem] flex-col items-center justify-center rounded-2xl border border-navy-200/40 bg-surface/70 px-4 py-5 text-center shadow-[0_16px_40px_-30px_rgba(0,0,0,0.55)] sm:min-h-[8rem] sm:px-5 sm:py-6">
+        <p className="font-display text-sm font-bold leading-relaxed text-gradient-primary sm:text-base">
+          {L(stat.text, lang)}
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex min-h-[7.5rem] flex-col items-center justify-center rounded-2xl border border-navy-200/50 bg-surface/60 px-4 py-5 text-center shadow-[0_16px_40px_-30px_rgba(0,0,0,0.5)] sm:min-h-[8rem] sm:px-5 sm:py-6">
-      <div className="flex items-baseline justify-center gap-0.5">
+    <div className="flex min-h-[7.5rem] flex-col items-center justify-center rounded-2xl border border-navy-200/40 bg-surface/70 px-4 py-5 text-center shadow-[0_16px_40px_-30px_rgba(0,0,0,0.55)] sm:min-h-[8rem] sm:px-5 sm:py-6">
+      <div className="flex items-baseline justify-center gap-0.5" dir="ltr">
+        <span className="font-display text-xl font-extrabold text-primary-500 sm:text-2xl">{stat.suffix}</span>
         <CountValue
           value={stat.value}
           decimals={stat.decimals || 0}
           className="font-display text-4xl font-extrabold leading-none text-gradient-primary sm:text-5xl"
         />
-        <span className="font-display text-xl font-extrabold text-primary-500 sm:text-2xl">
-          {stat.suffix}
-        </span>
       </div>
       <p className="mt-3 max-w-[9rem] body-sm font-semibold leading-snug text-subtle">
         {L(stat.label, lang)}
@@ -84,49 +91,44 @@ export default function AboutGeheny() {
 
   return (
     <section className="section-pad relative overflow-hidden bg-ink">
-      <div className="pointer-events-none absolute -right-16 top-1/4 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
+      <div className="pointer-events-none absolute -left-16 top-1/4 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
+      <div className="pointer-events-none absolute -right-16 bottom-1/4 h-64 w-64 rounded-full bg-primary-500/5 blur-[120px]" />
 
       <div className="container-x">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* الصورة */}
-          <Reveal direction="right" className="relative order-1">
-            <div className="relative mx-auto w-full max-w-[30rem]">
-              <div className="overflow-hidden rounded-[1.6rem] shadow-[0_40px_90px_-45px_rgba(15,23,34,0.55)]">
-                <img
-                  src={aboutImage}
-                  alt={L(content.eyebrow, lang)}
-                  loading="lazy"
-                  className="aspect-[4/5] w-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-12 xl:gap-16">
+          {/* الصورة — يسار في RTL */}
+          <Reveal direction="left" className="relative order-1 lg:order-2">
+            <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-[26rem] lg:max-w-none lg:mx-0">
+              <img
+                src={aboutImage}
+                alt={lang === 'ar' ? '35 سنة خبرة — الجهيني للتطوير العقاري' : '35 years of experience — El-Geheny Real Estate'}
+                loading="lazy"
+                className="mx-auto w-full object-contain object-center lg:object-bottom"
+              />
             </div>
           </Reveal>
 
-          {/* النص والإحصائيات */}
-          <div className="order-2 text-center lg:text-start">
-            <SectionTitle className="mb-5">{L(content.eyebrow, lang)}</SectionTitle>
+          {/* النص والإحصائيات — يمين في RTL */}
+          <div className="order-2 text-center lg:order-1 lg:text-start">
+            <SectionTitle className="mb-6">{L(content.eyebrow, lang)}</SectionTitle>
+
             <Reveal delay={0.05}>
-              <h2 className="section-subtitle">
-                {L(content.titleA, lang)}{' '}
-                <span className="text-gradient-primary">{L(content.titleB, lang)}</span>
-              </h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-xl body-lg font-display font-bold text-navy-900 lg:mx-0">
+              <p className="mx-auto max-w-xl body-lg font-display font-bold text-navy-900 lg:mx-0">
                 {L(content.p1, lang)}
               </p>
             </Reveal>
-            <Reveal delay={0.13}>
-              <p className="mx-auto mt-4 max-w-xl section-desc lg:mx-0">
+
+            <Reveal delay={0.1}>
+              <p className="mx-auto mt-5 max-w-xl section-desc lg:mx-0">
                 {L(content.p2, lang)}
               </p>
             </Reveal>
 
-            <Reveal delay={0.16}>
-              <ul className="mx-auto mt-7 grid max-w-xl gap-3 text-start sm:grid-cols-2 lg:mx-0">
+            <Reveal delay={0.14}>
+              <ul className="mx-auto mt-8 grid max-w-xl gap-3.5 text-start sm:grid-cols-2 lg:mx-0">
                 {achievements[lang].map((item) => (
                   <li key={item} className="flex items-start gap-2.5">
-                    <span className="mt-0.5 gold-check h-6 w-6 flex-shrink-0 shadow-gold">
+                    <span className="mt-0.5 gold-check h-6 w-6 flex-shrink-0">
                       <CheckIcon />
                     </span>
                     <span className="body-sm font-semibold text-body">{item}</span>
@@ -135,12 +137,23 @@ export default function AboutGeheny() {
               </ul>
             </Reveal>
 
-            {/* الإحصائيات */}
             <Reveal delay={0.18}>
-              <div className="mx-auto mt-10 grid max-w-xl grid-cols-1 gap-4 sm:grid-cols-3 lg:mx-0">
-                {stats.map((stat) => (
-                  <StatCard key={L(stat.label, 'ar')} stat={stat} lang={lang} />
-                ))}
+              <div className="mx-auto mt-10 max-w-xl lg:mx-0">
+                <div className="mb-6 h-px w-full bg-gradient-to-r from-transparent via-primary-500/50 to-transparent" />
+
+                <h3 className="section-subtitle mb-6">
+                  {L(content.statsTitle, lang)}
+                </h3>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+                  {stats.map((stat) => (
+                    <StatCard
+                      key={stat.text ? L(stat.text, 'ar') : `${stat.value}${stat.suffix}`}
+                      stat={stat}
+                      lang={lang}
+                    />
+                  ))}
+                </div>
               </div>
             </Reveal>
           </div>

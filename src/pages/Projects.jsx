@@ -34,7 +34,7 @@ export default function Projects() {
         </div>
       </section>
 
-      <SectionReveal from="left">
+      <SectionReveal>
       <section className="section-pad pt-10">
         <div className="container-x">
           {/* الفلاتر */}

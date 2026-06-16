@@ -1,9 +1,12 @@
+import { useRef } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import FixedParallaxBackground from '../components/FixedParallaxBackground'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
+import { motionConfig, revealFromBottom, revealToVisible, revealTransition, revealViewport } from '../utils/motion'
 
-import buildingImage from '../../images/building.jpg'
+import buildingImage from '../../images/hero-residential.png'
 
 const heritageProjects = [
   {
@@ -81,14 +84,14 @@ function HeritageItem({ item, index }) {
 
   return (
     <motion.li
-      initial={{ opacity: 0, x: lang === 'ar' ? 16 : -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, delay: (index % 8) * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      className="flex gap-3.5 body-sm text-hero-body"
+      initial={revealFromBottom()}
+      whileInView={revealToVisible}
+      viewport={revealViewport}
+      transition={revealTransition(index * motionConfig.stagger)}
+      className="heritage-item group flex gap-4 rounded-xl border border-white/10 bg-ink/35 p-4 backdrop-blur-sm transition-[border-color,background-color,box-shadow] duration-300 hover:border-primary-400/30 hover:bg-ink/50 hover:shadow-[0_12px_32px_-16px_rgba(212,175,55,0.28)] sm:p-5"
     >
-      <span className="gold-check mt-0.5 h-6 w-6 shadow-gold-sm">
-        <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3" aria-hidden="true">
+      <span className="gold-check mt-0.5 h-7 w-7 shrink-0 shadow-gold-sm transition-transform duration-300 group-hover:scale-105">
+        <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5" aria-hidden="true">
           <path
             d="M20 6L9 17l-5-5"
             stroke="currentColor"
@@ -98,64 +101,54 @@ function HeritageItem({ item, index }) {
           />
         </svg>
       </span>
-      <span>{L(item, lang)}</span>
+      <span className="body-md font-medium leading-relaxed text-white/92 sm:text-lg">{L(item, lang)}</span>
     </motion.li>
   )
 }
 
 export default function WhyUs() {
+  const sectionRef = useRef(null)
   const { t, lang } = useLang()
   const reduceMotion = useReducedMotion()
 
+  const overlayClassName = lang === 'ar' ? 'heritage-overlay-rtl' : 'heritage-overlay-ltr'
+
   return (
-    <section id="heritage" className="relative min-h-[85vh] w-full overflow-hidden bg-ink">
-      {/* خلفية متحركة — zoom in بسيط */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <motion.div
-          className="heritage-bg absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${buildingImage})` }}
-          initial={reduceMotion ? false : { scale: 1 }}
-          whileInView={{ scale: reduceMotion ? 1 : 1.07 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 2.6, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </div>
+    <section ref={sectionRef} id="heritage" className="relative isolate min-h-[88vh] w-full overflow-hidden bg-ink">
+      <FixedParallaxBackground
+        targetRef={sectionRef}
+        image={buildingImage}
+        alt={t('heritage.title')}
+        overlayClassName={overlayClassName}
+      />
 
-      {/* طبقات التغميق */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/72 to-ink/88" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(202,161,63,0.14),transparent_55%)]" />
-        <div
-          className={`absolute inset-0 ${
-            lang === 'ar'
-              ? 'bg-gradient-to-l from-ink/90 via-ink/55 to-transparent'
-              : 'bg-gradient-to-r from-ink/90 via-ink/55 to-transparent'
-          }`}
-        />
-      </div>
-
-      {/* النص فوق الصورة */}
       <div className="container-x relative z-10 px-5 py-20 sm:py-24 lg:py-28">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          initial={revealFromBottom(reduceMotion, motionConfig.sectionOffsetY)}
+          whileInView={revealToVisible}
+          viewport={revealViewport}
+          transition={revealTransition(0, motionConfig.sectionDuration)}
           className="mx-auto max-w-6xl"
         >
-          <SectionTitle tone="gold" className="mb-5">
-            {t('heritage.eyebrow')}
-          </SectionTitle>
-          <Reveal delay={0.05}>
-            <h3 className="section-subtitle text-white">{t('heritage.title')}</h3>
+          <Reveal delay={0.02}>
+            <SectionTitle tone="gold" className="mb-6">
+              {t('heritage.eyebrow')}
+            </SectionTitle>
           </Reveal>
+
           <Reveal delay={0.08}>
-            <p className="section-desc mt-4 text-hero-body">
+            <h3 className="heading-lg max-w-4xl text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+              {t('heritage.title')}
+            </h3>
+          </Reveal>
+
+          <Reveal delay={0.14}>
+            <p className="body-lg mt-5 max-w-3xl font-medium leading-relaxed text-white/92 sm:text-xl">
               {t('heritage.description')}
             </p>
           </Reveal>
 
-          <ul className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 md:gap-x-12 lg:gap-x-16">
+          <ul className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 md:gap-x-8 lg:gap-x-12">
             {heritageProjects.map((item, i) => (
               <HeritageItem key={i} item={item} index={i} />
             ))}

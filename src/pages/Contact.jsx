@@ -61,7 +61,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <SectionReveal from="left">
+      <SectionReveal>
       <section className="section-pad pt-10">
         <div className="container-x grid gap-8 lg:grid-cols-5">
           {/* بطاقات معلومات التواصل */}

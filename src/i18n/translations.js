@@ -28,7 +28,8 @@ export const translations = {
       about: 'من نحن',
       projects: 'المشاريع',
       blog: 'المدونة',
-      contact: 'تواصل معنا',
+      contact: 'اتصل بنا',
+      callNow: 'اتصل الآن',
     },
     navMenu: {
       eyebrow: 'القائمة',
@@ -46,6 +47,26 @@ export const translations = {
         'رحلة بصرية تكشف مشاريعنا وخبرتنا الممتدة في التطوير العقاري، بحضور سينمائي يجمع بين أصالة العلامة وطموح المستقبل.',
       btnProjects: 'استعرض المشاريع',
       btnContact: 'تواصل معنا',
+      slides: [
+        {
+          eyebrow: 'منذ عام 1990 — الجهيني للتطوير العقاري',
+          title: 'قوة الخبرة... برؤية جديدة',
+          caption:
+            'رحلة بصرية تكشف مشاريعنا وخبرتنا الممتدة في التطوير العقاري، بحضور سينمائي يجمع بين أصالة العلامة وطموح المستقبل.',
+        },
+        {
+          eyebrow: 'مشاريعنا المتميزة',
+          title: 'مشاريع سكنية واستثمارية',
+          caption:
+            'نطوّر مشروعات مدروسة بعناية تجمع بين التصميم العصري وجودة التنفيذ والمواقع الواعدة.',
+        },
+        {
+          eyebrow: 'استثمر بثقة',
+          title: 'استثمارك القادم يبدأ هنا',
+          caption:
+            'منذ عام 1990، نبني قيمة حقيقية اليوم واستثماراً أكثر قوة للمستقبل.',
+        },
+      ],
     },
     stats: {
       eyebrow: 'نبذة عن الجهيني',
@@ -60,7 +81,7 @@ export const translations = {
     },
     heritage: {
       eyebrow: 'إرثنا',
-      title: 'سجل من الإنجازات يمتد لأكثر من ثلاثة عقود',
+      title: 'سجل من الإنجازات يمتد لأكثر من 35 عاما',
       description:
         'منذ عام 1990، نفّذنا مشروعات سكنية وتجارية وبنية تحتية في أهم مواقع مصر — شاهد على خبرتنا وثقة عملائنا.',
     },
@@ -92,8 +113,12 @@ export const translations = {
       title: 'خدماتنا',
     },
     projectsShowcase: {
-      eyebrow: 'مشاريعنا',
-      title: 'استكشف مشروعاتنا',
+      eyebrow: 'المشاريع المتاحة',
+      title: 'استكشف استثمارك القادم',
+      carouselTitle: 'استكشف مشروعاتنا',
+      description:
+        'اكتشف مشروعاتنا العقارية المتنوعة التي تقدم فرص استثمارية ناجحة ونمواً مستداماً.',
+      exploreAll: 'استكشف جميع المشاريع',
       viewDetails: 'عرض التفاصيل',
       view: 'عرض',
     },
@@ -267,7 +292,8 @@ export const translations = {
       about: 'About Us',
       projects: 'Projects',
       blog: 'Blog',
-      contact: 'Contact',
+      contact: 'Contact Us',
+      callNow: 'Call Now',
     },
     navMenu: {
       eyebrow: 'Menu',
@@ -285,6 +311,26 @@ export const translations = {
         'A visual journey revealing our projects and our extensive experience in real estate development, with a cinematic presence that blends brand heritage with future ambition.',
       btnProjects: 'View Projects',
       btnContact: 'Contact Us',
+      slides: [
+        {
+          eyebrow: 'Since 1990 — El-Geheny Developments',
+          title: 'The power of experience... with a new vision',
+          caption:
+            'A visual journey revealing our projects and our extensive experience in real estate development, with a cinematic presence that blends brand heritage with future ambition.',
+        },
+        {
+          eyebrow: 'Our distinguished projects',
+          title: 'Residential & investment projects',
+          caption:
+            'We develop carefully studied projects that combine modern design, quality execution, and promising locations.',
+        },
+        {
+          eyebrow: 'Invest with confidence',
+          title: 'Your next investment starts here',
+          caption:
+            'Since 1990, we build real value today and a stronger investment for the future.',
+        },
+      ],
     },
     stats: {
       eyebrow: 'About El-Geheny',
@@ -331,8 +377,12 @@ export const translations = {
       title: 'Our Services',
     },
     projectsShowcase: {
-      eyebrow: 'Our Projects',
-      title: 'Explore our projects',
+      eyebrow: 'Available Projects',
+      title: 'Explore your next investment',
+      carouselTitle: 'Explore Our Projects',
+      description:
+        'Discover our diverse real estate projects offering successful investment opportunities and sustainable growth.',
+      exploreAll: 'Explore all projects',
       viewDetails: 'View Details',
       view: 'View',
     },

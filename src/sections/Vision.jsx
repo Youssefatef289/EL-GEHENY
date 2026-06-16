@@ -5,6 +5,7 @@ import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 
+import { motionConfig, revealFromBottom, revealToVisible, revealTransition } from '../utils/motion'
 import visionImage from '../../images/Our vision.png'
 import valuesImage from '../../images/Our values.png'
 import messageImage from '../../images/Our message.png'
@@ -97,7 +98,7 @@ export default function Vision() {
                   animate={{ x: 0 }}
                   exit={{ x: '-100%' }}
                   transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                  className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_30px_60px_rgba(202,161,63,0.25)]"
+                  className="absolute inset-0 h-full w-full object-contain "
                 />
               </AnimatePresence>
             </div>
@@ -108,10 +109,10 @@ export default function Vision() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={slide.key}
-                initial={{ opacity: 0, x: lang === 'ar' ? 30 : -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: lang === 'ar' ? -20 : 20 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                initial={revealFromBottom()}
+                animate={revealToVisible}
+                exit={{ opacity: 0, y: -16 }}
+                transition={revealTransition(0, motionConfig.duration)}
                 className="space-y-5"
               >
                 <SectionTitle as="h3" className="mb-1" reveal={false}>

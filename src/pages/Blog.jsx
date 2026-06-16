@@ -92,7 +92,7 @@ export default function Blog() {
         </div>
       </section>
 
-      <SectionReveal from="left">
+      <SectionReveal>
       <section className="section-pad pt-10">
         <div className="container-x">
           <div className="grid gap-6 lg:grid-cols-2">

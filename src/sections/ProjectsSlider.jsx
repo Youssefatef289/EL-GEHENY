@@ -5,7 +5,7 @@ import { gsap } from 'gsap'
 import { projects } from '../data/projects'
 import { useLang, L } from '../i18n'
 
-import slideJ290 from '../../images/projects/j290/00.jpg'
+import slideJ290 from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 import slideE80 from '../../images/projects/e80/00.jpg'
 import slideM75 from '../../images/projects/m75/00.jpg'
 import slideOrchid from '../../images/projects/orchid179/00.jpg'
@@ -67,19 +67,19 @@ export default function ProjectsSlider() {
 
   useEffect(() => {
     tweenRef.current?.kill()
-    setProgress(0)
 
     const obj = { value: 0 }
     tweenRef.current = gsap.to(obj, {
       value: 1,
       duration: SLIDE_MS / 1000,
       ease: 'none',
+      onStart: () => setProgress(0),
       onUpdate: () => setProgress(obj.value),
       onComplete: () => setActive((i) => (i + 1) % total),
     })
 
     return () => tweenRef.current?.kill()
-  }, [active, goTo])
+  }, [active, goTo, total])
 
   const slideNum = String(active + 1).padStart(2, '0')
   const totalNum = String(total).padStart(2, '0')

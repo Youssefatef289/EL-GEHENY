@@ -18,9 +18,9 @@ export default function SectionTitle({
   const isAr = lang === 'ar'
 
   const textTone =
-    tone === 'light' ? 'text-white' : 'text-primary-500'
+    tone === 'light' ? 'text-white' : 'text-gradient-primary'
   const lineTone =
-    tone === 'light' ? 'bg-white/85' : 'bg-primary-500'
+    tone === 'light' ? 'bg-white/85' : 'bg-primary-400'
 
   const content = (
     <div
@@ -31,7 +31,7 @@ export default function SectionTitle({
         <>
           <Tag
             dir="auto"
-            className={`section-title-text heading-lg shrink-0 font-display font-extrabold leading-tight ${textTone}`}
+            className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-tight ${textTone}`}
           >
             {children}
           </Tag>
@@ -48,7 +48,7 @@ export default function SectionTitle({
           />
           <Tag
             dir="auto"
-            className={`section-title-text heading-lg shrink-0 font-display font-extrabold leading-tight ${textTone}`}
+            className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-tight ${textTone}`}
           >
             {children}
           </Tag>

@@ -5,6 +5,52 @@ import { useLang, L } from '../i18n'
 import logoImage from '../../images/Logo.png'
 
 const lineEase = [0.22, 1, 0.36, 1]
+const DEVELOPMENTS = 'DEVELOPMENTS'
+const LOGO_REVEAL_DELAY = 0.35
+const WORD_START_DELAY = 1.05
+const LETTER_STAGGER = 0.07
+
+function DevelopmentsWord({ startDelay = WORD_START_DELAY }) {
+  const reduceMotion = useReducedMotion()
+
+  return (
+    <p
+      dir="ltr"
+      className="flex flex-row flex-nowrap items-center justify-center gap-[0.06em] font-sans text-3xl font-extrabold uppercase leading-none tracking-[0.14em] sm:text-4xl md:text-5xl lg:text-6xl [unicode-bidi:isolate]"
+      aria-label={DEVELOPMENTS}
+    >
+      {DEVELOPMENTS.split('').map((letter, index) => (
+        <motion.span
+          key={`${letter}-${index}`}
+          initial={
+            reduceMotion
+              ? false
+              : {
+                  opacity: 0,
+                  y: 28,
+                  scale: 0.88,
+                  filter: 'blur(5px)',
+                }
+          }
+          animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+          }}
+          transition={{
+            duration: 0.55,
+            delay: startDelay + index * LETTER_STAGGER,
+            ease: lineEase,
+          }}
+          className="inline-flex shrink-0 items-center justify-center text-gradient-primary will-change-transform drop-shadow-[0_2px_14px_rgba(212,175,55,0.35)]"
+        >
+          {letter}
+        </motion.span>
+      ))}
+    </p>
+  )
+}
 
 export default function BrandLoaderContent({ progress = 0, indeterminate = false, compact = false }) {
   const reduceMotion = useReducedMotion()
@@ -41,68 +87,32 @@ export default function BrandLoaderContent({ progress = 0, indeterminate = false
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-grid opacity-[0.035]" />
 
       {/* المحتوى المركزي */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 sm:gap-6">
-        <div className="relative flex items-center justify-center">
-          {/* حلقة دوّارة */}
-          {!reduceMotion && (
-            <svg
-              aria-hidden="true"
-              className="loader-ring absolute h-[min(52vw,240px)] w-[min(52vw,240px)] sm:h-60 sm:w-60 md:h-72 md:w-72"
-              viewBox="0 0 120 120"
-              fill="none"
-            >
-              <circle
-                cx="60"
-                cy="60"
-                r="54"
-                stroke="url(#loaderRingGrad)"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeDasharray="80 260"
-              />
-              <defs>
-                <linearGradient id="loaderRingGrad" x1="0" y1="0" x2="120" y2="120">
-                  <stop stopColor="#FFF6D5" />
-                  <stop offset="0.45" stopColor="#CAA13F" />
-                  <stop offset="1" stopColor="#7A5C18" />
-                </linearGradient>
-              </defs>
-            </svg>
-          )}
-
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 px-6 sm:gap-8">
+        <div className="relative flex flex-col items-center gap-6 sm:gap-8">
           <motion.div
-            initial={reduceMotion ? false : { opacity: 0, scale: 0.9, y: 12 }}
+            initial={reduceMotion ? false : { opacity: 0, scale: 0.88, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: lineEase, delay: reduceMotion ? 0 : 0.35 }}
+            transition={{ duration: 0.85, ease: lineEase, delay: reduceMotion ? 0 : LOGO_REVEAL_DELAY }}
             className={`loader-shimmer relative ${reduceMotion ? '' : 'overflow-hidden rounded-2xl'}`}
           >
             <img
               src={logoImage}
               alt={L(company.name, lang)}
-              className="relative z-[1] h-20 w-auto max-w-[min(72vw,300px)] object-contain drop-shadow-[0_14px_44px_rgba(202,161,63,0.28)] sm:h-24 md:h-28"
+              className="relative z-[1] h-20 w-auto max-w-[min(72vw,300px)] object-contain drop-shadow-[0_14px_44px_rgba(212,175,55,0.3)] sm:h-24 md:h-28"
             />
           </motion.div>
-        </div>
 
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: lineEase, delay: reduceMotion ? 0 : 0.55 }}
-          className="text-center"
-        >
-          <p className="font-display text-sm font-semibold tracking-[0.22em] text-gradient-primary sm:text-base">
-            {L(company.slogan, lang)}
-          </p>
-          <p className="mt-2 text-xs font-medium tracking-[0.28em] text-navy-500 sm:text-sm">
-            {t('loader.since')} {company.since}
-          </p>
-        </motion.div>
+          <DevelopmentsWord />
+        </div>
 
         <motion.p
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.72 }}
-          className="loader-dots text-xs font-semibold uppercase tracking-[0.38em] text-navy-600"
+          transition={{
+            duration: 0.5,
+            delay: reduceMotion ? 0 : WORD_START_DELAY + DEVELOPMENTS.length * LETTER_STAGGER + 0.25,
+          }}
+          className="loader-dots text-xs font-semibold uppercase tracking-[0.32em] text-navy-500"
           aria-live="polite"
         >
           {t('common.loading')}

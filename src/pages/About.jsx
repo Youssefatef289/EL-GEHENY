@@ -52,7 +52,7 @@ const whyHeading = {
 function VideoHero() {
   const { t } = useLang()
   return (
-    <section className="relative isolate flex min-h-[72svh] flex-col justify-end overflow-hidden bg-ink pt-28 pb-14 sm:min-h-[82svh]">
+    <section className="relative isolate flex min-h-[78svh] flex-col justify-end overflow-hidden bg-ink pb-14 pt-[6rem] sm:min-h-[88svh] sm:pt-[6.75rem] lg:pt-[7.5rem] xl:pt-[8rem]">
       <img
         className="absolute inset-0 -z-20 h-full w-full object-cover"
         src={aboutHero}
@@ -87,17 +87,17 @@ export default function About() {
       <VideoHero />
 
       {/* فريق القيادة */}
-      <SectionReveal from="left">
+      <SectionReveal>
         <AboutTeam />
       </SectionReveal>
 
       {/* نبذة عن الجهيني */}
-      <SectionReveal from="right">
+      <SectionReveal>
         <AboutGeheny />
       </SectionReveal>
 
       {/* لماذا الجهيني */}
-      <SectionReveal from="right">
+      <SectionReveal>
         <section className="section-pad">
           <div className="container-x">
             <SectionTitle className="mb-4">{L(whyHeading.eyebrow, lang)}</SectionTitle>
@@ -127,11 +127,11 @@ export default function About() {
       </SectionReveal>
 
       {/* رؤيتنا للمستقبل */}
-      <SectionReveal from="left">
+      <SectionReveal>
         <Vision />
       </SectionReveal>
 
-      <SectionReveal from="right">
+      <SectionReveal>
         <CTA />
       </SectionReveal>
     </>

@@ -12,19 +12,21 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <SectionReveal from="right">
+      <SectionReveal>
         <AboutGeheny />
       </SectionReveal>
-      <SectionReveal from="left">
+      <SectionReveal>
         <WhyUs />
       </SectionReveal>
-      <SectionReveal from="right">
+      <SectionReveal>
         <Vision />
       </SectionReveal>
       <Services />
       <ProjectsSlider />
-      <ExploreProjects />
-      <SectionReveal from="right">
+      <SectionReveal>
+        <ExploreProjects />
+      </SectionReveal>
+      <SectionReveal>
         <Partners />
       </SectionReveal>
     </>

@@ -1,5 +1,7 @@
 // بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
+import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
+
 // تحميل جميع صور المشاريع تلقائياً من مجلد كل مشروع داخل images/projects/<folder>/
 const imageModules = import.meta.glob(
   '../../images/projects/*/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
@@ -11,7 +13,8 @@ for (const [path, url] of Object.entries(imageModules)) {
   const match = path.match(/\/projects\/([^/]+)\//)
   if (!match) continue
   const key = match[1]
-  ;(galleries[key] ||= []).push({ path, url })
+  if (!galleries[key]) galleries[key] = []
+  galleries[key].push({ path, url })
 }
 for (const key of Object.keys(galleries)) {
   galleries[key] = galleries[key]
@@ -123,8 +126,8 @@ export const projects = [
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
     unitTypes: defaultUnitTypes,
-    cover: galleryFor('j290')[0],
-    gallery: galleryFor('j290'),
+    cover: j290Cover,
+    gallery: [j290Cover, ...galleryFor('j290')],
     shortDescription: {
       ar: 'مشروع سكني فاخر في بيت الوطن بواجهات كلاسيكية أنيقة وإضاءة مميزة.',
       en: 'A luxury residential project in Beit El-Watan with elegant classic facades and distinctive lighting.',
