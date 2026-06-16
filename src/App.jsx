@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import ScrollToTopButton from './components/ScrollToTopButton'
 import WhatsAppButton from './components/WhatsAppButton'
+import Seo from './components/Seo'
 import Loader from './components/Loader'
 import IntroLoader from './components/IntroLoader'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -51,6 +52,7 @@ export default function App() {
 
   return (
     <div className="relative flex min-h-screen flex-col bg-ink">
+      <Seo />
       <IntroLoader />
       <ScrollToTop />
       <Navbar />

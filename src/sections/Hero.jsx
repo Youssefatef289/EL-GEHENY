@@ -20,7 +20,7 @@ function SlideContent({ slide, animate, reduceMotion }) {
       </div>
 
       <div className="mask">
-        <h2 className="hero-slide-title">{slide.title}</h2>
+        <h1 className="hero-slide-title">{slide.title}</h1>
       </div>
 
       <div className="hero-slide-divider" aria-hidden="true" />

@@ -261,6 +261,39 @@ export const translations = {
       aria: 'تواصل عبر واتساب',
       message: 'مرحباً، أرغب في الاستفسار عن مشاريع الجهيني للتطوير العقاري',
     },
+    seo: {
+      siteName: 'الجهيني للتطوير العقاري',
+      keywords:
+        'الجهيني للتطوير العقاري, تطوير عقاري, عقارات القاهرة الجديدة, التجمع الخامس, بيت الوطن, مشاريع سكنية, استثمار عقاري, شركات عقارات مصر',
+      home: {
+        description:
+          'الجهيني للتطوير العقاري — منذ عام 1990 نطوّر مشاريع سكنية واستثمارية متميزة في القاهرة الجديدة والتجمع الخامس. اكتشف مشاريعنا وتواصل معنا.',
+      },
+      about: {
+        title: 'من نحن',
+        description:
+          'تعرف على قصة الجهيني للتطوير العقاري، فريق القيادة، وخبرتنا الممتدة منذ 1990 في تطوير مشاريع عقارية موثوقة بالقاهرة الجديدة.',
+      },
+      projects: {
+        title: 'المشاريع',
+        description:
+          'استعرض مشاريع الجهيني للتطوير العقاري السكنية والاستثمارية في بيت الوطن والتجمع الخامس — وحدات متنوعة وأنظمة سداد مرنة.',
+      },
+      blog: {
+        title: 'المدونة',
+        description:
+          'مقالات ونصائح عقارية من الجهيني للتطوير العقاري حول الاستثمار، اختيار العقار، وفرص القاهرة الجديدة.',
+      },
+      contact: {
+        title: 'اتصل بنا',
+        description:
+          'تواصل مع الجهيني للتطوير العقاري للاستفسار عن المشاريع، الحجز، أو زيارة المكتب في التجمع الخامس — هاتف، بريد، وواتساب.',
+      },
+      notFound: {
+        title: 'الصفحة غير موجودة',
+        description: 'الصفحة التي تبحث عنها غير متوفرة. عد إلى موقع الجهيني للتطوير العقاري لاستكشاف المشاريع والخدمات.',
+      },
+    },
   },
 
   en: {
@@ -524,6 +557,39 @@ export const translations = {
       tooltip: 'Chat with us now',
       aria: 'Chat on WhatsApp',
       message: 'Hello, I would like to inquire about El-Geheny Real Estate projects',
+    },
+    seo: {
+      siteName: 'El-Geheny Real Estate Development',
+      keywords:
+        'El-Geheny Real Estate, real estate development, New Cairo properties, Fifth Settlement, Beit El-Watan, residential projects, property investment, Egypt real estate',
+      home: {
+        description:
+          'El-Geheny Real Estate Development — since 1990 we deliver distinguished residential and investment projects in New Cairo and the Fifth Settlement. Explore our projects and contact us.',
+      },
+      about: {
+        title: 'About Us',
+        description:
+          'Learn about El-Geheny Real Estate Development, our leadership team, and our experience since 1990 in trusted real estate projects across New Cairo.',
+      },
+      projects: {
+        title: 'Projects',
+        description:
+          'Browse El-Geheny residential and investment projects in Beit El-Watan and the Fifth Settlement — varied units and flexible payment plans.',
+      },
+      blog: {
+        title: 'Blog',
+        description:
+          'Real estate articles and insights from El-Geheny on investment, choosing property, and opportunities in New Cairo.',
+      },
+      contact: {
+        title: 'Contact Us',
+        description:
+          'Contact El-Geheny Real Estate Development to inquire about projects, bookings, or visit our Fifth Settlement office — phone, email, and WhatsApp.',
+      },
+      notFound: {
+        title: 'Page Not Found',
+        description: 'The page you are looking for is unavailable. Return to El-Geheny Real Estate Development to explore projects and services.',
+      },
     },
   },
 }
