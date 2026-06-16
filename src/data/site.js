@@ -2,7 +2,7 @@
 
 export const company = {
   name: { ar: 'الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development' },
-  nameShort: { ar: 'الجهيني', en: 'El-Geheny' },
+  nameShort: { ar: 'الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development' },
   slogan: { ar: 'قوة الخبرة... برؤية جديدة', en: 'The power of experience... with a new vision' },
   since: 1990,
   phone: '01070312000',

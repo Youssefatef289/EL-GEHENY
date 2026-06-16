@@ -10,7 +10,7 @@ export const blogPosts = [
     category: { ar: 'استثمار عقاري', en: 'Real Estate Investment' },
     date: '2025-12-15',
     readTime: { ar: '6 دقائق', en: '6 min read' },
-    author: { ar: 'فريق الجهيني', en: 'El-Geheny Team' },
+    author: { ar: 'فريق الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development Team' },
     cover:
       'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80',
     excerpt: {
@@ -41,7 +41,7 @@ export const blogPosts = [
     category: { ar: 'دليل المستثمر', en: 'Investor Guide' },
     date: '2025-11-28',
     readTime: { ar: '7 دقائق', en: '7 min read' },
-    author: { ar: 'فريق الجهيني', en: 'El-Geheny Team' },
+    author: { ar: 'فريق الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development Team' },
     cover:
       'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80',
     excerpt: {
@@ -52,13 +52,13 @@ export const blogPosts = [
       ar: [
         'الاستثمار العقاري قرار مهم يتطلب دراسة متأنية لعدة عوامل تضمن تحقيق أعلى عائد ممكن وتقليل المخاطر.',
         'العامل الأول والأهم هو الموقع؛ فالعقار في منطقة واعدة قريبة من الخدمات والمحاور يحقق نمواً أسرع في القيمة. اختر دائماً المناطق ذات خطط التطوير المستقبلية.',
-        'العامل الثاني هو سمعة المطور العقاري وسجله السابق، فالتعامل مع شركة موثوقة مثل الجهيني بخبرة تتجاوز 35 عاماً يضمن جودة التنفيذ والالتزام بمواعيد التسليم.',
+        'العامل الثاني هو سمعة المطور العقاري وسجله السابق، فالتعامل مع شركة موثوقة مثل الجهيني للتطوير العقاري بخبرة تتجاوز 35 عاماً يضمن جودة التنفيذ والالتزام بمواعيد التسليم.',
         'كما يجب دراسة أنظمة السداد المتاحة، وحساب العائد المتوقع من التأجير أو إعادة البيع، والتأكد من اكتمال أوراق العقار القانونية قبل الشراء.',
       ],
       en: [
         'Real estate investment is an important decision that requires careful study of several factors to ensure the highest possible return and minimize risks.',
         'The first and most important factor is location; a property in a promising area close to services and axes achieves faster value growth. Always choose areas with future development plans.',
-        'The second factor is the developer’s reputation and track record. Dealing with a trusted company like El-Geheny, with over 35 years of experience, guarantees execution quality and commitment to delivery dates.',
+        'The second factor is the developer’s reputation and track record. Dealing with a trusted company like El-Geheny Real Estate Development, with over 35 years of experience, guarantees execution quality and commitment to delivery dates.',
         'You should also study the available payment plans, calculate the expected return from renting or reselling, and ensure the property’s legal documents are complete before buying.',
       ],
     },
@@ -72,7 +72,7 @@ export const blogPosts = [
     category: { ar: 'تحليل السوق', en: 'Market Analysis' },
     date: '2025-11-10',
     readTime: { ar: '8 دقائق', en: '8 min read' },
-    author: { ar: 'فريق الجهيني', en: 'El-Geheny Team' },
+    author: { ar: 'فريق الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development Team' },
     cover:
       'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=80',
     excerpt: {
@@ -103,7 +103,7 @@ export const blogPosts = [
     category: { ar: 'دليل المستثمر', en: 'Investor Guide' },
     date: '2025-10-22',
     readTime: { ar: '5 دقائق', en: '5 min read' },
-    author: { ar: 'فريق الجهيني', en: 'El-Geheny Team' },
+    author: { ar: 'فريق الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development Team' },
     cover:
       'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1200&q=80',
     excerpt: {

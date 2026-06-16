@@ -45,7 +45,7 @@ const whyReasons = [
 ]
 
 const whyHeading = {
-  eyebrow: { ar: 'لماذا الجهيني؟', en: 'Why El-Geheny?' },
+  eyebrow: { ar: 'لماذا الجهيني للتطوير العقاري؟', en: 'Why El-Geheny Real Estate Development?' },
   title: { ar: 'أسباب تجعلنا خيارك الأول', en: 'Reasons that make us your first choice' },
 }
 
@@ -59,18 +59,21 @@ function VideoHero() {
         alt=""
         aria-hidden="true"
       />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/60 to-ink/35" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-ink/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/40" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-ink/80 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.12),transparent_45%)]" />
 
       <div className="container-x relative">
         <Reveal>
-          <span className="eyebrow mb-5 border-white/20 bg-white/10 text-white">{t('about.heroEyebrow')}</span>
+          <span className="label-caps mb-5 border-primary-500/35 bg-primary-500/10 text-primary-100">
+            {t('about.heroEyebrow')}
+          </span>
         </Reveal>
         <Reveal delay={0.08}>
-          <h1 className="heading-xl max-w-4xl text-white">{t('about.heroTitle')}</h1>
+          <h1 className="heading-xl max-w-4xl text-gradient-primary">{t('about.heroTitle')}</h1>
         </Reveal>
         <Reveal delay={0.16}>
-          <p className="section-desc mt-6 text-hero-body">
+          <p className="section-desc mt-6 max-w-3xl text-primary-100/90">
             {t('about.heroDesc')}
           </p>
         </Reveal>

@@ -69,12 +69,12 @@ export const translations = {
       ],
     },
     stats: {
-      eyebrow: 'نبذة عن الجهيني',
+      eyebrow: 'نبذة عن الجهيني للتطوير العقاري',
       p1: 'منذ عام 1990، تواصل الجهيني للتطوير العقاري بناء سجل من النجاحات يعتمد على الجودة، والالتزام، والثقة.',
       p2: 'نطوّر مشروعات سكنية واستثمارية مدروسة بعناية، تجمع بين التصميم العصري، وجودة التنفيذ، والمواقع الواعدة، لنمنح عملاءنا قيمة حقيقية اليوم واستثماراً أكثر قوة للمستقبل.',
     },
     whyUs: {
-      eyebrow: 'لماذا الجهيني؟',
+      eyebrow: 'لماذا الجهيني للتطوير العقاري؟',
       title: 'نبني الثقة قبل أن نبني العقار',
       description:
         'أربعة أسباب تجعل من الجهيني للتطوير العقاري الخيار الأمثل لاستثمارك العقاري الآمن.',
@@ -155,13 +155,13 @@ export const translations = {
       heroTitle: 'الجهيني للتطوير العقاري',
       heroDesc:
         'تأسست عام 1990، ونمضي منذ أكثر من ثلاثة عقود في بناء مسيرة قائمة على الخبرة والالتزام والجودة.',
-      introEyebrow: 'نبذة عن الجهيني',
+      introEyebrow: 'نبذة عن الجهيني للتطوير العقاري',
       introTitleA: 'مسيرة قائمة على',
       introTitleB: 'الخبرة والثقة',
       introP1:
         'تأسست شركة الجهيني للتطوير العقاري عام 1990، ومنذ ذلك الوقت نجحت في بناء مسيرة قوية قائمة على الخبرة والالتزام والجودة. على مدار أكثر من ثلاثة عقود، شاركت الشركة في تنفيذ وتطوير أكثر من 100 مشروع متنوع بين المشروعات السكنية والتجارية ومتعددة الاستخدامات.',
       introP2:
-        'تؤمن الجهيني بأن العقار ليس مجرد مبنى، بل استثمار طويل الأجل وأسلوب حياة متكامل، لذلك نركز على اختيار المواقع المتميزة، والتصميمات العملية، وجودة التنفيذ، لضمان أفضل تجربة سكنية واستثمارية، ما مكّننا من بناء قاعدة قوية من العملاء الذين منحونا ثقتهم لسنوات طويلة.',
+        'تؤمن الجهيني للتطوير العقاري بأن العقار ليس مجرد مبنى، بل استثمار طويل الأجل وأسلوب حياة متكامل، لذلك نركز على اختيار المواقع المتميزة، والتصميمات العملية، وجودة التنفيذ، لضمان أفضل تجربة سكنية واستثمارية، ما مكّننا من بناء قاعدة قوية من العملاء الذين منحونا ثقتهم لسنوات طويلة.',
       yearsBadge: 'عاماً من التميز',
       promiseLabel: 'وعدنا',
       promiseText:
@@ -313,7 +313,7 @@ export const translations = {
       btnContact: 'Contact Us',
       slides: [
         {
-          eyebrow: 'Since 1990 — El-Geheny Developments',
+          eyebrow: 'Since 1990 — El-Geheny Real Estate Development',
           title: 'The power of experience... with a new vision',
           caption:
             'A visual journey revealing our projects and our extensive experience in real estate development, with a cinematic presence that blends brand heritage with future ambition.',
@@ -333,12 +333,12 @@ export const translations = {
       ],
     },
     stats: {
-      eyebrow: 'About El-Geheny',
+      eyebrow: 'About El-Geheny Real Estate Development',
       p1: 'Since 1990, El-Geheny Real Estate Development has been building a record of success rooted in quality, commitment, and trust.',
       p2: 'We develop carefully studied residential and investment projects that combine modern design, quality execution, and promising locations, giving our clients real value today and a stronger investment for the future.',
     },
     whyUs: {
-      eyebrow: 'Why El-Geheny?',
+      eyebrow: 'Why El-Geheny Real Estate Development?',
       title: 'We build trust before we build property',
       description:
         'Four reasons that make El-Geheny Real Estate Development the ideal choice for your safe real estate investment.',
@@ -419,13 +419,13 @@ export const translations = {
       heroTitle: 'El-Geheny Real Estate Development',
       heroDesc:
         'Founded in 1990, for more than three decades we have built a journey grounded in experience, commitment, and quality.',
-      introEyebrow: 'About El-Geheny',
+      introEyebrow: 'About El-Geheny Real Estate Development',
       introTitleA: 'A journey built on',
       introTitleB: 'experience and trust',
       introP1:
         'El-Geheny Real Estate Development was founded in 1990, and ever since it has built a strong journey based on experience, commitment, and quality. Over more than three decades, the company has participated in executing and developing more than 100 diverse projects across residential, commercial, and mixed-use developments.',
       introP2:
-        'El-Geheny believes that real estate is not just a building, but a long-term investment and an integrated lifestyle. That is why we focus on selecting prime locations, practical designs, and quality execution to ensure the best residential and investment experience, which has enabled us to build a strong base of clients who have trusted us for many years.',
+        'El-Geheny Real Estate Development believes that real estate is not just a building, but a long-term investment and an integrated lifestyle. That is why we focus on selecting prime locations, practical designs, and quality execution to ensure the best residential and investment experience, which has enabled us to build a strong base of clients who have trusted us for many years.',
       yearsBadge: 'years of excellence',
       promiseLabel: 'Our Promise',
       promiseText:

@@ -51,7 +51,7 @@ const textSlideVariants = {
 function shortTitle(project, lang) {
   const title = L(project.title, lang)
   const part = title.split(' - ')[0] || title
-  return part.replace(/^El-Geheny\s+/i, '').replace(/^الجهيني\s+/i, '').trim()
+  return part.replace(/^El-Geheny Real Estate Development\s+/i, '').replace(/^El-Geheny\s+/i, '').replace(/^الجهيني للتطوير العقاري\s+/i, '').replace(/^الجهيني\s+/i, '').trim()
 }
 
 function shortLocation(project, lang) {

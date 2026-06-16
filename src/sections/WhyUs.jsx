@@ -26,8 +26,8 @@ const heritageProjects = [
     en: 'Construction of Flower Tower residential building — Zahraa, Nasr City',
   },
   {
-    ar: 'إنشاء مجموعة أبراج الجهينى (1، 2، 3، 4، 5، 6، 7) - زهراء مدينة نصر',
-    en: 'Development of El-Geheny Towers Group (1–7) — Zahraa, Nasr City',
+    ar: 'إنشاء مجموعة أبراج الجهيني للتطوير العقاري (1، 2، 3، 4، 5، 6، 7) - زهراء مدينة نصر',
+    en: 'Development of El-Geheny Real Estate Development Towers Group (1–7) — Zahraa, Nasr City',
   },
   {
     ar: 'إنشاء عمائر سكنية بمدينة بدر الحى المتميز 236',

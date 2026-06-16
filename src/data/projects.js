@@ -115,7 +115,7 @@ const fifthDistrictHighlights = [
 export const projects = [
   {
     id: 'j290',
-    title: { ar: 'الجهيني J290 - الحي الثاني', en: 'El-Geheny J290 - Second District' },
+    title: { ar: 'الجهيني للتطوير العقاري J290 - الحي الثاني', en: 'El-Geheny Real Estate Development J290 - Second District' },
     category: 'hay-thani',
     categoryName: { ar: 'بيت الوطن - الحي الثاني', en: 'Beit El-Watan - Second District' },
     location: { ar: 'بيت الوطن، الحي الثاني، التجمع الخامس', en: 'Beit El-Watan, Second District, Fifth Settlement' },
@@ -288,7 +288,7 @@ export const projects = [
   },
   {
     id: 'm75',
-    title: { ar: 'الجهيني M75 - الحي الثالث', en: 'El-Geheny M75 - Third District' },
+    title: { ar: 'الجهيني للتطوير العقاري M75 - الحي الثالث', en: 'El-Geheny Real Estate Development M75 - Third District' },
     category: 'hay-thalith',
     categoryName: { ar: 'بيت الوطن - الحي الثالث', en: 'Beit El-Watan - Third District' },
     location: { ar: 'بيت الوطن، الحي الثالث، التجمع الخامس', en: 'Beit El-Watan, Third District, Fifth Settlement' },
@@ -346,7 +346,7 @@ export const projects = [
   },
   {
     id: 'e80',
-    title: { ar: 'الجهيني E80 - الحي الخامس', en: 'El-Geheny E80 - Fifth District' },
+    title: { ar: 'الجهيني للتطوير العقاري E80 - الحي الخامس', en: 'El-Geheny Real Estate Development E80 - Fifth District' },
     category: 'hay-khamis',
     categoryName: { ar: 'بيت الوطن - الحي الخامس', en: 'Beit El-Watan - Fifth District' },
     location: { ar: 'بيت الوطن، الحي الخامس، التجمع الخامس', en: 'Beit El-Watan, Fifth District, Fifth Settlement' },
@@ -445,7 +445,7 @@ export const projects = [
   },
   {
     id: 'm36',
-    title: { ar: 'الجهيني M36 - الحي الخامس', en: 'El-Geheny M36 - Fifth District' },
+    title: { ar: 'الجهيني للتطوير العقاري M36 - الحي الخامس', en: 'El-Geheny Real Estate Development M36 - Fifth District' },
     category: 'hay-khamis',
     categoryName: { ar: 'الحي الخامس', en: 'Fifth District' },
     location: { ar: 'الحي الخامس، التجمع الخامس، القاهرة الجديدة', en: 'Fifth District, Fifth Settlement, New Cairo' },
@@ -516,7 +516,7 @@ export const projects = [
   },
   {
     id: 'a149',
-    title: { ar: 'الجهيني A149 - الحي التكميلي', en: 'El-Geheny A149 - Supplementary District' },
+    title: { ar: 'الجهيني للتطوير العقاري A149 - الحي التكميلي', en: 'El-Geheny Real Estate Development A149 - Supplementary District' },
     category: 'hay-takmili',
     categoryName: { ar: 'بيت الوطن - الحي التكميلي', en: 'Beit El-Watan - Supplementary District' },
     location: { ar: 'بيت الوطن، الحي التكميلي، التجمع الخامس', en: 'Beit El-Watan, Supplementary District, Fifth Settlement' },
@@ -635,7 +635,7 @@ export const projects = [
   },
   {
     id: 'north-orchid-179',
-    title: { ar: 'الجهيني 179 - شمال الأوركيد', en: 'El-Geheny 179 - North Orchid' },
+    title: { ar: 'الجهيني للتطوير العقاري 179 - شمال الأوركيد', en: 'El-Geheny Real Estate Development 179 - North Orchid' },
     category: 'north-orchid',
     categoryName: { ar: 'شمال الأوركيد', en: 'North Orchid' },
     location: { ar: 'شمال الأوركيد، التجمع الخامس، القاهرة الجديدة', en: 'North Orchid, Fifth Settlement, New Cairo' },
