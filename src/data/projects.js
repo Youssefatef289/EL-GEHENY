@@ -1,4 +1,4 @@
-// بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
+﻿// بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 
@@ -25,6 +25,12 @@ for (const key of Object.keys(galleries)) {
 // معرض صور المشروع حسب اسم مجلده (الصورة الأولى = الغلاف)
 const galleryFor = (folder) => galleries[folder] || []
 
+function galleryForProject(folder, { excludePlanFiles = false } = {}) {
+  const images = galleryFor(folder)
+  if (!excludePlanFiles) return images
+  return images.filter((url) => !String(url).includes('plan-'))
+}
+
 const projectFolderById = {
   'north-orchid-179': 'orchid179',
 }
@@ -39,7 +45,11 @@ const unitPlanFileMap = {
   e80: { ground: ['06.jpg'], repeated: ['08.jpg'], roof: [] },
   m36: { ground: ['05.jpg'], repeated: ['06.jpg'], roof: [] },
   a149: { ground: ['06.jpg'], repeated: ['07.jpg'], roof: [] },
-  orchid179: { ground: [], repeated: [], roof: [] },
+  orchid179: {
+    ground: ['plan-ground-right.png', 'plan-ground-left.png'],
+    repeated: ['plan-repeated-right.png', 'plan-repeated-left.png'],
+    roof: ['plan-roof-right.png', 'plan-roof-left.png'],
+  },
 }
 
 function projectImageUrl(folder, filename) {
@@ -700,28 +710,157 @@ export const projects = [
     id: 'north-orchid-179',
     title: { ar: 'الجهيني للتطوير العقاري 179 - شمال الأوركيد', en: 'El-Geheny Real Estate Development 179 - North Orchid' },
     category: 'north-orchid',
-    categoryName: { ar: 'شمال الأوركيد', en: 'North Orchid' },
-    location: { ar: 'شمال الأوركيد، التجمع الخامس، القاهرة الجديدة', en: 'North Orchid, Fifth Settlement, New Cairo' },
+    categoryName: { ar: 'بيت الوطن - شمال الأوركيد', en: 'Beit El-Watan - North Orchid' },
+    location: { ar: 'بيت الوطن، شمال الأوركيد، التجمع الخامس، القاهرة الجديدة', en: 'Beit El-Watan, North Orchid, Fifth Settlement, New Cairo' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: '179 م²', en: '179 m²' },
-    units: { ar: 'وحدات متنوعة', en: 'Various units' },
+    area: { ar: '120 – 180 م²', en: '120 – 180 m²' },
+    units: { ar: '6 نماذج', en: '6 models' },
     progress: 45,
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'تحت الإنشاء', en: 'Under construction' },
     unitTypes: defaultUnitTypes,
-    cover: galleryFor('orchid179')[0],
-    gallery: galleryFor('orchid179'),
+    cover: projectImageUrl('orchid179', '01-facade-front-day.png') || galleryForProject('orchid179', { excludePlanFiles: true })[0],
+    gallery: galleryForProject('orchid179', { excludePlanFiles: true }),
     shortDescription: {
-      ar: 'مشروع سكني عصري في شمال الأوركيد بواجهات أنيقة وموقع واعد.',
-      en: 'A modern residential project in North Orchid with elegant facades and a promising location.',
+      ar: 'مشروع سكني عصري في شمال الأوركيد — ناصية صريحة على منطقة الخدمات بمساحات من 120 إلى 180 م².',
+      en: 'A modern residential project in North Orchid — a corner plot overlooking the services zone, with areas from 120 to 180 m².',
     },
     description: {
-      ar: 'عمارة سكنية في منطقة شمال الأوركيد الواعدة بتصميم معماري حديث وواجهات مميزة، توفر نمط حياة عصري في واحدة من أكثر المناطق نمواً بالتجمع الخامس.',
-      en: 'A residential building in the promising North Orchid area with a modern architectural design and distinctive facades, offering a modern lifestyle in one of the fastest-growing areas of the Fifth Settlement.',
+      ar: 'عمارة سكنية في حي شمال الأوركيد ببيت الوطن (القطعة 179) بتصميم معماري مودرن يجمع بين الخطوط العصرية والخامات المميزة. يتميز المشروع بواجهات مدروسة بإطلالات بانورامية، وموقع ناصية بالقرب من منطقة الخدمات والطرق الرئيسية وكمبوندات Mountain View و Address East.',
+      en: 'A residential building in North Orchid, Beit El-Watan (Plot 179), with a modern architectural design combining contemporary lines and premium materials. The project features carefully designed facades with panoramic views, on a corner plot near the services zone, main roads, and compounds such as Mountain View and Address East.',
     },
-    features: defaultFeatures,
+    features: [
+      { ar: 'تصميم معماري مودرن بواجهات بانورامية', en: 'Modern design with panoramic facades' },
+      { ar: 'ناصية صريحة على منطقة الخدمات والمولات', en: 'Corner plot overlooking the services and mall zone' },
+      { ar: 'مدخل فاخر وجراج مجهّز', en: 'Luxury entrance and equipped garage' },
+      { ar: '6 نماذج: أرضي · متكرر · روف', en: '6 models: ground · repeated · roof' },
+      { ar: 'قرب Mountain View و Address East', en: 'Close to Mountain View and Address East' },
+      { ar: 'موقع استرategي قرب طريق السويس والدائري الأوسطي', en: 'Strategic location near Suez Road and the Middle Ring Road' },
+    ],
     payment: defaultPayment,
     deliverySpecs: defaultDeliverySpecs,
+    locationFeatures: {
+      tagline: { ar: 'ناصية صريحة — شمال الأوركيد 179', en: 'Corner plot — North Orchid 179' },
+      intro: {
+        ar: 'موقع مميز جداً بحي شمال الأوركيد — ناصية صريحة بالقرب من منطقة الخدمات والطرق الرئيسية والكمبوندات مثل Mountain View و Address East.',
+        en: 'A prime location in North Orchid — a clear corner plot near the services area, main roads, and compounds such as Mountain View and Address East.',
+      },
+      points: [
+        { ar: 'التسعين الشمالي', en: 'North 90th Street' },
+        { ar: 'شارع النوادي', en: 'Clubs Street' },
+        { ar: 'طريق السويس', en: 'Suez Road' },
+        { ar: 'الطريق الدائري الأوسطي', en: 'Middle Ring Road' },
+      ],
+      highlights: [
+        {
+          title: { ar: 'موقع استراتيجي مميز', en: 'Prime strategic location' },
+          desc: {
+            ar: 'قريب من طريق السويس والطريق الدائري الأوسطي، مما يسهّل الوصول لمناطق التجمع الخامس والعاصمة الإدارية.',
+            en: 'Close to Suez Road and the Middle Ring Road, easing access to the Fifth Settlement and the Administrative Capital.',
+          },
+        },
+        {
+          title: { ar: 'محاط بأرقى الكمبوندات', en: 'Surrounded by top compounds' },
+          desc: {
+            ar: 'بالقرب من Mountain View و Address East و Palm Hills، مما يرفع القيمة الاستثمارية للمنطقة.',
+            en: 'Near Mountain View, Address East, and Palm Hills, boosting the area’s investment value.',
+          },
+        },
+        {
+          title: { ar: 'منطقة مرتفعة ومفتوحة', en: 'Elevated open area' },
+          desc: {
+            ar: 'يتمتع الحي بتهوية ممتازة وإطلالات أفضل مقارنة بالمناطق المجاورة.',
+            en: 'The district enjoys excellent ventilation and better views than neighboring areas.',
+          },
+        },
+        {
+          title: { ar: 'قيمة استثمارية متزايدة', en: 'Rising investment value' },
+          desc: {
+            ar: 'أسعار المنطقة في نمو مستمر مع تطور البنية التحتية وزيادة نسب الإشغال.',
+            en: 'Area prices keep rising as infrastructure develops and occupancy grows.',
+          },
+        },
+      ],
+    },
+    unitDetails: [
+      {
+        name: { ar: 'نموذج أرضي – يمين الواجهة', en: 'Ground model – right facade' },
+        area: { ar: '130 م²', en: '130 m²' },
+        extra: { ar: 'جاردن 75 م² · فيو بانوراما', en: '75 m² garden · panorama view' },
+        status: { ar: 'تحت الإنشاء', en: 'Under construction' },
+        rooms: [
+          { name: { ar: 'ريسبشن قطعتين', en: 'Reception (2 pieces)' } },
+          { name: { ar: '3 غرف نوم', en: '3 bedrooms' } },
+          { name: { ar: '3 حمامات', en: '3 bathrooms' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'حديقة خاصة', en: 'Private garden' } },
+        ],
+      },
+      {
+        name: { ar: 'نموذج أرضي – يسار الواجهة', en: 'Ground model – left facade' },
+        area: { ar: '130 م²', en: '130 m²' },
+        extra: { ar: 'جاردن 90 م²', en: '90 m² garden' },
+        status: { ar: 'تحت الإنشاء', en: 'Under construction' },
+        rooms: [
+          { name: { ar: 'ريسبشن قطعتين', en: 'Reception (2 pieces)' } },
+          { name: { ar: '3 غرف نوم', en: '3 bedrooms' } },
+          { name: { ar: '3 حمامات', en: '3 bathrooms' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'حديقة خاصة', en: 'Private garden' } },
+        ],
+      },
+      {
+        name: { ar: 'نموذج متكرر – يمين الواجهة', en: 'Repeated model – right facade' },
+        area: { ar: '180 م²', en: '180 m²' },
+        extra: { ar: 'فيو بانوراما · 4 تراس', en: 'Panorama view · 4 terraces' },
+        status: { ar: 'تحت الإنشاء', en: 'Under construction' },
+        rooms: [
+          { name: { ar: 'ريسبشن 3 قطع', en: 'Reception (3 pieces)' } },
+          { name: { ar: '3 غرف نوم', en: '3 bedrooms' } },
+          { name: { ar: '3 حمامات', en: '3 bathrooms' } },
+          { name: { ar: '4 تراس', en: '4 terraces' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+        ],
+      },
+      {
+        name: { ar: 'نموذج متكرر – يسار الواجهة', en: 'Repeated model – left facade' },
+        area: { ar: '165 م²', en: '165 m²' },
+        status: { ar: 'تحت الإنشاء', en: 'Under construction' },
+        rooms: [
+          { name: { ar: 'ريسبشن 3 قطع', en: 'Reception (3 pieces)' } },
+          { name: { ar: '3 غرف نوم', en: '3 bedrooms' } },
+          { name: { ar: '3 حمامات', en: '3 bathrooms' } },
+          { name: { ar: 'تراس', en: 'Terrace' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+        ],
+      },
+      {
+        name: { ar: 'نموذج روف – يمين الواجهة', en: 'Roof model – right facade' },
+        area: { ar: '125 م²', en: '125 m²' },
+        extra: { ar: 'تراس روف 45 م² · فيو بانوراما', en: '45 m² roof terrace · panorama view' },
+        status: { ar: 'تحت الإنشاء', en: 'Under construction' },
+        rooms: [
+          { name: { ar: 'ريسبشن قطعتين', en: 'Reception (2 pieces)' } },
+          { name: { ar: '2 غرف نوم', en: '2 bedrooms' } },
+          { name: { ar: '2 حمام', en: '2 bathrooms' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'تراس خاص', en: 'Private terrace' } },
+        ],
+      },
+      {
+        name: { ar: 'نموذج روف – يسار الواجهة', en: 'Roof model – left facade' },
+        area: { ar: '120 م²', en: '120 m²' },
+        extra: { ar: 'تراس روف 37 م²', en: '37 m² roof terrace' },
+        status: { ar: 'تحت الإنشاء', en: 'Under construction' },
+        rooms: [
+          { name: { ar: 'ريسبشن قطعتين', en: 'Reception (2 pieces)' } },
+          { name: { ar: '2 غرف نوم', en: '2 bedrooms' } },
+          { name: { ar: '2 حمام', en: '2 bathrooms' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'تراس خاص', en: 'Private terrace' } },
+        ],
+      },
+    ],
   },
 ]
 

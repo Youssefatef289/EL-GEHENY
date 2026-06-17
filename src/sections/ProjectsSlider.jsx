@@ -8,7 +8,7 @@ import { useLang, L } from '../i18n'
 import slideJ290 from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 import slideE80 from '../../images/projects/e80/00.jpg'
 import slideM75 from '../../images/projects/m75/00.jpg'
-import slideOrchid from '../../images/projects/orchid179/00.jpg'
+import slideOrchid from '../../images/projects/orchid179/01-facade-front-day.png'
 
 const SLIDE_MS = 6500
 
