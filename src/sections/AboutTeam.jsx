@@ -9,40 +9,40 @@ import waleedImg from '../../images/وليد كمال الجهينى.png'
 import signatureImg from '../../images/التوقيع.png'
 
 const founder = {
-  name: { ar: 'الحاج صلاح كمال الجهيني', en: 'Haj Salah Kamal Al-Juhaini' },
-  role: { ar: 'رئيس مجلس الإدارة والمؤسس', en: 'Chairman of the Board and Founder' },
+  name: { ar: 'الحاج صلاح كمال الجهيني', en: 'Salah Kamal El Geheny' },
+  role: { ar: 'المؤسس ورئيس مجلس الإدارة', en: 'Founder & Chairman' },
   bio: {
-    ar: 'يُعد الحاج صلاح كمال الجهيني المؤسس ورئيس مجلس إدارة شركة الجهيني للتطوير العقاري، ويتمتع بخبرة طويلة تمتد لسنوات في مجالات التطوير العقاري والمقاولات والإنشاءات. قاد تنفيذ العديد من المشروعات السكنية والتجارية والبنية التحتية في مختلف أنحاء الجمهورية، واضعًا أسس الشركة على مبادئ الثقة والالتزام والجودة، مما ساهم في بناء سجل قوي من المشروعات الناجحة وعلاقات طويلة الأمد مع العملاء والشركاء.',
-    en: 'Haj Salah Kamal Al-Juhaini is the founder and Chairman of the Board of El-Geheny Real Estate Development Company. With many years of experience in real estate development, contracting, and construction, he has led the execution of numerous residential, commercial, and infrastructure projects across Egypt. He built the company on the principles of trust, commitment, and quality, establishing a strong record of successful projects and long-term relationships with clients and partners.',
+    ar: 'يُعد الحاج صلاح كمال الجهيني المؤسس ورئيس مجلس إدارة شركة الجهيني للتطوير العقاري، ويتمتع بخبرة طويلة في مجالات التطوير العقاري والمقاولات والإنشاءات. قاد تنفيذ العديد من المشروعات السكنية والتجارية والهندسية في مختلف أنحاء مصر، ووضع أسس الشركة على مبادئ الثقة والالتزام والجودة، مما ساهم في بناء سجل قوي من المشروعات الناجحة وسمعة راسخة للشركة.',
+    en: 'Salah Kamal El Geheny is the Founder and Chairman of El Geheny Development. With extensive experience in real estate development, construction, and infrastructure projects, he has led the execution of numerous residential, commercial, and engineering developments across Egypt. His vision is built on trust, commitment, and quality, forming the foundation of the company\'s strong reputation and successful project portfolio.',
   },
   image: founderImg,
 }
 
 const teamMembers = [
   {
-    name: { ar: 'علاء صلاح الجهينى', en: 'Alaa Salah Al-Juhaini' },
+    name: { ar: 'علاء صلاح الجهيني', en: 'Alaa Salah El Geheny' },
     role: { ar: 'المدير العام', en: 'General Manager' },
     bio: {
-      ar: 'يتولى علاء صلاح الجهيني إدارة العمليات اليومية للشركة والإشراف على تنفيذ الخطط التشغيلية والاستراتيجية، مع التركيز على تحقيق أعلى مستويات الجودة والكفاءة وضمان الالتزام بالجداول الزمنية للمشروعات.',
-      en: "Alaa Salah Al-Juhaini manages the company's daily operations and oversees the implementation of operational and strategic plans, with a focus on achieving the highest levels of quality and efficiency and ensuring commitment to project timelines.",
+      ar: 'يتولى علاء صلاح الجهيني الإشراف على العمليات اليومية للشركة والتنفيذ الاستراتيجي، مع ضمان الكفاءة والجودة وتسليم المشروعات في مواعيدها بما يدعم أهداف النمو طويلة الأمد للشركة.',
+      en: 'Alaa Salah El Geheny oversees the company\'s daily operations and strategic execution, ensuring efficiency, quality standards, and timely project delivery while supporting the company\'s long-term growth objectives.',
     },
     image: alaaImg,
   },
   {
-    name: { ar: 'احمد صلاح الجهينى', en: 'Ahmed Salah Al-Juhaini' },
+    name: { ar: 'أحمد صلاح الجهيني', en: 'Ahmed Salah El Geheny' },
     role: { ar: 'مدير العمليات', en: 'Operations Manager' },
     bio: {
-      ar: 'يشرف أحمد صلاح الجهيني على إدارة العمليات التشغيلية ومتابعة سير العمل بين مختلف الإدارات، لضمان تنفيذ المشروعات وفق أعلى معايير الجودة وتحقيق التكامل بين التخطيط والتنفيذ بما يدعم أهداف الشركة ونموها المستمر.',
-      en: "Ahmed Salah Al-Juhaini supervises operational management and workflow across departments, ensuring projects are executed to the highest quality standards and that planning and implementation are integrated to support the company's goals and continuous growth.",
+      ar: 'يشرف أحمد صلاح الجهيني على الأنشطة التشغيلية وتنسيق سير العمل بين الإدارات، ويلعب دوراً محورياً في ضمان تنفيذ المشروعات بسلاسة وتحقيق الكفاءة التشغيلية وفق معايير الجودة وأهداف الشركة.',
+      en: 'Ahmed Salah El Geheny is responsible for overseeing operational activities and coordinating workflows across departments. He plays a key role in ensuring smooth project execution, operational efficiency, and alignment with the company\'s quality standards and business goals.',
     },
     image: ahmedImg,
   },
   {
-    name: { ar: 'وليد كمال الجهينى', en: 'Waleed Kamal Al-Juhaini' },
-    role: { ar: 'مدير المشروعات', en: 'Projects Manager' },
+    name: { ar: 'وليد كمال الجهيني', en: 'Waleed Kamal El Geheny' },
+    role: { ar: 'مدير المشروع', en: 'Project Manager' },
     bio: {
-      ar: 'يمتلك وليد كمال الجهيني خبرة عملية في إدارة وتنفيذ المشروعات العقارية، ويتولى الإشراف على مراحل التنفيذ المختلفة، مع الحرص على تطبيق أعلى معايير الجودة والالتزام بالمواصفات الفنية والجداول الزمنية المحددة.',
-      en: 'Waleed Kamal Al-Juhaini has practical experience in managing and executing real estate projects. He supervises various implementation stages while ensuring the highest quality standards and adherence to technical specifications and schedules.',
+      ar: 'يدير وليد كمال الجهيني تنفيذ المشروعات ويشرف على أنشطة الإنشاء في مختلف التطويرات، مع التركيز على الحفاظ على معايير الجودة والالتزام بالجداول الزمنية وضمان التسليم الناجح في كل مرحلة.',
+      en: 'Waleed Kamal El Geheny manages project execution and oversees construction activities across various developments. His focus is on maintaining quality standards, meeting project timelines, and ensuring successful delivery at every stage of development.',
     },
     image: waleedImg,
   },

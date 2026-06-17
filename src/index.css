@@ -47,6 +47,16 @@
       #f9e27d 78%,
       #fff6c5 100%
     );
+
+    --font-sans: 'Cairo', system-ui, sans-serif;
+  }
+
+  html.lang-en {
+    --font-sans: 'Jost', system-ui, sans-serif;
+  }
+
+  html.lang-ar {
+    --font-sans: 'Cairo', system-ui, sans-serif;
   }
 
   /* الوضع الداكن — يُعكس تدرّج navy فيتحول النص إلى فاتح والأسطح إلى داكنة */
@@ -78,7 +88,7 @@
   }
 
   body {
-    font-family: 'Cairo', system-ui, sans-serif;
+    font-family: var(--font-sans);
     @apply bg-ink text-navy-900 font-sans antialiased;
     overflow-x: hidden;
     transition: background-color 0.4s ease, color 0.4s ease;
@@ -280,7 +290,21 @@
   }
 
   .label-caps {
-    @apply text-xs font-semibold uppercase tracking-[0.2em];
+    @apply text-xs font-semibold;
+  }
+
+  html.lang-en .label-caps {
+    @apply uppercase tracking-[0.2em];
+  }
+
+  html.lang-ar .label-caps,
+  html.lang-ar .eyebrow {
+    letter-spacing: normal;
+    word-spacing: normal;
+  }
+
+  html.lang-en .eyebrow {
+    @apply tracking-wide;
   }
 
   .link-hover {

@@ -24,6 +24,8 @@ export function LanguageProvider({ children }) {
     const root = document.documentElement
     root.lang = lang
     root.dir = dir
+    root.classList.toggle('lang-en', lang === 'en')
+    root.classList.toggle('lang-ar', lang === 'ar')
     window.localStorage.setItem(STORAGE_KEY, lang)
   }, [lang, dir])
 

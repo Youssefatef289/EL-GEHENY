@@ -50,8 +50,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Cairo', 'system-ui', 'sans-serif'],
-        display: ['Cairo', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         signature: ['"Great Vibes"', 'cursive'],
       },
       boxShadow: {

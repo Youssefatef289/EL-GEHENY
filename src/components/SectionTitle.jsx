@@ -2,7 +2,7 @@ import Reveal from './Reveal'
 import { useLang } from '../i18n'
 
 /**
- * عنوان سكشن: نص ذهبي + خط أفقي — مثل «رؤيتنا»
+ * عنوان سكشن: نص ذهبي + خط أفقي
  * @param {'gold'|'light'} tone — ذهبي على خلفية داكنة، أو أبيض فوق صور
  */
 export default function SectionTitle({
@@ -24,36 +24,19 @@ export default function SectionTitle({
 
   const content = (
     <div
-      dir="ltr"
+      dir={isAr ? 'rtl' : 'ltr'}
       className={`section-title flex w-full items-center gap-3 sm:gap-4 ${className}`}
     >
-      {isAr ? (
-        <>
-          <Tag
-            dir="auto"
-            className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-tight ${textTone}`}
-          >
-            {children}
-          </Tag>
-          <span
-            className={`section-title-line h-px flex-1 ${lineTone} ${lineClassName}`}
-            aria-hidden="true"
-          />
-        </>
-      ) : (
-        <>
-          <span
-            className={`section-title-line h-px flex-1 ${lineTone} ${lineClassName}`}
-            aria-hidden="true"
-          />
-          <Tag
-            dir="auto"
-            className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-tight ${textTone}`}
-          >
-            {children}
-          </Tag>
-        </>
-      )}
+      <Tag
+        dir="auto"
+        className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-tight ${textTone}`}
+      >
+        {children}
+      </Tag>
+      <span
+        className={`section-title-line h-px flex-1 ${lineTone} ${lineClassName}`}
+        aria-hidden="true"
+      />
     </div>
   )
 
