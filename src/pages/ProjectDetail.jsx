@@ -1,9 +1,16 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useParams, Navigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
 import Reveal from '../components/Reveal'
-import { getProjectById, projects, defaultUnitTypes } from '../data/projects'
+import {
+  getProjectById,
+  projects,
+  UNIT_TYPE_KEYS,
+  UNIT_TYPE_LABELS,
+  groupUnitDetails,
+  getProjectUnitPlans,
+} from '../data/projects'
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
@@ -11,17 +18,35 @@ export default function ProjectDetail() {
   const { id } = useParams()
   const project = getProjectById(id)
   const [activeImg, setActiveImg] = useState(0)
+  const [activeUnitType, setActiveUnitType] = useState('ground')
+  const [activePlanImg, setActivePlanImg] = useState(0)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
   const { t, lang } = useLang()
+
+  const unitGroups = useMemo(
+    () => groupUnitDetails(project?.unitDetails || []),
+    [project?.unitDetails],
+  )
+  const unitPlans = useMemo(
+    () => (project ? getProjectUnitPlans(project) : { ground: [], repeated: [], roof: [] }),
+    [project],
+  )
 
   if (!project) return <Navigate to="/projects" replace />
 
   const related = projects.filter((p) => p.id !== project.id).slice(0, 3)
   const delivered = project.statusKey === 'delivered'
   const deliveryLabel = L(project.deliveryStatus, lang)
-  const unitTypesLabel = L(project.unitTypes || defaultUnitTypes, lang)
   const title = L(project.title, lang)
+  const activeUnits = unitGroups[activeUnitType] || []
+  const activePlans = unitPlans[activeUnitType] || []
+  const activeUnitLabel = L(UNIT_TYPE_LABELS[activeUnitType], lang)
+
+  const handleUnitTypeChange = (type) => {
+    setActiveUnitType(type)
+    setActivePlanImg(0)
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -110,7 +135,7 @@ export default function ProjectDetail() {
             {/* معلومات سريعة */}
             <Reveal>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <InfoBox label={t('project.unitTypes')} value={unitTypesLabel} />
+                <InfoBox label={t('project.unitTypes')} value={activeUnitLabel} />
                 <InfoBox label={t('project.areaFrom')} value={L(project.area, lang)} />
                 <InfoBox label={t('project.units')} value={L(project.units, lang)} />
                 <InfoBox label={t('project.deliveryStatus')} value={deliveryLabel} />
@@ -122,6 +147,114 @@ export default function ProjectDetail() {
               <div>
                 <h2 className="heading-md mb-4 text-navy-900">{t('project.about')}</h2>
                 <p className="body-md text-body">{L(project.description, lang)}</p>
+              </div>
+            </Reveal>
+
+            {/* أنواع الوحدات */}
+            <Reveal>
+              <div>
+                <h2 className="heading-md mb-5 text-navy-900">{t('project.unitsTitle')}</h2>
+
+                <div className="unit-type-tabs mb-8">
+                  {UNIT_TYPE_KEYS.map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => handleUnitTypeChange(type)}
+                      className={activeUnitType === type ? 'unit-type-tab-active' : 'unit-type-tab-idle'}
+                    >
+                      {L(UNIT_TYPE_LABELS[type], lang)}
+                    </button>
+                  ))}
+                </div>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeUnitType}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
+                    className="space-y-6"
+                  >
+                    {activePlans.length > 0 && (
+                      <div>
+                        <h3 className="mb-4 font-display text-lg font-bold text-navy-900">{t('project.unitPlansTitle')}</h3>
+                        <div className="overflow-hidden rounded-3xl border border-navy-200">
+                          <LazyImage
+                            src={activePlans[activePlanImg]}
+                            alt={`${title} - ${activeUnitLabel}`}
+                            className="aspect-[4/3] w-full bg-navy-50"
+                            imgClassName="object-contain"
+                          />
+                        </div>
+                        {activePlans.length > 1 && (
+                          <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
+                            {activePlans.map((img, i) => (
+                              <button
+                                key={img}
+                                type="button"
+                                onClick={() => setActivePlanImg(i)}
+                                className={`overflow-hidden rounded-2xl border-2 transition-all ${
+                                  activePlanImg === i ? 'border-primary-400' : 'border-transparent opacity-70 hover:opacity-100'
+                                }`}
+                              >
+                                <LazyImage src={img} alt="" className="aspect-video w-full" imgClassName="object-cover" />
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {activeUnits.length > 0 ? (
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        {activeUnits.map((unit, ui) => (
+                          <div key={ui} className="glass rounded-3xl p-6">
+                            <h4 className="font-display text-lg font-bold text-navy-900">{L(unit.name, lang)}</h4>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {unit.area && (
+                                <span className="rounded-full bg-primary-500/10 px-3 py-1 text-xs font-semibold text-primary-600 ring-1 ring-primary-500/25">
+                                  {L(unit.area, lang)}
+                                </span>
+                              )}
+                              {unit.extra && (
+                                <span className="rounded-full bg-navy-100 px-3 py-1 text-xs font-semibold text-navy-700">
+                                  {L(unit.extra, lang)}
+                                </span>
+                              )}
+                              {unit.status && (
+                                <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
+                                  {L(unit.status, lang)}
+                                </span>
+                              )}
+                            </div>
+                            {unit.rooms?.length > 0 && (
+                              <ul className="mt-4 space-y-2 border-t border-navy-200 pt-4">
+                                {unit.rooms.map((room, ri) => (
+                                  <li key={ri} className="flex items-start justify-between gap-3 text-sm">
+                                    <span className="text-body">{room.name ? L(room.name, lang) : L(room, lang)}</span>
+                                    {room.dim && (
+                                      <span className="flex-shrink-0 font-mono text-xs text-muted" dir="ltr">
+                                        {room.dim}
+                                      </span>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      !activePlans.length && (
+                        <p className="rounded-2xl border border-dashed border-navy-200 bg-navy-50/50 px-6 py-10 text-center body-sm text-muted">
+                          {t('project.unitsEmpty')}
+                        </p>
+                      )
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </Reveal>
 

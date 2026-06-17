@@ -104,7 +104,7 @@ export default function Hero() {
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-44 bg-gradient-to-b from-ink/75 to-transparent" />
 
-      <div className="container-x relative z-[3] flex flex-1 flex-col items-center justify-center px-5 pb-24 pt-[6rem] text-center sm:pt-[6.75rem] lg:pt-[7.5rem] xl:pt-[8rem]">
+      <div className="container-x relative z-[3] flex flex-1 flex-col items-center justify-center px-5 pb-16 pt-[6rem] text-center sm:pb-20 sm:pt-[6.75rem] lg:pt-[7.5rem] xl:pt-[8rem]">
         <div className="relative w-full max-w-4xl">
           {slides.map((slide, index) =>
             index === activeIndex ? (
@@ -132,24 +132,6 @@ export default function Hero() {
           />
         ))}
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1, duration: 0.6 }}
-        className="pointer-events-none absolute bottom-4 left-1/2 z-[4] -translate-x-1/2"
-      >
-        <div className="flex flex-col items-center gap-2 text-hero-muted">
-          <span className="label-caps">{t('common.scrollDown')}</span>
-          <div className="flex h-10 w-6 items-start justify-center rounded-full border border-white/20 bg-white/10 p-1.5 backdrop-blur-md dark:border-navy-700/50 dark:bg-navy-900/30">
-            <motion.span
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-              className="h-2 w-1 rounded-full gold-metallic shadow-gold-sm"
-            />
-          </div>
-        </div>
-      </motion.div>
     </section>
   )
 }

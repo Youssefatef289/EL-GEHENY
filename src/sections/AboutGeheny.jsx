@@ -7,6 +7,7 @@ import aboutImage from '../../images/about-geheny.jpg'
 
 const content = {
   eyebrow: { ar: 'من نحن', en: 'About Us' },
+  statsTitle: { ar: 'من نحن في أرقام', en: 'Us in numbers' },
   p1: {
     ar: 'منذ عام 1990، تواصل الجهيني للتطوير العقاري بناء سجل من النجاحات يعتمد على الجودة، والالتزام، والثقة.',
     en: 'Since 1990, El-Geheny Real Estate Development has been building a record of success rooted in quality, commitment, and trust.',
@@ -98,12 +99,12 @@ export default function AboutGeheny() {
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-12 xl:gap-16">
           {/* الصورة — يسار في RTL */}
           <Reveal direction="left" className="relative order-1 lg:order-2">
-            <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-[26rem] lg:max-w-none lg:mx-0">
+            <div className="relative mx-auto w-full max-w-[min(100%,28rem)] sm:max-w-[26rem] lg:max-w-none lg:mx-0">
               <img
                 src={aboutImage}
-                alt={lang === 'ar' ? '35 سنة خبرة — الجهيني للتطوير العقاري' : '35 years of experience — El-Geheny Real Estate'}
+                alt={lang === 'ar' ? 'اكتشف مشروعاتنا — الجهيني للتطوير العقاري' : 'Explore our projects — El-Geheny Real Estate'}
                 loading="lazy"
-                className="mx-auto w-full object-contain object-center lg:object-bottom"
+                className="mx-auto w-full scale-105 object-contain object-center sm:scale-100 lg:object-bottom"
               />
             </div>
           </Reveal>
@@ -113,13 +114,13 @@ export default function AboutGeheny() {
             <SectionTitle className="mb-6">{L(content.eyebrow, lang)}</SectionTitle>
 
             <Reveal delay={0.05}>
-              <p className="mx-auto max-w-xl body-lg font-display font-bold text-navy-900 lg:mx-0">
+              <p className="mx-auto max-w-xl text-sm font-display font-bold leading-relaxed text-navy-900 sm:text-base sm:body-lg lg:mx-0">
                 {L(content.p1, lang)}
               </p>
             </Reveal>
 
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-5 max-w-xl section-desc lg:mx-0">
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted sm:mt-5 sm:section-desc lg:mx-0">
                 {L(content.p2, lang)}
               </p>
             </Reveal>
@@ -131,7 +132,7 @@ export default function AboutGeheny() {
                     <span className="mt-0.5 gold-check h-6 w-6 flex-shrink-0">
                       <CheckIcon />
                     </span>
-                    <span className="body-sm font-semibold text-body">{item}</span>
+                    <span className="text-xs font-semibold text-body sm:body-sm">{item}</span>
                   </li>
                 ))}
               </ul>

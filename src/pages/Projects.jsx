@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import Reveal from '../components/Reveal'
@@ -9,7 +9,13 @@ import { useLang, L } from '../i18n'
 
 export default function Projects() {
   const [active, setActive] = useState('all')
+  const tabRefs = useRef({})
   const { t, lang } = useLang()
+
+  const selectCategory = (id) => {
+    setActive(id)
+    tabRefs.current[id]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  }
 
   const filtered = useMemo(
     () => (active === 'all' ? projects : projects.filter((p) => p.category === active)),
@@ -38,24 +44,27 @@ export default function Projects() {
       <section className="section-pad pt-10">
         <div className="container-x">
           {/* الفلاتر */}
-          <div className="mb-12 flex flex-wrap items-center justify-center gap-3">
-            {projectCategories.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => setActive(cat.id)}
-                className={active === cat.id ? 'tab-pill-active' : 'tab-pill-idle'}
-              >
-                {active === cat.id && (
-                  <motion.span
-                    layoutId="project-filter"
-                    className="absolute inset-0 -z-10 rounded-full gold-metallic shadow-gold-sm"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-                {L(cat.name, lang)}
-              </button>
-            ))}
+          <div className="relative mb-12 flex justify-center">
+            <div className="pointer-events-none absolute inset-x-8 top-1/2 h-20 -translate-y-1/2 rounded-full bg-primary-500/10 blur-[70px]" />
+            <div className="project-filter-shell">
+              <div className="project-filter-scroll">
+                <div className="project-filter-track">
+                  {projectCategories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      ref={(el) => {
+                        tabRefs.current[cat.id] = el
+                      }}
+                      type="button"
+                      onClick={() => selectCategory(cat.id)}
+                      className={active === cat.id ? 'project-filter-tab-active' : 'project-filter-tab-idle'}
+                    >
+                      {L(cat.name, lang)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* شبكة المشاريع */}

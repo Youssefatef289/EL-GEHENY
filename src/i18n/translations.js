@@ -215,6 +215,11 @@ export const translations = {
       fieldPhone: 'رقم الهاتف',
       fieldMessage: 'رسالتك',
       fieldMessagePh: 'استفسارك عن المشروع...',
+      unitTypeGround: 'أرضي بحديقة',
+      unitTypeRepeated: 'متكرر',
+      unitTypeRoof: 'روف',
+      unitPlansTitle: 'مخططات الوحدات',
+      unitsEmpty: 'لا توجد تفاصيل لهذا النوع حالياً — تواصل معنا للاستفسار.',
     },
     contact: {
       eyebrow: 'تواصل معنا',
@@ -512,6 +517,11 @@ export const translations = {
       fieldPhone: 'Phone number',
       fieldMessage: 'Your message',
       fieldMessagePh: 'Your inquiry about the project...',
+      unitTypeGround: 'Ground with garden',
+      unitTypeRepeated: 'Repeated floor',
+      unitTypeRoof: 'Roof',
+      unitPlansTitle: 'Unit floor plans',
+      unitsEmpty: 'No details for this type yet — contact us to inquire.',
     },
     contact: {
       eyebrow: 'Contact Us',

@@ -77,9 +77,6 @@ function ProjectCard({
   offset,
   direction,
   onSelect,
-  onPrev,
-  onNext,
-  showNav,
   isMobile,
   reduceMotion,
 }) {
@@ -117,8 +114,8 @@ function ProjectCard({
       {...cardMotion}
       className={
         isMobile
-          ? 'available-projects-card relative mx-auto w-full max-w-[30rem]'
-          : `available-projects-card absolute left-1/2 top-0 w-[min(92vw,30rem)] -translate-x-1/2 sm:w-[min(88vw,36rem)] lg:w-[min(74vw,50rem)] xl:w-[min(68vw,56rem)] ${
+          ? 'available-projects-card relative mx-auto w-full max-w-[32rem]'
+          : `available-projects-card absolute left-1/2 top-0 w-[min(92vw,32rem)] -translate-x-1/2 sm:w-[min(88vw,38rem)] lg:w-[min(74vw,52rem)] xl:w-[min(68vw,58rem)] ${
               isActive ? 'pointer-events-auto' : 'pointer-events-auto cursor-pointer'
             }`
       }
@@ -129,7 +126,7 @@ function ProjectCard({
       aria-hidden={!isActive && absOffset > 0}
     >
       <div className="relative overflow-hidden bg-ink shadow-[0_40px_90px_-35px_rgba(0,0,0,0.85)] transition-shadow duration-500">
-        <div className="relative aspect-[4/3] w-full min-h-[14rem] sm:aspect-[16/11] sm:min-h-[16rem] lg:aspect-[16/10] lg:min-h-[22rem] xl:min-h-[24rem]">
+        <div className="relative aspect-[4/3] w-full min-h-[30rem] sm:aspect-[16/11] sm:min-h-[20rem] lg:aspect-[16/9] lg:min-h-[36rem] xl:min-h-[28rem]">
           <AnimatePresence mode="wait" custom={direction} initial={false}>
             <motion.div
               key={project.id}
@@ -190,36 +187,6 @@ function ProjectCard({
           </AnimatePresence>
         </div>
 
-        {showNav && (
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-4 z-30 flex items-center justify-center gap-4 sm:bottom-5"
-            dir="ltr"
-          >
-            <motion.button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation()
-                onPrev()
-              }}
-              aria-label={L({ ar: 'السابق', en: 'Previous' }, lang)}
-              className="available-projects-nav-btn pointer-events-auto"
-              data-direction="prev"
-              whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-            />
-            <motion.button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation()
-                onNext()
-              }}
-              aria-label={L({ ar: 'التالي', en: 'Next' }, lang)}
-              className="available-projects-nav-btn pointer-events-auto"
-              data-direction="next"
-              whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-            />
-          </div>
-        )}
-
         {isActive && (
           <Link
             to={`/projects/${project.id}`}
@@ -272,8 +239,10 @@ export default function ExploreProjects() {
       <div className="relative border-y border-white/10 bg-ink/60 py-10 sm:py-14">
         <div className="container-x relative">
           <div
-            className={`available-projects-stage relative mx-auto h-[22rem] sm:h-[26rem] lg:h-[34rem] xl:h-[38rem] ${
-              isMobile ? 'flex max-w-[30rem] items-start justify-center overflow-hidden' : ''
+            className={`available-projects-stage relative mx-auto ${
+              isMobile
+                ? 'flex max-w-[32rem] items-start justify-center'
+                : 'h-[38rem] lg:h-[40rem] xl:h-[30rem]'
             }`}
           >
             {visibleOffsets.map((offset) => {
@@ -289,36 +258,30 @@ export default function ExploreProjects() {
                   offset={offset}
                   direction={direction}
                   onSelect={() => goTo(index)}
-                  onPrev={prev}
-                  onNext={next}
-                  showNav={isMobile && offset === 0}
                   isMobile={isMobile}
                   reduceMotion={reduceMotion}
                 />
               )
             })}
+          </div>
 
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-5 z-30 hidden items-center justify-center gap-5 lg:flex"
-              dir="ltr"
-            >
-              <motion.button
-                type="button"
-                onClick={prev}
-                aria-label={t('projectsSlider.prev')}
-                className="available-projects-nav-btn pointer-events-auto"
-                data-direction="prev"
-                whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-              />
-              <motion.button
-                type="button"
-                onClick={next}
-                aria-label={t('projectsSlider.next')}
-                className="available-projects-nav-btn pointer-events-auto"
-                data-direction="next"
-                whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-              />
-            </div>
+          <div className="mt-5 flex items-center justify-center gap-5 sm:mt-6" dir="ltr">
+            <motion.button
+              type="button"
+              onClick={prev}
+              aria-label={t('projectsSlider.prev')}
+              className="available-projects-nav-btn"
+              data-direction="prev"
+              whileTap={reduceMotion ? undefined : { scale: 0.92 }}
+            />
+            <motion.button
+              type="button"
+              onClick={next}
+              aria-label={t('projectsSlider.next')}
+              className="available-projects-nav-btn"
+              data-direction="next"
+              whileTap={reduceMotion ? undefined : { scale: 0.92 }}
+            />
           </div>
 
           <Reveal delay={0.08}>

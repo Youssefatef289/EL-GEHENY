@@ -25,6 +25,69 @@ for (const key of Object.keys(galleries)) {
 // معرض صور المشروع حسب اسم مجلده (الصورة الأولى = الغلاف)
 const galleryFor = (folder) => galleries[folder] || []
 
+const projectFolderById = {
+  'north-orchid-179': 'orchid179',
+}
+
+const unitPlanFileMap = {
+  j290: {
+    ground: ['06.jpg', '07.jpg', '08.jpg'],
+    repeated: ['09.jpg', '10.jpg', '11.jpg'],
+    roof: ['21.jpeg', '22.jpeg', '23.jpeg'],
+  },
+  m75: { ground: ['13.jpg'], repeated: ['14.jpg'], roof: [] },
+  e80: { ground: ['06.jpg'], repeated: ['08.jpg'], roof: [] },
+  m36: { ground: ['05.jpg'], repeated: ['06.jpg'], roof: [] },
+  a149: { ground: ['06.jpg'], repeated: ['07.jpg'], roof: [] },
+  orchid179: { ground: [], repeated: [], roof: [] },
+}
+
+function projectImageUrl(folder, filename) {
+  const entry = Object.entries(imageModules).find(([path]) => {
+    const normalized = path.replace(/\\/g, '/')
+    return normalized.includes(`/projects/${folder}/`) && normalized.endsWith(`/${filename}`)
+  })
+  return entry ? entry[1] : null
+}
+
+export const UNIT_TYPE_KEYS = ['ground', 'repeated', 'roof']
+
+export const UNIT_TYPE_LABELS = {
+  ground: { ar: 'أرضي بحديقة', en: 'Ground with garden' },
+  repeated: { ar: 'متكرر', en: 'Repeated floor' },
+  roof: { ar: 'روف', en: 'Roof' },
+}
+
+export function classifyUnitType(unit) {
+  const ar = typeof unit.name === 'object' ? unit.name?.ar : String(unit.name || '')
+  const en = typeof unit.name === 'object' ? unit.name?.en : ''
+  const text = `${ar} ${en}`.toLowerCase()
+  if (/رووف|روف|\broof\b/i.test(text)) return 'roof'
+  if (/متكرر|repeated/i.test(text)) return 'repeated'
+  if (/أرضي|ارضي|ground|بزمنت|basement|دوبلكس|duplex/i.test(text)) return 'ground'
+  if (/الوحدة الأولى|unit 1/i.test(text)) return 'repeated'
+  return 'ground'
+}
+
+export function groupUnitDetails(unitDetails = []) {
+  const groups = { ground: [], repeated: [], roof: [] }
+  unitDetails.forEach((unit) => {
+    groups[classifyUnitType(unit)].push(unit)
+  })
+  return groups
+}
+
+export function getProjectUnitPlans(project) {
+  const folder = projectFolderById[project.id] || project.id
+  const map = unitPlanFileMap[folder] || { ground: [], repeated: [], roof: [] }
+  const resolve = (files) => files.map((file) => projectImageUrl(folder, file)).filter(Boolean)
+  return {
+    ground: resolve(map.ground),
+    repeated: resolve(map.repeated),
+    roof: resolve(map.roof),
+  }
+}
+
 export const projectCategories = [
   { id: 'all', name: { ar: 'كل المشاريع', en: 'All Projects' } },
   { id: 'hay-thani', name: { ar: 'الحي الثاني', en: 'Second District' } },
