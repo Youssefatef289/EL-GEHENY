@@ -9,18 +9,27 @@ import waleedImg from '../../images/وليد كمال الجهينى.png'
 import signatureImg from '../../images/التوقيع.png'
 
 const founder = {
-  name: { ar: 'الحاج صلاح كمال الجهيني', en: 'Salah Kamal El Geheny' },
-  role: { ar: 'المؤسس ورئيس مجلس الإدارة', en: 'Founder & Chairman' },
+  name: { ar: 'الحاج / صلاح كمال الجهيني', en: 'Haj Salah Kamal El Geheny' },
+  role: { ar: 'المؤسس ورئيس مجلس الإدارة', en: 'Founder & Chairman of the Board' },
   bio: {
     ar: 'يُعد الحاج صلاح كمال الجهيني المؤسس ورئيس مجلس إدارة شركة الجهيني للتطوير العقاري، ويتمتع بخبرة طويلة في مجالات التطوير العقاري والمقاولات والإنشاءات. قاد تنفيذ العديد من المشروعات السكنية والتجارية والهندسية في مختلف أنحاء مصر، ووضع أسس الشركة على مبادئ الثقة والالتزام والجودة، مما ساهم في بناء سجل قوي من المشروعات الناجحة وسمعة راسخة للشركة.',
-    en: 'Salah Kamal El Geheny is the Founder and Chairman of El Geheny Development. With extensive experience in real estate development, construction, and infrastructure projects, he has led the execution of numerous residential, commercial, and engineering developments across Egypt. His vision is built on trust, commitment, and quality, forming the foundation of the company\'s strong reputation and successful project portfolio.',
+    en: 'Salah Kamal El Geheny is the Founder and Chairman of El Geheny Real Estate Development. With extensive experience in real estate development, construction, and infrastructure projects, he has led the execution of numerous residential, commercial, and engineering developments across Egypt. His vision is built on trust, commitment, and quality, forming the foundation of the company\'s strong reputation and successful project portfolio.',
   },
   image: founderImg,
 }
 
 const teamMembers = [
   {
-    name: { ar: 'علاء صلاح الجهيني', en: 'Alaa Salah El Geheny' },
+    name: { ar: 'م/ وليد كمال الجهيني', en: 'Eng. Waleed Kamal El Geheny' },
+    role: { ar: 'مدير الإشراف والتنفيذ', en: 'Supervision & Execution Director' },
+    bio: {
+      ar: 'يدير وليد كمال الجهيني الإشراف على التنفيذ والمتابعة الميدانية للمشروعات، مع التركيز على الحفاظ على معايير الجودة، والالتزام بالجداول الزمنية، وضمان التسليم الناجح في كل مرحلة من مراحل التطوير.',
+      en: 'Waleed Kamal El Geheny manages on-site supervision and project execution, with a focus on maintaining quality standards, meeting timelines, and ensuring successful delivery at every stage of development.',
+    },
+    image: waleedImg,
+  },
+  {
+    name: { ar: 'م/ علاء صلاح الجهيني', en: 'Eng. Alaa Salah El Geheny' },
     role: { ar: 'المدير العام', en: 'General Manager' },
     bio: {
       ar: 'يتولى علاء صلاح الجهيني الإشراف على العمليات اليومية للشركة والتنفيذ الاستراتيجي، مع ضمان الكفاءة والجودة وتسليم المشروعات في مواعيدها بما يدعم أهداف النمو طويلة الأمد للشركة.',
@@ -29,22 +38,13 @@ const teamMembers = [
     image: alaaImg,
   },
   {
-    name: { ar: 'أحمد صلاح الجهيني', en: 'Ahmed Salah El Geheny' },
-    role: { ar: 'مدير العمليات', en: 'Operations Manager' },
+    name: { ar: 'م/ احمد صلاح الجهيني', en: 'Eng. Ahmed Salah El Geheny' },
+    role: { ar: 'إدارة المبيعات', en: 'Sales Management' },
     bio: {
-      ar: 'يشرف أحمد صلاح الجهيني على الأنشطة التشغيلية وتنسيق سير العمل بين الإدارات، ويلعب دوراً محورياً في ضمان تنفيذ المشروعات بسلاسة وتحقيق الكفاءة التشغيلية وفق معايير الجودة وأهداف الشركة.',
-      en: 'Ahmed Salah El Geheny is responsible for overseeing operational activities and coordinating workflows across departments. He plays a key role in ensuring smooth project execution, operational efficiency, and alignment with the company\'s quality standards and business goals.',
+      ar: 'يقود أحمد صلاح الجهيني فريق المبيعات ويشرف على تطوير علاقات العملاء وتحقيق أهداف البيع، مع متابعة أداء كل فرد، وتصحيح مسار التواصل مع العملاء إذا لزم الأمر، لضمان تجربة احترافية تعكس قيمة مشروعات الجهيني.',
+      en: 'Ahmed Salah El Geheny leads the sales team and oversees client relationships and sales targets, monitoring each member\'s performance and adjusting client communication when needed to ensure a professional experience that reflects the value of El Geheny projects.',
     },
     image: ahmedImg,
-  },
-  {
-    name: { ar: 'وليد كمال الجهيني', en: 'Waleed Kamal El Geheny' },
-    role: { ar: 'مدير المشروع', en: 'Project Manager' },
-    bio: {
-      ar: 'يدير وليد كمال الجهيني تنفيذ المشروعات ويشرف على أنشطة الإنشاء في مختلف التطويرات، مع التركيز على الحفاظ على معايير الجودة والالتزام بالجداول الزمنية وضمان التسليم الناجح في كل مرحلة.',
-      en: 'Waleed Kamal El Geheny manages project execution and oversees construction activities across various developments. His focus is on maintaining quality standards, meeting project timelines, and ensuring successful delivery at every stage of development.',
-    },
-    image: waleedImg,
   },
 ]
 
@@ -108,9 +108,9 @@ function MemberTextBlock({ name, role, bio, align = 'center' }) {
 
   return (
     <div className={alignClass}>
-      <h3 className="heading-md text-gradient-primary sm:text-2xl lg:text-[1.75rem]">{name}</h3>
-      <p className="mt-2 font-display text-base font-bold text-primary-300 sm:text-lg">{role}</p>
-      <p className="body-md mt-5 max-w-prose leading-relaxed text-hero-body sm:text-lg lg:leading-8">{bio}</p>
+      <h3 className="text-2xl font-extrabold text-gradient-primary sm:text-3xl lg:text-[2.15rem]">{name}</h3>
+      <p className="mt-3 font-display text-lg font-bold text-primary-300 sm:text-xl lg:text-2xl">{role}</p>
+      <p className="mt-6 max-w-prose text-base leading-relaxed text-hero-body sm:text-lg lg:text-xl lg:leading-9">{bio}</p>
     </div>
   )
 }
@@ -162,9 +162,9 @@ export default function AboutTeam() {
           </SideReveal>
 
           <SideReveal from="end" delay={0.1} className="w-full flex-1 text-center lg:text-start">
-            <h2 className="heading-xl text-gradient-primary sm:text-3xl lg:text-4xl">{founderName}</h2>
-            <p className="mt-3 font-display text-lg font-bold text-primary-300 sm:text-xl">{founderRole}</p>
-            <p className="body-md mt-6 max-w-3xl leading-relaxed text-hero-body sm:text-lg lg:leading-8">{founderBio}</p>
+            <h2 className="text-3xl font-extrabold text-gradient-primary sm:text-4xl lg:text-5xl">{founderName}</h2>
+            <p className="mt-4 font-display text-xl font-bold text-primary-300 sm:text-2xl">{founderRole}</p>
+            <p className="mt-7 max-w-3xl text-base leading-relaxed text-hero-body sm:text-lg lg:text-xl lg:leading-9">{founderBio}</p>
           </SideReveal>
         </div>
 

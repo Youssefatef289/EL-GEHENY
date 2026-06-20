@@ -5,21 +5,21 @@ import { useLang, L } from '../i18n'
 import logoImage from '../../images/Logo.png'
 
 const lineEase = [0.22, 1, 0.36, 1]
-const DEVELOPMENTS = 'DEVELOPMENTS'
+const DEVELOPMENT = 'DEVELOPMENT'
 const LOGO_REVEAL_DELAY = 0.35
 const WORD_START_DELAY = 1.05
 const LETTER_STAGGER = 0.07
 
-function DevelopmentsWord({ startDelay = WORD_START_DELAY }) {
+function DevelopmentWord({ startDelay = WORD_START_DELAY }) {
   const reduceMotion = useReducedMotion()
 
   return (
     <p
       dir="ltr"
       className="flex flex-row flex-nowrap items-center justify-center gap-[0.06em] font-sans text-3xl font-extrabold uppercase leading-none tracking-[0.14em] sm:text-4xl md:text-5xl lg:text-6xl [unicode-bidi:isolate]"
-      aria-label={DEVELOPMENTS}
+      aria-label={DEVELOPMENT}
     >
-      {DEVELOPMENTS.split('').map((letter, index) => (
+      {DEVELOPMENT.split('').map((letter, index) => (
         <motion.span
           key={`${letter}-${index}`}
           initial={
@@ -102,7 +102,7 @@ export default function BrandLoaderContent({ progress = 0, indeterminate = false
             />
           </motion.div>
 
-          <DevelopmentsWord />
+          <DevelopmentWord />
         </div>
 
         <motion.p
@@ -110,7 +110,7 @@ export default function BrandLoaderContent({ progress = 0, indeterminate = false
           animate={{ opacity: 1 }}
           transition={{
             duration: 0.5,
-            delay: reduceMotion ? 0 : WORD_START_DELAY + DEVELOPMENTS.length * LETTER_STAGGER + 0.25,
+            delay: reduceMotion ? 0 : WORD_START_DELAY + DEVELOPMENT.length * LETTER_STAGGER + 0.25,
           }}
           className="loader-dots text-xs font-semibold uppercase tracking-[0.32em] text-navy-500"
           aria-live="polite"

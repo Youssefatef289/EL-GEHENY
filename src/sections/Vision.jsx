@@ -4,54 +4,42 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
-
 import { motionConfig, revealFromBottom, revealToVisible, revealTransition } from '../utils/motion'
-import visionImage from '../../images/Our vision.png'
-import valuesImage from '../../images/Our values.png'
-import messageImage from '../../images/Our message.png'
+
+import visionImage from '../../images/Our vision.jpeg'
+
+const KASHIDA = '\u0640'
+
+/** يطوّل الكلمة عمودياً: رسالتنا → رسالتنــــــــــــا */
+function stretchArabicVertical(word, length = 44) {
+  if (!word.endsWith('ا')) return word
+  return `${word.slice(0, -1)}${KASHIDA.repeat(length)}ا`
+}
 
 const slides = [
   {
-    key: 'values',
-    image: valuesImage,
-    eyebrow: { ar: 'قيمنا', en: 'Our Values' },
-    title: { ar: 'قيم تصنع الفارق', en: 'Values that make the difference' },
-    points: {
-      ar: [
-        'الجودة في كل تفصيلة',
-        'الالتزام والشفافية',
-        'احترام استثمارات العملاء',
-        'الابتكار والتطوير المستمر',
-        'بناء مجتمعات مستدامة',
-      ],
-      en: [
-        'Quality in every detail',
-        'Commitment and transparency',
-        'Respect for clients’ investments',
-        'Continuous innovation and development',
-        'Building sustainable communities',
-      ],
-    },
+    key: 'vision',
+    eyebrow: { ar: 'رؤيتنا للمستقبل', en: 'Our Vision for the Future' },
+    verticalLabel: { ar: 'رؤيتنا', en: 'VISION' },
+    titleA: { ar: 'نُطوّر العقار لنُطوّر', en: 'We develop real estate to elevate' },
+    titleB: { ar: 'جودة الحياة', en: 'quality of life' },
+    gradientB: true,
   },
   {
-    key: 'vision',
-    image: visionImage,
-    eyebrow: { ar: 'رؤيتنا', en: 'Our Vision' },
-    title: { ar: 'نحو مستقبل أكثر قيمة', en: 'Toward a more valuable future' },
-    text: {
-      ar: 'أن نكون من أكثر شركات التطوير العقاري موثوقية وتأثيراً في السوق المصري، من خلال تطوير مجتمعات سكنية واستثمارية ترتقي بجودة الحياة وتحقق قيمة مستدامة للأفراد والمستثمرين.',
-      en: 'To be among the most trusted and influential real estate development companies in the Egyptian market, by developing residential and investment communities that elevate quality of life and deliver sustainable value for individuals and investors.',
-    },
+    key: 'values',
+    eyebrow: { ar: 'قيمنا', en: 'Our Values' },
+    verticalLabel: { ar: 'قيمنا', en: 'VALUES' },
+    titleA: { ar: 'قيم تصنع الفارق', en: 'Values that make the difference' },
+    titleB: null,
+    gradientB: false,
   },
   {
     key: 'message',
-    image: messageImage,
     eyebrow: { ar: 'رسالتنا', en: 'Our Mission' },
-    title: { ar: 'التزام تجاه عملائنا', en: 'A commitment to our clients' },
-    text: {
-      ar: 'نطوّر مشروعات عقارية تجمع بين جودة التنفيذ، والابتكار، والمواقع الواعدة، لنقدم تجربة سكنية واستثمارية تحقق تطلعات عملائنا وتحافظ على قيمة استثماراتهم على المدى الطويل.',
-      en: 'We develop real estate projects that combine quality execution, innovation, and promising locations, to deliver a residential and investment experience that meets our clients’ aspirations and preserves the value of their investments over the long term.',
-    },
+    verticalLabel: { ar: 'رسالتنا', en: 'MISSION' },
+    titleA: { ar: 'التزام تجاه عملائنا', en: 'A commitment to our clients' },
+    titleB: null,
+    gradientB: false,
   },
 ]
 
@@ -61,7 +49,7 @@ export default function Vision() {
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
-    if (reduceMotion) return
+    if (reduceMotion) return undefined
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % slides.length)
     }, 5000)
@@ -69,106 +57,113 @@ export default function Vision() {
   }, [reduceMotion])
 
   const slide = slides[index]
+  const verticalText =
+    lang === 'ar'
+      ? stretchArabicVertical(L(slide.verticalLabel, lang))
+      : L(slide.verticalLabel, lang)
 
   return (
-    <section className="section-pad relative overflow-hidden bg-ink">
-      <div className="pointer-events-none absolute -left-10 top-1/4 h-40 w-40 rounded-full bg-primary-500/20 blur-[80px]" />
+    <section id="vision" className="relative w-full overflow-hidden bg-ink">
+      <div className="pointer-events-none absolute -left-10 top-1/3 h-56 w-56 rounded-full bg-primary-500/15 blur-[100px]" />
+      <div className="pointer-events-none absolute bottom-0 end-0 h-48 w-48 rounded-full bg-primary-500/8 blur-[90px]" />
 
-      <div className="container-x">
-        <div className="mb-12">
-          <SectionTitle className="mb-4">{t('vision.eyebrow')}</SectionTitle>
-          <Reveal delay={0.05}>
-            <h3 className="section-subtitle">
-              {t('vision.titleA')} <span className="text-gradient-primary">{t('vision.titleB')}</span>
-            </h3>
-          </Reveal>
-        </div>
+      <div className="grid w-full lg:min-h-[min(88vh,820px)] lg:grid-cols-2">
+        {/* صورة — عرض كامل */}
+        <Reveal direction="start" duration={0.78} className="relative order-1 min-h-[20rem] sm:min-h-[24rem] lg:min-h-full">
+          <img
+            src={visionImage}
+            alt={L(slide.eyebrow, lang)}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover object-[center_35%]"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-ink/10 lg:bg-gradient-to-l lg:from-ink/50 lg:via-ink/15 lg:to-transparent"
+            aria-hidden="true"
+          />
 
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* الصورة - سلايدر ينزلق من الجانب */}
-          <div className="relative order-1 lg:order-2 lg:-mx-8">
-            <div className="relative aspect-square w-full overflow-hidden">
-              <AnimatePresence initial={false}>
-                <motion.img
-                  key={slide.key}
-                  src={slide.image}
-                  alt={L(slide.eyebrow, lang)}
-                  loading="lazy"
-                  initial={{ x: '100%' }}
-                  animate={{ x: 0 }}
-                  exit={{ x: '-100%' }}
-                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                  className="absolute inset-0 h-full w-full object-contain "
-                />
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* النص الخاص بكل صورة */}
-          <div className="order-2 lg:order-1">
+          <div
+            className="absolute inset-y-0 start-0 z-10 flex w-14 items-center justify-center bg-black/60 backdrop-blur-[3px] sm:w-16 lg:w-[4.75rem]"
+            aria-label={L(slide.verticalLabel, lang)}
+          >
             <AnimatePresence mode="wait">
-              <motion.div
+              <motion.span
                 key={slide.key}
-                initial={revealFromBottom()}
-                animate={revealToVisible}
-                exit={{ opacity: 0, y: -16 }}
-                transition={revealTransition(0, motionConfig.duration)}
-                className="space-y-5"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+                dir={lang === 'ar' ? 'rtl' : 'ltr'}
+                className="max-h-[88%] select-none whitespace-nowrap px-1 font-sans text-[0.95rem] font-extrabold leading-none text-white sm:text-base lg:text-lg [writing-mode:vertical-rl] rotate-180"
               >
-                <SectionTitle as="h3" className="mb-1" reveal={false}>
-                  {L(slide.eyebrow, lang)}
-                </SectionTitle>
-                <h4 className="heading-md text-navy-900">
-                  {L(slide.title, lang)}
-                </h4>
-
-                {slide.text && (
-                  <p className="body-md text-body">
-                    {L(slide.text, lang)}
-                  </p>
-                )}
-
-                {slide.points && (
-                  <ul className="space-y-3">
-                    {L(slide.points, lang).map((point) => (
-                      <li key={point} className="flex items-start gap-3">
-                        <span className="mt-1 gold-check h-6 w-6 flex-shrink-0 shadow-gold-sm">
-                          <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
-                            <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </span>
-                        <span className="body-sm text-body">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </motion.div>
+                {verticalText}
+              </motion.span>
             </AnimatePresence>
+          </div>
+        </Reveal>
 
-            {/* مؤشرات الشرائح */}
-            <div className="mt-8 flex items-center gap-2.5">
-              {slides.map((s, i) => (
-                <button
-                  key={s.key}
-                  onClick={() => setIndex(i)}
-                  aria-label={L(s.eyebrow, lang)}
-                  className={`h-2.5 rounded-full transition-all duration-300 ${
-                    i === index ? 'w-8 bg-primary-gradient' : 'w-2.5 bg-primary-200 hover:bg-primary-300'
-                  }`}
-                />
-              ))}
-            </div>
+        {/* نص السلاider */}
+        <Reveal direction="end" duration={0.78} delay={0.1} className="order-2 flex items-center border-t border-white/10 lg:border-t-0 lg:border-s lg:border-white/10">
+          <div className="flex w-full flex-col justify-center px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16 xl:px-16 2xl:px-20">
+            <div className="mx-auto w-full max-w-xl lg:mx-0">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={slide.key}
+                  initial={revealFromBottom()}
+                  animate={revealToVisible}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={revealTransition(0, motionConfig.duration)}
+                  className="min-h-[9.5rem] space-y-4 sm:min-h-[10.5rem] sm:space-y-5"
+                >
+                  <SectionTitle as="h2" className="mb-2" reveal={false}>
+                    {L(slide.eyebrow, lang)}
+                  </SectionTitle>
 
-            <div className="mt-8">
-              <Link to="/about" className="btn-primary">
-                {t('vision.cta')}
-                <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4">
-                  <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
+                  <h3 className="heading-lg max-w-xl text-navy-900 lg:max-w-2xl lg:text-4xl xl:text-[2.65rem]">
+                    {L(slide.titleA, lang)}
+                    {slide.titleB && (
+                      <>
+                        {' '}
+                        <span className={slide.gradientB ? 'text-gradient-primary' : ''}>
+                          {L(slide.titleB, lang)}
+                        </span>
+                      </>
+                    )}
+                  </h3>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="mt-10 flex items-center gap-2.5 sm:mt-12">
+                {slides.map((s, i) => (
+                  <button
+                    key={s.key}
+                    type="button"
+                    onClick={() => setIndex(i)}
+                    aria-label={L(s.eyebrow, lang)}
+                    aria-current={i === index ? 'true' : undefined}
+                    className={`h-2.5 rounded-full transition-all duration-300 ${
+                      i === index ? 'w-8 bg-primary-gradient' : 'w-2.5 bg-primary-200 hover:bg-primary-300'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <div className="mt-8 sm:mt-10">
+                <Link to="/about" className="btn-primary">
+                  {t('vision.cta')}
+                  <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+                    <path
+                      d="M19 12H5M12 19l-7-7 7-7"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

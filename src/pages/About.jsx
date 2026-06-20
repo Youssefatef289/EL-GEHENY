@@ -1,13 +1,15 @@
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
+import ImagePageHero from '../components/ImagePageHero'
+import CompanyBrief from '../sections/CompanyBrief'
 import AboutGeheny from '../sections/AboutGeheny'
 import AboutTeam from '../sections/AboutTeam'
+import Heritage from '../sections/Heritage'
 import Vision from '../sections/Vision'
 import CTA from '../sections/CTA'
+import { company } from '../data/site'
 import { useLang, L } from '../i18n'
-
-import aboutHero from '../../images/projects/j290/00.jpg'
 
 const whyReasons = [
   {
@@ -49,36 +51,26 @@ const whyHeading = {
   title: { ar: 'أسباب تجعلنا خيارك الأول', en: 'Reasons that make us your first choice' },
 }
 
-function VideoHero() {
-  const { t } = useLang()
-  return (
-    <section className="relative isolate flex min-h-[78svh] flex-col justify-end overflow-hidden bg-ink pb-14 pt-[6rem] sm:min-h-[88svh] sm:pt-[6.75rem] lg:pt-[7.5rem] xl:pt-[8rem]">
-      <img
-        className="absolute inset-0 -z-20 h-full w-full object-cover"
-        src={aboutHero}
-        alt=""
-        aria-hidden="true"
-      />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/70 to-ink/40" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-ink/80 to-transparent" />
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.12),transparent_45%)]" />
+function AboutHero() {
+  const { t, lang } = useLang()
+  const sinceLabel = lang === 'ar' ? `منذ عام ${company.since}` : `Since ${company.since}`
 
-      <div className="container-x relative">
-        <Reveal>
-          <span className="label-caps mb-5 border-primary-500/35 bg-primary-500/10 text-primary-100">
-            {t('about.heroEyebrow')}
-          </span>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h1 className="heading-xl max-w-4xl text-gradient-primary">{t('about.heroTitle')}</h1>
-        </Reveal>
-        <Reveal delay={0.16}>
-          <p className="section-desc mt-6 max-w-3xl text-primary-100/90">
-            {t('about.heroDesc')}
-          </p>
-        </Reveal>
+  return (
+    <ImagePageHero
+      eyebrow={t('about.heroEyebrow')}
+      title={t('about.heroTitle')}
+      description={t('about.heroDesc')}
+      imageAlt={t('about.heroEyebrow')}
+    >
+      <div className="flex flex-wrap justify-center gap-3">
+        <span className="label-caps border-primary-500/40 bg-primary-500/15 text-primary-100 backdrop-blur-md">
+          {sinceLabel}
+        </span>
+        <span className="label-caps border-white/15 bg-white/10 text-white/90 backdrop-blur-md">
+          {L(company.slogan, lang)}
+        </span>
       </div>
-    </section>
+    </ImagePageHero>
   )
 }
 
@@ -87,16 +79,26 @@ export default function About() {
 
   return (
     <>
-      <VideoHero />
+      <AboutHero />
+
+      {/* من نحن */}
+      <SectionReveal>
+        <AboutGeheny />
+      </SectionReveal>
 
       {/* فريق القيادة */}
       <SectionReveal>
         <AboutTeam />
       </SectionReveal>
 
-      {/* نبذة عن الجهيني */}
+      {/* نبذة عن الشركة */}
       <SectionReveal>
-        <AboutGeheny />
+        <CompanyBrief />
+      </SectionReveal>
+
+      {/* إرثنا */}
+      <SectionReveal>
+        <Heritage />
       </SectionReveal>
 
       {/* لماذا الجهيني */}

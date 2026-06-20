@@ -29,7 +29,7 @@ export default function SectionTitle({
     >
       <Tag
         dir="auto"
-        className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-tight ${textTone}`}
+        className={`section-title-text heading-lg shrink-0 font-sans font-extrabold leading-snug ${textTone}`}
       >
         {children}
       </Tag>

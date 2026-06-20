@@ -113,13 +113,14 @@ export const translations = {
       title: 'خدماتنا',
     },
     projectsShowcase: {
-      eyebrow: 'المشاريع المتاحة',
-      title: 'استكشف استثمارك القادم',
+      eyebrow: 'مشاريعنا',
+      title: 'اكتشف مجموعتنا المتنوعة من المشاريع',
       carouselTitle: 'استكشف مشروعاتنا',
       description:
-        'اكتشف مشروعاتنا العقارية المتنوعة التي تقدم فرص استثمارية ناجحة ونمواً مستداماً.',
-      exploreAll: 'استكشف جميع المشاريع',
+        'نطوّر مشروعات سكنية واستثمارية متنوعة في مواقع استراتيجية بالقاهرة الجديدة، مع التركيز على الجودة والقيمة الاستثمارية طويلة الأجل.',
+      exploreAll: 'عرض جميع المشاريع',
       viewDetails: 'عرض التفاصيل',
+      viewMore: 'عرض المزيد',
       view: 'عرض',
     },
     partners: {
@@ -149,6 +150,16 @@ export const translations = {
       pillSince: 'منذ',
       pillIdentity: 'الهوية',
       pillMotion: 'الحركة',
+    },
+    companyBrief: {
+      eyebrow: 'عن الشركة',
+      headline: 'ثقة بلا حدود، جودة بلا مساومة',
+      description:
+        'تأسست شركة الجهيني للتطوير العقاري عام 1990، ومنذ ذلك الوقت نجحت في بناء مسيرة قوية قائمة على الخبرة والالتزام والجودة. على مدار أكثر من ثلاثة عقود، شاركت الشركة في تنفيذ وتطوير أكثر من 100 مشروع متنوع بين المشروعات السكنية والتجارية ومتعددة الاستخدامات، مع الحرص الدائم على تقديم قيمة حقيقية للعملاء وتحقيق أعلى معايير الجودة في كل مشروع.',
+      highlight:
+        'تؤمن الجهيني بأن العقار ليس مجرد مبنى، بل استثمار طويل الأجل وأسلوب حياة متكامل — نلتزم باختيار المواقع المتميزة والتصميمات العملية وجودة التنفيذ لضمان أفضل تجربة سكنية واستثمارية.',
+      supportLabel: 'اتصل بمركز الدعم',
+      imageAlt: 'الجهيني للتطوير العقاري — تطوير عقاري بثقة وجودة',
     },
     about: {
       heroEyebrow: 'من نحن',
@@ -191,9 +202,11 @@ export const translations = {
       inProgress: 'قيد التنفيذ',
       details: 'التفاصيل',
       progress: 'نسبة الإنجاز',
+      progressPhase: 'المرحلة الحالية',
       unitTypes: 'أنواع الوحدات',
       deliveryStatus: 'حالة التسليم',
-      areaFrom: 'المساحة تبدأ من',
+      areaFrom: 'المساحات',
+      areaRange: 'المساحات (من – إلى)',
       units: 'عدد الوحدات',
       about: 'عن المشروع',
       featuresTitle: 'مميزات المشروع',
@@ -219,6 +232,8 @@ export const translations = {
       unitTypeRepeated: 'متكرر',
       unitTypeRoof: 'روف',
       unitPlansTitle: 'مخططات الوحدات',
+      layoutPlansTitle: 'مخططات الأوتوكاد',
+      unitsSummaryTitle: 'ملخص الوحدات',
       unitsEmpty: 'لا توجد تفاصيل لهذا النوع حالياً — تواصل معنا للاستفسار.',
     },
     contact: {
@@ -262,7 +277,7 @@ export const translations = {
       back: 'العودة للرئيسية',
     },
     whatsapp: {
-      tooltip: 'تواصل معنا الآن',
+      tooltip: 'تواصل معانا الان',
       aria: 'تواصل عبر واتساب',
       message: 'مرحباً، أرغب في الاستفسار عن مشاريع الجهيني للتطوير العقاري',
     },
@@ -415,13 +430,14 @@ export const translations = {
       title: 'Our Services',
     },
     projectsShowcase: {
-      eyebrow: 'Available Projects',
-      title: 'Explore your next investment',
+      eyebrow: 'Our Projects',
+      title: 'Discover our diverse range of projects',
       carouselTitle: 'Explore Our Projects',
       description:
-        'Discover our diverse real estate projects offering successful investment opportunities and sustainable growth.',
-      exploreAll: 'Explore all projects',
+        'We develop diverse residential and investment projects in strategic locations across New Cairo, with a focus on quality and long-term investment value.',
+      exploreAll: 'View all projects',
       viewDetails: 'View Details',
+      viewMore: 'View more',
       view: 'View',
     },
     partners: {
@@ -451,6 +467,16 @@ export const translations = {
       pillSince: 'Since',
       pillIdentity: 'Identity',
       pillMotion: 'Motion',
+    },
+    companyBrief: {
+      eyebrow: 'About the Company',
+      headline: 'Trust without limits, quality without compromise',
+      description:
+        'El-Geheny Real Estate Development was founded in 1990, and since then it has built a strong journey grounded in experience, commitment, and quality. Over more than three decades, the company has executed and developed more than 100 diverse residential, commercial, and mixed-use projects, with a constant focus on delivering real value and the highest quality standards in every project.',
+      highlight:
+        'El-Geheny believes real estate is not just a building, but a long-term investment and an integrated lifestyle — we are committed to prime locations, practical designs, and quality execution for the best residential and investment experience.',
+      supportLabel: 'Call our support center',
+      imageAlt: 'El-Geheny Real Estate Development — trusted quality development',
     },
     about: {
       heroEyebrow: 'About Us',
@@ -493,9 +519,11 @@ export const translations = {
       inProgress: 'In Progress',
       details: 'Details',
       progress: 'Progress',
+      progressPhase: 'Current phase',
       unitTypes: 'Unit types',
       deliveryStatus: 'Delivery status',
-      areaFrom: 'Area starts from',
+      areaFrom: 'Areas',
+      areaRange: 'Areas (from – to)',
       units: 'Number of units',
       about: 'About the project',
       featuresTitle: 'Project features',
@@ -521,6 +549,8 @@ export const translations = {
       unitTypeRepeated: 'Repeated floor',
       unitTypeRoof: 'Roof',
       unitPlansTitle: 'Unit floor plans',
+      layoutPlansTitle: 'AutoCAD layouts',
+      unitsSummaryTitle: 'Units overview',
       unitsEmpty: 'No details for this type yet — contact us to inquire.',
     },
     contact: {

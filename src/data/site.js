@@ -31,8 +31,8 @@ export const stats = [
 
 export const navLinks = [
   { to: '/', key: 'home' },
-  { to: '/projects', key: 'projects' },
   { to: '/about', key: 'about' },
+  { to: '/projects', key: 'projects' },
   { to: '/blog', key: 'blog' },
   { to: '/contact', key: 'contact' },
 ]

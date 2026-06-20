@@ -2,14 +2,24 @@ import { useMemo, useState } from 'react'
 import { Link, useParams, Navigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
+import PlanLightbox from '../components/PlanLightbox'
+import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
 import Reveal from '../components/Reveal'
 import {
   getProjectById,
+  getProjectDisplayTitle,
+  formatProjectCode,
+  getProjectAreaRange,
+  getProjectUnitsLabel,
+  getProjectUnitTypesSummary,
+  getAllProjectLayoutPlans,
   projects,
   UNIT_TYPE_KEYS,
   UNIT_TYPE_LABELS,
   groupUnitDetails,
   getProjectUnitPlans,
+  getConstructionStageState,
+  getActiveConstructionPhase,
 } from '../data/projects'
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
@@ -20,6 +30,7 @@ export default function ProjectDetail() {
   const [activeImg, setActiveImg] = useState(0)
   const [activeUnitType, setActiveUnitType] = useState('ground')
   const [activePlanImg, setActivePlanImg] = useState(0)
+  const [layoutLightboxIndex, setLayoutLightboxIndex] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
   const { t, lang } = useLang()
@@ -32,13 +43,22 @@ export default function ProjectDetail() {
     () => (project ? getProjectUnitPlans(project) : { ground: [], repeated: [], roof: [] }),
     [project],
   )
+  const layoutPlans = useMemo(
+    () => (project ? getAllProjectLayoutPlans(project) : []),
+    [project],
+  )
 
   if (!project) return <Navigate to="/projects" replace />
 
   const related = projects.filter((p) => p.id !== project.id).slice(0, 3)
   const delivered = project.statusKey === 'delivered'
+  const activePhase = getActiveConstructionPhase(project.progress, delivered)
+  const constructionStages = getConstructionStageState(project.progress)
   const deliveryLabel = L(project.deliveryStatus, lang)
-  const title = L(project.title, lang)
+  const displayTitle = getProjectDisplayTitle(project, lang)
+  const unitTypesSummary = getProjectUnitTypesSummary(project, lang)
+  const unitsLabel = getProjectUnitsLabel(project, lang)
+  const areaRangeLabel = getProjectAreaRange(project, lang)
   const activeUnits = unitGroups[activeUnitType] || []
   const activePlans = unitPlans[activeUnitType] || []
   const activeUnitLabel = L(UNIT_TYPE_LABELS[activeUnitType], lang)
@@ -53,79 +73,49 @@ export default function ProjectDetail() {
     setSubmitted(true)
   }
 
+  const openLayoutLightbox = (plan) => {
+    const planIndex = layoutPlans.findIndex((item) => item.src === plan.src && item.type === plan.type)
+    setLayoutLightboxIndex(planIndex >= 0 ? planIndex : 0)
+  }
+
   return (
     <>
-      {/* رأس الصفحة مع صورة الغلاف */}
-      <section className="relative bg-ink pt-28 sm:pt-32">
-        <div className="container-x">
-          <div className="relative overflow-hidden rounded-[1.75rem] shadow-[0_45px_110px_-50px_rgba(0,0,0,0.65)] sm:rounded-[2.25rem]">
-            <LazyImage
-              src={project.cover}
-              alt={title}
-              className="h-[56vh] min-h-[380px] w-full sm:h-[64vh]"
-              imgClassName="object-cover object-center"
-            />
-            {/* تدرّج داكن ثابت لإبراز النص */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/10" />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink/40 to-transparent" />
-
-            <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 sm:p-10">
-              <motion.nav
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-5 flex flex-wrap items-center gap-2 text-sm text-white/70"
-              >
-                <Link to="/" className="transition-colors hover:text-primary-300">{t('project.breadcrumbHome')}</Link>
-                <span className="text-white/40">/</span>
-                <Link to="/projects" className="transition-colors hover:text-primary-300">{t('project.breadcrumbProjects')}</Link>
-                <span className="text-white/40">/</span>
-                <span className="text-primary-300">{title}</span>
-              </motion.nav>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex flex-wrap items-center gap-3"
-              >
-                <span className="rounded-full bg-primary-500/25 px-4 py-1.5 text-sm font-semibold text-primary-100 ring-1 ring-primary-300/40 backdrop-blur-md">
-                  {L(project.categoryName, lang)}
-                </span>
-                <span
-                  className={`rounded-full px-4 py-1.5 text-sm font-semibold backdrop-blur-md ${
-                    delivered
-                      ? 'bg-emerald-500/25 text-emerald-100 ring-1 ring-emerald-400/40'
-                      : 'bg-amber-500/25 text-amber-100 ring-1 ring-amber-400/40'
-                  }`}
-                >
-                  {deliveryLabel}
-                </span>
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="heading-lg mt-4 text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)]"
-              >
-                {title}
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="mt-3 flex items-center gap-2 text-white/85"
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 text-primary-300">
-                  <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
-                </svg>
-                {L(project.location, lang)}
-              </motion.p>
-            </div>
-          </div>
+      <PlanLightbox
+        items={layoutPlans}
+        index={layoutLightboxIndex}
+        onClose={() => setLayoutLightboxIndex(null)}
+        onChange={setLayoutLightboxIndex}
+        title={displayTitle}
+      />
+      <ImagePageHero
+        image={heroProjectImage}
+        imageAlt={displayTitle}
+        eyebrow={L(project.categoryName, lang)}
+        title={displayTitle}
+        breadcrumb={[
+          { label: t('project.breadcrumbHome'), to: '/' },
+          { label: t('project.breadcrumbProjects'), to: '/projects' },
+          { label: formatProjectCode(project.id) },
+        ]}
+      >
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          <span
+            className={`rounded-full px-4 py-1.5 text-sm font-semibold backdrop-blur-md ${
+              delivered
+                ? 'bg-emerald-500/25 text-emerald-100 ring-1 ring-emerald-400/40'
+                : 'bg-amber-500/25 text-amber-100 ring-1 ring-amber-400/40'
+            }`}
+          >
+            {deliveryLabel}
+          </span>
+          <p className="flex items-center gap-2 text-sm text-white/88 sm:text-base">
+            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 shrink-0 text-primary-300">
+              <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+            </svg>
+            {L(project.location, lang)}
+          </p>
         </div>
-      </section>
+      </ImagePageHero>
 
       {/* المحتوى الرئيسي */}
       <section className="section-pad pt-10">
@@ -134,12 +124,24 @@ export default function ProjectDetail() {
           <div className="space-y-12 lg:col-span-2">
             {/* معلومات سريعة */}
             <Reveal>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <InfoBox label={t('project.unitTypes')} value={activeUnitLabel} />
-                <InfoBox label={t('project.areaFrom')} value={L(project.area, lang)} />
-                <InfoBox label={t('project.units')} value={L(project.units, lang)} />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <InfoBox label={t('project.unitTypes')} value={unitTypesSummary} />
+                <InfoBox label={t('project.areaRange')} value={areaRangeLabel} />
+                <InfoBox label={t('project.units')} value={unitsLabel} />
                 <InfoBox label={t('project.deliveryStatus')} value={deliveryLabel} />
               </div>
+            </Reveal>
+
+            {/* واجهة المشروع */}
+            <Reveal>
+              <figure className="overflow-hidden rounded-[1.35rem] border border-white/10 shadow-[0_30px_80px_-45px_rgba(0,0,0,0.7)] sm:rounded-[1.75rem]">
+                <LazyImage
+                  src={project.cover}
+                  alt={displayTitle}
+                  className="aspect-[16/10] w-full bg-ink sm:aspect-[21/10]"
+                  imgClassName="h-full w-full object-cover object-center"
+                />
+              </figure>
             </Reveal>
 
             {/* الوصف */}
@@ -154,6 +156,63 @@ export default function ProjectDetail() {
             <Reveal>
               <div>
                 <h2 className="heading-md mb-5 text-navy-900">{t('project.unitsTitle')}</h2>
+
+                <div className="mb-8 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-primary-200/60 bg-primary-500/5 p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary-400">{t('project.unitTypes')}</p>
+                    <p className="mt-2 text-base font-semibold leading-relaxed text-navy-900 sm:text-lg">{unitTypesSummary}</p>
+                  </div>
+                  <div className="rounded-2xl border border-navy-200 bg-navy-50/70 p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t('project.units')}</p>
+                    <p className="mt-2 text-base font-semibold text-navy-900 sm:text-lg">{unitsLabel}</p>
+                  </div>
+                  <div className="rounded-2xl border border-navy-200 bg-navy-50/70 p-5 sm:col-span-1">
+                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t('project.areaRange')}</p>
+                    <p className="mt-2 text-base font-semibold leading-relaxed text-navy-900 sm:text-lg">{areaRangeLabel}</p>
+                  </div>
+                </div>
+
+                {layoutPlans.length > 0 && (
+                  <div className="mb-10">
+                    <h3 className="mb-5 font-display text-xl font-bold text-navy-900">{t('project.layoutPlansTitle')}</h3>
+                    <div className="space-y-8">
+                      {UNIT_TYPE_KEYS.map((type) => {
+                        const typePlans = layoutPlans.filter((plan) => plan.type === type)
+                        if (typePlans.length === 0) return null
+                        return (
+                          <div key={type}>
+                            <p className="mb-4 inline-flex rounded-full border border-primary-300/40 bg-primary-500/10 px-4 py-1.5 text-sm font-bold text-primary-500">
+                              {L(UNIT_TYPE_LABELS[type], lang)}
+                            </p>
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                              {typePlans.map((plan, index) => (
+                                <button
+                                  key={`${plan.src}-${index}`}
+                                  type="button"
+                                  onClick={() => openLayoutLightbox(plan)}
+                                    className="group overflow-hidden rounded-2xl border border-primary-400/20 bg-transparent text-start shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary-300/50 hover:shadow-[0_20px_50px_-30px_rgba(202,161,63,0.35)]"
+                                  >
+                                    <LazyImage
+                                      src={plan.src}
+                                      alt={`${displayTitle} - ${L(plan.label, lang)} ${index + 1}`}
+                                      className="aspect-[4/3] w-full bg-transparent"
+                                      imgClassName="object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
+                                    />
+                                    <span className="flex items-center justify-between gap-2 px-4 py-3 text-xs font-semibold text-primary-300">
+                                      <span>{L(plan.label, lang)}</span>
+                                      <span className="text-primary-400 opacity-80 transition-opacity group-hover:opacity-100">
+                                        {lang === 'ar' ? 'عرض' : 'View'}
+                                      </span>
+                                    </span>
+                                  </button>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 <div className="unit-type-tabs mb-8">
                   {UNIT_TYPE_KEYS.map((type) => (
@@ -183,7 +242,7 @@ export default function ProjectDetail() {
                         <div className="overflow-hidden rounded-3xl border border-navy-200">
                           <LazyImage
                             src={activePlans[activePlanImg]}
-                            alt={`${title} - ${activeUnitLabel}`}
+                            alt={`${displayTitle} - ${activeUnitLabel}`}
                             className="aspect-[4/3] w-full bg-navy-50"
                             imgClassName="object-contain"
                           />
@@ -208,34 +267,37 @@ export default function ProjectDetail() {
                     )}
 
                     {activeUnits.length > 0 ? (
-                      <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="grid gap-5 sm:grid-cols-2">
                         {activeUnits.map((unit, ui) => (
-                          <div key={ui} className="glass rounded-3xl p-6">
-                            <h4 className="font-display text-lg font-bold text-navy-900">{L(unit.name, lang)}</h4>
-                            <div className="mt-3 flex flex-wrap gap-2">
+                          <div key={ui} className="glass rounded-3xl p-6 sm:p-7">
+                            <h4 className="font-display text-xl font-bold leading-snug text-navy-900">{L(unit.name, lang)}</h4>
+                            <div className="mt-4 space-y-2 border-b border-navy-200 pb-4">
                               {unit.area && (
-                                <span className="rounded-full bg-primary-500/10 px-3 py-1 text-xs font-semibold text-primary-600 ring-1 ring-primary-500/25">
-                                  {L(unit.area, lang)}
-                                </span>
+                                <p className="flex items-center justify-between gap-3 text-sm sm:text-base">
+                                  <span className="font-semibold text-muted">{lang === 'ar' ? 'المساحة' : 'Area'}</span>
+                                  <span className="font-bold text-navy-900">{L(unit.area, lang)}</span>
+                                </p>
                               )}
                               {unit.extra && (
-                                <span className="rounded-full bg-navy-100 px-3 py-1 text-xs font-semibold text-navy-700">
-                                  {L(unit.extra, lang)}
-                                </span>
+                                <p className="flex items-center justify-between gap-3 text-sm sm:text-base">
+                                  <span className="font-semibold text-muted">{lang === 'ar' ? 'إضافات' : 'Extras'}</span>
+                                  <span className="font-bold text-navy-900">{L(unit.extra, lang)}</span>
+                                </p>
                               )}
                               {unit.status && (
-                                <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600">
-                                  {L(unit.status, lang)}
-                                </span>
+                                <p className="flex items-center justify-between gap-3 text-sm sm:text-base">
+                                  <span className="font-semibold text-muted">{lang === 'ar' ? 'الحالة' : 'Status'}</span>
+                                  <span className="font-bold text-emerald-600">{L(unit.status, lang)}</span>
+                                </p>
                               )}
                             </div>
                             {unit.rooms?.length > 0 && (
-                              <ul className="mt-4 space-y-2 border-t border-navy-200 pt-4">
+                              <ul className="mt-4 space-y-2.5">
                                 {unit.rooms.map((room, ri) => (
-                                  <li key={ri} className="flex items-start justify-between gap-3 text-sm">
+                                  <li key={ri} className="flex items-start justify-between gap-3 text-sm sm:text-base">
                                     <span className="text-body">{room.name ? L(room.name, lang) : L(room, lang)}</span>
                                     {room.dim && (
-                                      <span className="flex-shrink-0 font-mono text-xs text-muted" dir="ltr">
+                                      <span className="flex-shrink-0 font-mono text-xs text-muted sm:text-sm" dir="ltr">
                                         {room.dim}
                                       </span>
                                     )}
@@ -261,8 +323,14 @@ export default function ProjectDetail() {
             {/* نسبة الإنجاز */}
             <Reveal>
               <div className="glass rounded-3xl p-8">
-                <div className="mb-3 flex items-center justify-between">
-                  <h3 className="font-display text-lg font-bold text-navy-900">{t('project.progress')}</h3>
+                <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <h3 className="font-display text-lg font-bold text-navy-900">{t('project.progress')}</h3>
+                    <p className="mt-1 body-sm text-muted">
+                      {t('project.progressPhase')}:{' '}
+                      <span className="font-semibold text-primary-400">{L(activePhase.label, lang)}</span>
+                    </p>
+                  </div>
                   <span className="font-display text-2xl font-extrabold text-gradient-primary">
                     {project.progress}%
                   </span>
@@ -275,6 +343,27 @@ export default function ProjectDetail() {
                     transition={{ duration: 1.5, ease: 'easeOut' }}
                     className="h-full rounded-full bg-primary-gradient"
                   />
+                </div>
+                <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+                  {constructionStages.map((stage) => (
+                    <div
+                      key={L(stage.label, 'ar')}
+                      className={`rounded-xl border px-3 py-2.5 text-center transition-colors ${
+                        stage.completed
+                          ? 'border-primary-400/50 bg-primary-500/10'
+                          : stage.active
+                            ? 'border-primary-400 bg-primary-500/15 ring-1 ring-primary-400/40'
+                            : 'border-navy-200 bg-navy-50/50 opacity-60'
+                      }`}
+                    >
+                      <p className={`text-[0.68rem] font-bold leading-snug sm:text-xs ${
+                        stage.active ? 'text-primary-300' : stage.completed ? 'text-primary-400' : 'text-muted'
+                      }`}
+                      >
+                        {L(stage.label, lang)}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </Reveal>
@@ -308,7 +397,7 @@ export default function ProjectDetail() {
                 <div className="overflow-hidden rounded-3xl border border-navy-200">
                   <LazyImage
                     src={project.gallery[activeImg]}
-                    alt={`${title} - ${activeImg + 1}`}
+                    alt={`${displayTitle} - ${activeImg + 1}`}
                     className="aspect-video w-full"
                   />
                 </div>
@@ -321,7 +410,7 @@ export default function ProjectDetail() {
                         activeImg === i ? 'border-primary-400' : 'border-transparent opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <LazyImage src={img} alt={`${title} ${i + 1}`} className="aspect-video w-full" />
+                      <LazyImage src={img} alt={`${displayTitle} ${i + 1}`} className="aspect-video w-full" />
                     </button>
                   ))}
                 </div>
@@ -409,7 +498,7 @@ export default function ProjectDetail() {
 
                   <div className="mt-6 border-t border-navy-200 pt-6">
                     <a
-                      href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent((lang === 'ar' ? 'استفسار عن مشروع: ' : 'Inquiry about project: ') + title)}`}
+                      href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent((lang === 'ar' ? 'استفسار عن مشروع: ' : 'Inquiry about project: ') + displayTitle)}`}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366]/15 px-4 py-3 text-sm font-semibold text-[#25D366] transition-colors hover:bg-[#25D366]/25"

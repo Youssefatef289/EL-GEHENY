@@ -1,8 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
-import Reveal from '../components/Reveal'
-import SectionTitle from '../components/SectionTitle'
+import ImagePageHero from '../components/ImagePageHero'
 import SectionReveal from '../components/SectionReveal'
 import { projects, projectCategories } from '../data/projects'
 import { useLang, L } from '../i18n'
@@ -24,21 +23,12 @@ export default function Projects() {
 
   return (
     <>
-      {/* ترويسة مبسّطة */}
-      <section className="relative overflow-hidden bg-ink pt-32 pb-6 sm:pt-36">
-        <div className="pointer-events-none absolute -right-16 top-0 h-72 w-72 rounded-full bg-primary-500/10 blur-[130px]" />
-        <div className="container-x relative">
-          <SectionTitle as="h1">{t('projectsPage.eyebrow')}</SectionTitle>
-          <Reveal delay={0.05}>
-            <h2 className="section-subtitle mt-4">{t('projectsPage.title')}</h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="section-desc mt-5">
-              {t('projectsPage.desc')}
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <ImagePageHero
+        eyebrow={t('projectsPage.eyebrow')}
+        title={t('projectsPage.title')}
+        description={t('projectsPage.desc')}
+        imageAlt={t('projectsPage.title')}
+      />
 
       <SectionReveal>
       <section className="section-pad pt-10">

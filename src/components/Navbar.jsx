@@ -6,7 +6,14 @@ import Logo from './Logo'
 import { navLinks, company } from '../data/site'
 import { useLang } from '../i18n'
 
-const OVERLAY_ROUTES = ['/', '/about']
+function isHeroOverlayRoute(pathname) {
+  return (
+    pathname === '/' ||
+    pathname === '/about' ||
+    pathname === '/projects' ||
+    pathname.startsWith('/projects/')
+  )
+}
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -15,7 +22,7 @@ export default function Navbar() {
   const location = useLocation()
   const whatsappMessage = encodeURIComponent(t('whatsapp.message'))
 
-  const isOverlayPage = OVERLAY_ROUTES.includes(location.pathname)
+  const isOverlayPage = isHeroOverlayRoute(location.pathname)
   const isOverlay = isOverlayPage && !scrolled && !mobileOpen
 
   useEffect(() => {
@@ -91,9 +98,12 @@ export default function Navbar() {
               target="_blank"
               rel="noreferrer"
               aria-label={t('whatsapp.aria')}
-              className="btn-outline min-h-10 min-w-10 px-0 py-0"
+              className="nav-whatsapp"
             >
-              <WhatsAppIcon />
+              <span className="nav-whatsapp-icon">
+                <WhatsAppIcon />
+              </span>
+              <span className="nav-whatsapp-label">{t('whatsapp.tooltip')}</span>
             </a>
           </div>
 

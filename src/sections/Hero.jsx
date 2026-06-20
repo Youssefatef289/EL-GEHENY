@@ -104,7 +104,7 @@ export default function Hero() {
 
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-44 bg-gradient-to-b from-ink/75 to-transparent" />
 
-      <div className="container-x relative z-[3] flex flex-1 flex-col items-center justify-center px-5 pb-16 pt-[6rem] text-center sm:pb-20 sm:pt-[6.75rem] lg:pt-[7.5rem] xl:pt-[8rem]">
+      <div className="container-x relative z-[3] flex flex-1 flex-col items-center justify-center px-5 pb-20 pt-[5.25rem] text-center sm:pb-24 sm:pt-[5.75rem] lg:pt-[6.5rem] xl:pt-[7rem] -translate-y-3 sm:-translate-y-4">
         <div className="relative w-full max-w-4xl">
           {slides.map((slide, index) =>
             index === activeIndex ? (

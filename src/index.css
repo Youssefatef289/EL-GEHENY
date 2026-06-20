@@ -140,6 +140,11 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    display: inline-block;
+    padding-bottom: 0.14em;
+    line-height: 1.35;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   /* سطح ذهبي معدني — أزرار، أيقونات، badges */
@@ -498,11 +503,55 @@
 }
 
 .nav-link {
-  @apply relative whitespace-nowrap font-sans text-[0.92rem] font-medium text-white/85 transition-colors duration-200 hover:text-white;
+  @apply relative whitespace-nowrap pb-1 font-sans text-[0.92rem] font-medium text-white/85 transition-colors duration-200 hover:text-white;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  background-image: var(--brand-gold-gradient);
+  transform: scaleX(0);
+  transform-origin: inline-start;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 999px;
+}
+
+.nav-link:hover::after,
+.nav-link-active::after {
+  transform: scaleX(1);
 }
 
 .nav-link-active {
   @apply text-white;
+}
+
+.nav-whatsapp {
+  @apply btn-outline inline-flex h-10 max-w-10 items-center overflow-hidden p-0 transition-[max-width,padding,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)];
+  direction: ltr;
+}
+
+.nav-whatsapp:hover {
+  max-width: 13.5rem;
+  padding-inline-end: 0.85rem;
+  @apply border-primary-400/70 shadow-[0_10px_32px_-12px_rgba(212,175,55,0.35)];
+}
+
+.nav-whatsapp-icon {
+  @apply flex h-10 w-10 shrink-0 items-center justify-center;
+}
+
+.nav-whatsapp-label {
+  @apply overflow-hidden whitespace-nowrap text-[0.72rem] font-semibold text-ink opacity-0 transition-[opacity,max-width,margin] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)];
+  max-width: 0;
+}
+
+.nav-whatsapp:hover .nav-whatsapp-label {
+  max-width: 9.5rem;
+  opacity: 1;
+  margin-inline-start: 0.1rem;
 }
 
 .nav-action-btn {
@@ -818,6 +867,7 @@
 .hero-slide-content .mask {
   position: relative;
   overflow: hidden;
+  padding-bottom: 0.35rem;
 }
 
 .hero-slide-eyebrow {
@@ -826,6 +876,8 @@
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+  line-height: 1.45;
+  padding-bottom: 0.1em;
   color: #f9e27d;
   text-shadow: 0 2px 16px rgba(212, 175, 55, 0.35);
 }
@@ -835,11 +887,15 @@
   font-size: clamp(1.85rem, 4.8vw, 3.2rem);
   font-weight: 800;
   letter-spacing: 0.04em;
-  line-height: 1.15;
+  line-height: 1.35;
+  display: inline-block;
+  padding-bottom: 0.14em;
   background-image: var(--brand-gold-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
   text-shadow: none;
   filter: drop-shadow(0 4px 20px rgba(212, 175, 55, 0.35));
 }

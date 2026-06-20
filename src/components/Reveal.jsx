@@ -1,16 +1,17 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { useLang } from '../i18n'
 import {
   motionConfig,
-  revealFromBottom,
+  revealInitial,
   revealToVisible,
   revealTransition,
   revealViewport,
 } from '../utils/motion'
 
-/** ظهور سلس من الأسفل عند التمرير */
+/** ظهور سلس عند التمرير — up | down | left | right | start | end */
 export default function Reveal({
   children,
-  direction: _direction = 'up',
+  direction = 'up',
   delay = 0,
   duration = motionConfig.duration,
   className = '',
@@ -19,12 +20,13 @@ export default function Reveal({
   as = 'div',
 }) {
   const reduceMotion = useReducedMotion()
+  const { lang } = useLang()
   const MotionTag = motion[as] ?? motion.div
 
   return (
     <MotionTag
       className={className}
-      initial={revealFromBottom(reduceMotion)}
+      initial={revealInitial(reduceMotion, direction, { isRtl: lang === 'ar' })}
       whileInView={revealToVisible}
       viewport={{ once, amount }}
       transition={revealTransition(delay, duration)}

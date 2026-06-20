@@ -1,5 +1,6 @@
 ﻿// بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
+import { company } from './site'
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 
 // تحميل جميع صور المشاريع تلقائياً من مجلد كل مشروع داخل images/projects/<folder>/
@@ -98,6 +99,92 @@ export function getProjectUnitPlans(project) {
   }
 }
 
+function parseAreaSqm(value) {
+  if (!value) return null
+  const text = typeof value === 'object' ? value.ar || value.en || '' : String(value)
+  const match = text.match(/(\d+)/)
+  return match ? Number.parseInt(match[1], 10) : null
+}
+
+export function getProjectAreaRange(project, lang) {
+  const areas = (project.unitDetails || [])
+    .map((unit) => parseAreaSqm(unit.area))
+    .filter((n) => Number.isFinite(n))
+
+  if (areas.length === 0) {
+    return project.area?.[lang] ?? project.area?.ar ?? ''
+  }
+
+  const min = Math.min(...areas)
+  const max = Math.max(...areas)
+
+  if (min === max) {
+    return lang === 'ar' ? `${min} م²` : `${min} m²`
+  }
+
+  return lang === 'ar' ? `من ${min} م² إلى ${max} م²` : `From ${min} m² to ${max} m²`
+}
+
+export function getProjectUnitsCount(project) {
+  return project.unitsCount ?? 10
+}
+
+export function getProjectUnitsLabel(project, lang) {
+  const count = getProjectUnitsCount(project)
+  if (lang === 'ar') {
+    if (count === 1) return 'شقة واحدة'
+    if (count === 2) return 'شقتان'
+    if (count >= 3 && count <= 10) return `${count} شقق`
+    return `${count} شقة`
+  }
+  return count === 1 ? '1 apartment' : `${count} apartments`
+}
+
+export function getProjectUnitTypesSummary(project, lang) {
+  const types = project.unitTypes ?? defaultUnitTypes
+  return typeof types === 'object' ? types[lang] ?? types.ar : types
+}
+
+export function getAllProjectLayoutPlans(project) {
+  const plans = getProjectUnitPlans(project)
+  return UNIT_TYPE_KEYS.flatMap((type) =>
+    plans[type].map((src) => ({
+      type,
+      src,
+      label: UNIT_TYPE_LABELS[type],
+    })),
+  )
+}
+
+/** مراحل الإنشاء المعتمدة — تُطابق نسبة الإنجاز المعروضة */
+export const CONSTRUCTION_STAGES = [
+  { threshold: 25, label: { ar: 'الأساسات والحفر', en: 'Foundations & excavation' } },
+  { threshold: 55, label: { ar: 'الهيكل الإنشائي', en: 'Structural works' } },
+  { threshold: 85, label: { ar: 'التشطيبات والتجهيزات', en: 'Finishing & MEP' } },
+  { threshold: 100, label: { ar: 'التسليم', en: 'Delivery' } },
+]
+
+export function getConstructionStageState(progress) {
+  return CONSTRUCTION_STAGES.map((stage, index) => {
+    const prev = index === 0 ? 0 : CONSTRUCTION_STAGES[index - 1].threshold
+    const completed = progress >= stage.threshold
+    const active = !completed && progress > prev
+    return { ...stage, completed, active }
+  })
+}
+
+export function getActiveConstructionPhase(progress, delivered = false) {
+  if (delivered || progress >= 100) {
+    return {
+      label: { ar: 'مكتمل — تم التسليم', en: 'Complete — delivered' },
+      completed: true,
+      active: false,
+    }
+  }
+  const stages = getConstructionStageState(progress)
+  return stages.find((s) => s.active) || stages.find((s) => !s.completed) || stages[stages.length - 1]
+}
+
 export const projectCategories = [
   { id: 'all', name: { ar: 'كل المشاريع', en: 'All Projects' } },
   { id: 'hay-thani', name: { ar: 'الحي الثاني', en: 'Second District' } },
@@ -193,9 +280,10 @@ export const projects = [
     categoryName: { ar: 'بيت الوطن - الحي الثاني', en: 'Beit El-Watan - Second District' },
     location: { ar: 'بيت الوطن، الحي الثاني، التجمع الخامس', en: 'Beit El-Watan, Second District, Fifth Settlement' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: 'من 125 م²', en: 'From 125 m²' },
-    units: { ar: 'وحدات متنوعة', en: 'Various units' },
-    progress: 90,
+    area: { ar: 'من 120 م² إلى 187 م²', en: 'From 120 m² to 187 m²' },
+    unitsCount: 15,
+    units: { ar: '15 شقة', en: '15 apartments' },
+    progress: 88,
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
     unitTypes: defaultUnitTypes,
@@ -366,9 +454,9 @@ export const projects = [
     categoryName: { ar: 'بيت الوطن - الحي الثالث', en: 'Beit El-Watan - Third District' },
     location: { ar: 'بيت الوطن، الحي الثالث، التجمع الخامس', en: 'Beit El-Watan, Third District, Fifth Settlement' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: 'من 225 م²', en: 'From 225 m²' },
-    units: { ar: 'وحدات متنوعة', en: 'Various units' },
-    progress: 75,
+    area: { ar: 'من 225 م² إلى 250 م²', en: 'From 225 m² to 250 m²' },
+    units: { ar: '10 شقق', en: '10 apartments' },
+    progress: 72,
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
     unitTypes: defaultUnitTypes,
@@ -424,8 +512,8 @@ export const projects = [
     categoryName: { ar: 'بيت الوطن - الحي الخامس', en: 'Beit El-Watan - Fifth District' },
     location: { ar: 'بيت الوطن، الحي الخامس، التجمع الخامس', en: 'Beit El-Watan, Fifth District, Fifth Settlement' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: '130 – 300 م²', en: '130 – 300 m²' },
-    units: { ar: 'وحدات متنوعة', en: 'Various units' },
+    area: { ar: 'من 130 م² إلى 300 م²', en: 'From 130 m² to 300 m²' },
+    units: { ar: '10 شقق', en: '10 apartments' },
     progress: 100,
     statusKey: 'delivered',
     deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
@@ -523,8 +611,8 @@ export const projects = [
     categoryName: { ar: 'الحي الخامس', en: 'Fifth District' },
     location: { ar: 'الحي الخامس، التجمع الخامس، القاهرة الجديدة', en: 'Fifth District, Fifth Settlement, New Cairo' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: '190 – 220 م²', en: '190 – 220 m²' },
-    units: { ar: 'وحدات متنوعة', en: 'Various units' },
+    area: { ar: 'من 190 م² إلى 220 م²', en: 'From 190 m² to 220 m²' },
+    units: { ar: '10 شقق', en: '10 apartments' },
     progress: 100,
     statusKey: 'delivered',
     deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
@@ -594,8 +682,8 @@ export const projects = [
     categoryName: { ar: 'بيت الوطن - الحي التكميلي', en: 'Beit El-Watan - Supplementary District' },
     location: { ar: 'بيت الوطن، الحي التكميلي، التجمع الخامس', en: 'Beit El-Watan, Supplementary District, Fifth Settlement' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: '150 – 160 م²', en: '150 – 160 m²' },
-    units: { ar: 'وحدات متنوعة', en: 'Various units' },
+    area: { ar: 'من 150 م² إلى 160 م²', en: 'From 150 m² to 160 m²' },
+    units: { ar: '10 شقق', en: '10 apartments' },
     progress: 100,
     statusKey: 'delivered',
     deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
@@ -713,9 +801,9 @@ export const projects = [
     categoryName: { ar: 'بيت الوطن - شمال الأوركيد', en: 'Beit El-Watan - North Orchid' },
     location: { ar: 'بيت الوطن، شمال الأوركيد، التجمع الخامس، القاهرة الجديدة', en: 'Beit El-Watan, North Orchid, Fifth Settlement, New Cairo' },
     type: { ar: 'عمارة سكنية', en: 'Residential building' },
-    area: { ar: '120 – 180 م²', en: '120 – 180 m²' },
-    units: { ar: '6 نماذج', en: '6 models' },
-    progress: 45,
+    area: { ar: 'من 120 م² إلى 180 م²', en: 'From 120 m² to 180 m²' },
+    units: { ar: '10 شقق', en: '10 apartments' },
+    progress: 42,
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'تحت الإنشاء', en: 'Under construction' },
     unitTypes: defaultUnitTypes,
@@ -863,5 +951,20 @@ export const projects = [
     ],
   },
 ]
+
+export function formatProjectCode(id) {
+  if (id === 'north-orchid-179') return '179'
+  const match = id.match(/^([a-z]+)(\d+)$/i)
+  if (match) return `${match[1].toUpperCase()}-${match[2]}`
+  return id.toUpperCase()
+}
+
+export function getProjectDisplayTitle(project, lang) {
+  const companyName = company.name[lang] ?? company.name.ar
+  const category = projectCategories.find((c) => c.id === project.category)
+  const district = category ? category.name[lang] : project.categoryName[lang]
+  const code = formatProjectCode(project.id)
+  return `${companyName} - ${district} ${code}`
+}
 
 export const getProjectById = (id) => projects.find((p) => p.id === id)
