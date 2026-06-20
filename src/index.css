@@ -1138,10 +1138,22 @@
 }
 
 .journey-contact-map {
-  @apply mt-2 h-52 overflow-hidden rounded-md border border-white/25 sm:h-60 lg:h-64;
+  @apply relative mt-2 h-52 overflow-hidden rounded-md border border-white/25 sm:h-60 lg:h-64;
+}
+
+.journey-contact-map-link {
+  @apply absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/95 via-ink/80 to-transparent px-4 py-3 text-center text-xs font-semibold text-primary-300 transition-colors hover:text-primary-200 sm:text-sm;
 }
 
 .journey-contact-map iframe {
+  @apply h-full w-full grayscale-[0.35] invert-[0.92] hue-rotate-180;
+}
+
+.footer-map {
+  @apply h-36 w-full max-w-xs overflow-hidden sm:h-40;
+}
+
+.footer-map iframe {
   @apply h-full w-full grayscale-[0.35] invert-[0.92] hue-rotate-180;
 }
 
@@ -1180,4 +1192,93 @@
 
 .project-sidebar-sticky {
   @apply sticky top-36 mt-4 sm:top-40 sm:mt-6 lg:top-44 lg:mt-8;
+}
+
+/* ── Image page hero — image shadow overlays ── */
+.image-page-hero-media {
+  box-shadow:
+    inset 0 -80px 90px -35px rgba(0, 0, 0, 0.75),
+    inset 0 0 80px rgba(0, 0, 0, 0.35),
+    0 28px 80px -45px rgba(0, 0, 0, 0.85);
+}
+
+.image-page-hero-shadow {
+  @apply pointer-events-none absolute inset-0;
+}
+
+.image-page-hero-shadow--base {
+  background: rgba(29, 29, 27, 0.38);
+}
+
+.image-page-hero-shadow--top {
+  background: linear-gradient(to bottom, rgba(29, 29, 27, 0.82) 0%, rgba(29, 29, 27, 0.35) 38%, transparent 100%);
+}
+
+.image-page-hero-shadow--bottom {
+  background: linear-gradient(
+    to top,
+    rgba(29, 29, 27, 0.88) 0%,
+    rgba(29, 29, 27, 0.55) 28%,
+    rgba(29, 29, 27, 0.18) 55%,
+    transparent 100%
+  );
+}
+
+.image-page-hero-content {
+  isolation: isolate;
+}
+
+.image-page-hero-shadow--vignette {
+  background: radial-gradient(ellipse 90% 85% at 50% 45%, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* ── Project detail hero stack ── */
+.project-hero-stack {
+  @apply w-full space-y-3 overflow-visible pb-1 sm:space-y-3.5;
+}
+
+.project-hero-company {
+  @apply block w-full font-display text-2xl font-extrabold leading-[1.45] tracking-wide sm:text-3xl lg:text-4xl xl:text-[2.85rem];
+  padding-bottom: 0.22em;
+}
+
+.project-hero-district {
+  @apply font-display text-xl font-bold leading-[1.5] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)] sm:text-2xl lg:text-[1.75rem];
+}
+
+.project-hero-location {
+  @apply pb-0.5 text-sm font-medium leading-relaxed text-primary-200 sm:text-base;
+}
+
+/* ── Project detail — unit plan carousel ── */
+.unit-plan-carousel {
+  @apply relative overflow-hidden rounded-3xl border border-primary-400/25 bg-navy-50/40 shadow-[0_24px_60px_-40px_rgba(202,161,63,0.35)];
+}
+
+.unit-plan-carousel-stage {
+  @apply relative block aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10];
+}
+
+.unit-plan-carousel-nav {
+  @apply absolute top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-ink/70 text-white backdrop-blur-sm transition-colors hover:border-primary-400/60 hover:text-primary-300 sm:h-11 sm:w-11;
+}
+
+.unit-plan-carousel-nav--prev {
+  @apply start-3;
+}
+
+.unit-plan-carousel-nav--next {
+  @apply end-3;
+}
+
+.unit-plan-carousel-view {
+  @apply absolute bottom-3 end-3 rounded-full border border-primary-400/40 bg-ink/75 px-3 py-1 text-xs font-semibold text-primary-300 opacity-0 transition-opacity group-hover:opacity-100;
+}
+
+.unit-plan-carousel-dot {
+  @apply h-2 w-2 rounded-full bg-navy-300 transition-all duration-300;
+}
+
+.unit-plan-carousel-dot-active {
+  @apply w-6 bg-primary-400;
 }

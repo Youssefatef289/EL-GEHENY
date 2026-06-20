@@ -65,7 +65,14 @@ export default function Footer() {
               <IconWrap>
                 <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
               </IconWrap>
-              <span className="leading-relaxed">{L(company.address, lang)}</span>
+              <a
+                href={company.mapUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="leading-relaxed link-hover"
+              >
+                {L(company.address, lang)}
+              </a>
             </li>
             <li>
               <a href={`tel:+${company.phoneIntl}`} className="flex items-center gap-2.5 text-body link-hover">
@@ -84,6 +91,26 @@ export default function Footer() {
               </a>
             </li>
           </ul>
+          <div className="footer-map mt-4">
+            <a
+              href={company.mapUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={t('contact.mapTitle')}
+              className="block overflow-hidden rounded-lg border border-white/15"
+            >
+              <iframe
+                title={t('contact.mapTitle')}
+                src={company.mapEmbed}
+                width="100%"
+                height="100%"
+                style={{ border: 0, pointerEvents: 'none' }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                tabIndex={-1}
+              />
+            </a>
+          </div>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, Navigate } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
 import PlanLightbox from '../components/PlanLightbox'
 import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
@@ -9,11 +9,9 @@ import { sendInquiryEmail } from '../lib/email'
 import {
   getProjectById,
   getProjectDisplayTitle,
+  getProjectHeroContent,
   getProjectSalesEmail,
   formatProjectCode,
-  getProjectAreaRange,
-  getProjectUnitsLabel,
-  getProjectUnitTypesSummary,
   getAllProjectLayoutPlans,
   projects,
   UNIT_TYPE_KEYS,
@@ -51,6 +49,16 @@ export default function ProjectDetail() {
     [project],
   )
 
+  const activeTypePlans = useMemo(
+    () => layoutPlans.filter((plan) => plan.type === activeUnitType),
+    [layoutPlans, activeUnitType],
+  )
+
+  useEffect(() => {
+    setActiveUnitType('ground')
+    setActivePlanImg(0)
+  }, [project?.id])
+
   if (!project) return <Navigate to="/projects" replace />
 
   const related = projects.filter((p) => p.id !== project.id).slice(0, 3)
@@ -59,9 +67,7 @@ export default function ProjectDetail() {
   const constructionStages = getConstructionStageState(project.progress)
   const deliveryLabel = L(project.deliveryStatus, lang)
   const displayTitle = getProjectDisplayTitle(project, lang)
-  const unitTypesSummary = getProjectUnitTypesSummary(project, lang)
-  const unitsLabel = getProjectUnitsLabel(project, lang)
-  const areaRangeLabel = getProjectAreaRange(project, lang)
+  const heroContent = getProjectHeroContent(project, lang)
   const activeUnits = unitGroups[activeUnitType] || []
   const activePlans = unitPlans[activeUnitType] || []
   const activeUnitLabel = L(UNIT_TYPE_LABELS[activeUnitType], lang)
@@ -95,8 +101,9 @@ export default function ProjectDetail() {
     setLayoutLightboxIndex(planIndex >= 0 ? planIndex : 0)
   }
 
-  const scrollToAbout = () => {
-    document.getElementById('project-about')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const openActivePlanLightbox = (index = activePlanImg) => {
+    const plan = activeTypePlans[index]
+    if (plan) openLayoutLightbox(plan)
   }
 
   return (
@@ -111,8 +118,11 @@ export default function ProjectDetail() {
       <ImagePageHero
         image={heroProjectImage}
         imageAlt={displayTitle}
-        eyebrow={L(project.categoryName, lang)}
-        title={displayTitle}
+        titleStack={{
+          company: heroContent.companyName,
+          district: heroContent.districtLine,
+          location: heroContent.locationLine,
+        }}
         breadcrumb={[
           { label: t('project.breadcrumbHome'), to: '/' },
           { label: t('project.breadcrumbProjects'), to: '/projects' },
@@ -143,16 +153,6 @@ export default function ProjectDetail() {
         <div className="container-x grid gap-10 lg:grid-cols-3">
           {/* العمود الأيمن - التفاصيل */}
           <div className="space-y-12 lg:col-span-2">
-            {/* معلومات سريعة */}
-            <Reveal>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <InfoBox label={t('project.unitTypes')} value={unitTypesSummary} onClick={scrollToAbout} />
-                <InfoBox label={t('project.areaRange')} value={areaRangeLabel} onClick={scrollToAbout} />
-                <InfoBox label={t('project.units')} value={unitsLabel} onClick={scrollToAbout} />
-                <InfoBox label={t('project.deliveryStatus')} value={deliveryLabel} onClick={scrollToAbout} />
-              </div>
-            </Reveal>
-
             <Reveal>
               <div id="project-about" className="project-about-panel">
                 <div className="project-about-grid">
@@ -177,76 +177,37 @@ export default function ProjectDetail() {
             {/* أنواع الوحدات */}
             <Reveal>
               <div>
-                <h2 className="heading-md mb-5 text-navy-900">{t('project.unitsTitle')}</h2>
-
-                <div className="mb-8 grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-primary-200/60 bg-primary-500/5 p-5">
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary-400">{t('project.unitTypes')}</p>
-                    <p className="mt-2 text-base font-semibold leading-relaxed text-navy-900 sm:text-lg">{unitTypesSummary}</p>
-                  </div>
-                  <div className="rounded-2xl border border-navy-200 bg-navy-50/70 p-5">
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t('project.units')}</p>
-                    <p className="mt-2 text-base font-semibold text-navy-900 sm:text-lg">{unitsLabel}</p>
-                  </div>
-                  <div className="rounded-2xl border border-navy-200 bg-navy-50/70 p-5 sm:col-span-1">
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-muted">{t('project.areaRange')}</p>
-                    <p className="mt-2 text-base font-semibold leading-relaxed text-navy-900 sm:text-lg">{areaRangeLabel}</p>
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                  <h2 className="heading-md text-navy-900">{t('project.unitsTitle')}</h2>
+                  <div
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${
+                      delivered
+                        ? 'border border-emerald-400/40 bg-emerald-500/10 text-emerald-300'
+                        : 'border border-amber-400/40 bg-amber-500/10 text-amber-200'
+                    }`}
+                  >
+                    <span className="text-xs font-bold uppercase tracking-wide opacity-80">{t('project.deliveryStatus')}</span>
+                    <span>{deliveryLabel}</span>
                   </div>
                 </div>
 
-                {layoutPlans.length > 0 && (
-                  <div className="mb-10">
-                    <h3 className="mb-5 font-display text-xl font-bold text-navy-900">{t('project.layoutPlansTitle')}</h3>
-                    <div className="space-y-8">
-                      {UNIT_TYPE_KEYS.map((type) => {
-                        const typePlans = layoutPlans.filter((plan) => plan.type === type)
-                        if (typePlans.length === 0) return null
-                        return (
-                          <div key={type}>
-                            <p className="mb-4 inline-flex rounded-full border border-primary-300/40 bg-primary-500/10 px-4 py-1.5 text-sm font-bold text-primary-500">
-                              {L(UNIT_TYPE_LABELS[type], lang)}
-                            </p>
-                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                              {typePlans.map((plan, index) => (
-                                <button
-                                  key={`${plan.src}-${index}`}
-                                  type="button"
-                                  onClick={() => openLayoutLightbox(plan)}
-                                    className="group overflow-hidden rounded-2xl border border-primary-400/20 bg-transparent text-start shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary-300/50 hover:shadow-[0_20px_50px_-30px_rgba(202,161,63,0.35)]"
-                                  >
-                                    <LazyImage
-                                      src={plan.src}
-                                      alt={`${displayTitle} - ${L(plan.label, lang)} ${index + 1}`}
-                                      className="aspect-[4/3] w-full bg-transparent"
-                                      imgClassName="object-contain p-2 transition-transform duration-500 group-hover:scale-[1.02]"
-                                    />
-                                    <span className="flex items-center justify-between gap-2 px-4 py-3 text-xs font-semibold text-primary-300">
-                                      <span>{L(plan.label, lang)}</span>
-                                      <span className="text-primary-400 opacity-80 transition-opacity group-hover:opacity-100">
-                                        {lang === 'ar' ? 'عرض' : 'View'}
-                                      </span>
-                                    </span>
-                                  </button>
-                              ))}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                <div className="unit-type-tabs mb-8">
-                  {UNIT_TYPE_KEYS.map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => handleUnitTypeChange(type)}
-                      className={activeUnitType === type ? 'unit-type-tab-active' : 'unit-type-tab-idle'}
-                    >
-                      {L(UNIT_TYPE_LABELS[type], lang)}
-                    </button>
-                  ))}
+                <div className="unit-type-tabs mb-6">
+                  {UNIT_TYPE_KEYS.map((type) => {
+                    const count = unitPlans[type]?.length ?? 0
+                    return (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => handleUnitTypeChange(type)}
+                        className={activeUnitType === type ? 'unit-type-tab-active' : 'unit-type-tab-idle'}
+                      >
+                        {L(UNIT_TYPE_LABELS[type], lang)}
+                        {count > 0 && (
+                          <span className="ms-1.5 text-[0.65rem] opacity-75">({count})</span>
+                        )}
+                      </button>
+                    )
+                  })}
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -258,37 +219,25 @@ export default function ProjectDetail() {
                     transition={{ duration: 0.35, ease: 'easeOut' }}
                     className="space-y-6"
                   >
-                    {activePlans.length > 0 && (
-                      <div>
-                        <h3 className="mb-4 font-display text-lg font-bold text-navy-900">{t('project.unitPlansTitle')}</h3>
-                        <div className="overflow-hidden rounded-3xl border border-navy-200">
-                          <LazyImage
-                            src={activePlans[activePlanImg]}
-                            alt={`${displayTitle} - ${activeUnitLabel}`}
-                            className="aspect-[4/3] w-full bg-navy-50"
-                            imgClassName="object-contain"
-                          />
-                        </div>
-                        {activePlans.length > 1 && (
-                          <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
-                            {activePlans.map((img, i) => (
-                              <button
-                                key={img}
-                                type="button"
-                                onClick={() => setActivePlanImg(i)}
-                                className={`overflow-hidden rounded-2xl border-2 transition-all ${
-                                  activePlanImg === i ? 'border-primary-400' : 'border-transparent opacity-70 hover:opacity-100'
-                                }`}
-                              >
-                                <LazyImage src={img} alt="" className="aspect-video w-full" imgClassName="object-cover" />
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                    {activePlans.length > 0 ? (
+                      <UnitPlanCarousel
+                        images={activePlans}
+                        activeIndex={activePlanImg}
+                        onIndexChange={setActivePlanImg}
+                        onOpenLightbox={openActivePlanLightbox}
+                        title={displayTitle}
+                        unitLabel={activeUnitLabel}
+                        lang={lang}
+                        plansTitle={t('project.unitPlansTitle')}
+                        viewLabel={lang === 'ar' ? 'عرض' : 'View'}
+                      />
+                    ) : (
+                      <p className="rounded-2xl border border-dashed border-navy-200 bg-navy-50/50 px-6 py-10 text-center body-sm text-muted">
+                        {t('project.unitsEmpty')}
+                      </p>
                     )}
 
-                    {activeUnits.length > 0 ? (
+                    {activeUnits.length > 0 && (
                       <div className="grid gap-5 sm:grid-cols-2">
                         {activeUnits.map((unit, ui) => (
                           <div key={ui} className="glass rounded-3xl p-6 sm:p-7">
@@ -330,12 +279,6 @@ export default function ProjectDetail() {
                           </div>
                         ))}
                       </div>
-                    ) : (
-                      !activePlans.length && (
-                        <p className="rounded-2xl border border-dashed border-navy-200 bg-navy-50/50 px-6 py-10 text-center body-sm text-muted">
-                          {t('project.unitsEmpty')}
-                        </p>
-                      )
                     )}
                   </motion.div>
                 </AnimatePresence>
@@ -549,16 +492,121 @@ export default function ProjectDetail() {
   )
 }
 
-function InfoBox({ label, value, onClick }) {
+function UnitPlanCarousel({
+  images,
+  activeIndex,
+  onIndexChange,
+  onOpenLightbox,
+  title,
+  unitLabel,
+  lang,
+  plansTitle,
+  viewLabel,
+}) {
+  const reduceMotion = useReducedMotion()
+  const [paused, setPaused] = useState(false)
+  const total = images.length
+  const currentSrc = images[activeIndex]
+
+  useEffect(() => {
+    if (reduceMotion || paused || total <= 1) return undefined
+    const id = setInterval(() => {
+      onIndexChange((i) => (i + 1) % total)
+    }, 4500)
+    return () => clearInterval(id)
+  }, [reduceMotion, paused, total, onIndexChange])
+
+  const goPrev = () => onIndexChange((activeIndex - 1 + total) % total)
+  const goNext = () => onIndexChange((activeIndex + 1) % total)
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="rounded-2xl border border-navy-200 bg-navy-50 p-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary-400/50 hover:shadow-[0_12px_32px_-20px_rgba(202,161,63,0.45)]"
-    >
-      <p className="text-xs text-navy-400">{label}</p>
-      <p className="mt-1 font-bold text-navy-900">{value}</p>
-    </button>
+    <div>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h3 className="font-display text-lg font-bold text-navy-900">{plansTitle}</h3>
+        <span className="rounded-full border border-primary-300/40 bg-primary-500/10 px-4 py-1 text-xs font-bold text-primary-400">
+          {unitLabel}
+        </span>
+      </div>
+
+      <div
+        className="unit-plan-carousel"
+        onMouseEnter={() => setPaused(true)}
+        onFocus={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onBlur={() => setPaused(false)}
+      >
+        <button
+          type="button"
+          onClick={() => onOpenLightbox(activeIndex)}
+          className="unit-plan-carousel-stage group"
+          aria-label={`${viewLabel} ${activeIndex + 1}`}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSrc}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              className="absolute inset-0"
+            >
+              <LazyImage
+                src={currentSrc}
+                alt={`${title} - ${unitLabel} ${activeIndex + 1}`}
+                className="h-full w-full bg-navy-50"
+                imgClassName="object-contain p-3 sm:p-4 transition-transform duration-500 group-hover:scale-[1.02]"
+              />
+            </motion.div>
+          </AnimatePresence>
+          <span className="unit-plan-carousel-view">{viewLabel}</span>
+        </button>
+
+        {total > 1 && (
+          <>
+            <button type="button" onClick={goPrev} className="unit-plan-carousel-nav unit-plan-carousel-nav--prev" aria-label={lang === 'ar' ? 'السابق' : 'Previous'}>
+              <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+                <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button type="button" onClick={goNext} className="unit-plan-carousel-nav unit-plan-carousel-nav--next" aria-label={lang === 'ar' ? 'التالي' : 'Next'}>
+              <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+                <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+
+      {total > 1 && (
+        <>
+          <div className="mt-4 flex items-center justify-center gap-2">
+            {images.map((img, i) => (
+              <button
+                key={img}
+                type="button"
+                onClick={() => onIndexChange(i)}
+                aria-label={`${unitLabel} ${i + 1}`}
+                className={`unit-plan-carousel-dot ${activeIndex === i ? 'unit-plan-carousel-dot-active' : ''}`}
+              />
+            ))}
+          </div>
+          <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+            {images.map((img, i) => (
+              <button
+                key={`${img}-${i}`}
+                type="button"
+                onClick={() => onIndexChange(i)}
+                className={`overflow-hidden rounded-2xl border-2 transition-all ${
+                  activeIndex === i ? 'border-primary-400 ring-2 ring-primary-400/25' : 'border-transparent opacity-70 hover:opacity-100'
+                }`}
+              >
+                <LazyImage src={img} alt="" className="aspect-[4/3] w-full bg-navy-50" imgClassName="object-contain p-1" />
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 

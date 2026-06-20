@@ -960,6 +960,35 @@ export function formatProjectCode(id) {
   return id.toUpperCase()
 }
 
+export function getProjectHeroContent(project, lang) {
+  const companyName = company.name[lang] ?? company.name.ar
+  const category = projectCategories.find((c) => c.id === project.category)
+  const districtName = category
+    ? category.name[lang] ?? category.name.ar
+    : project.categoryName[lang] ?? project.categoryName.ar
+  const code = formatProjectCode(project.id)
+  const districtLine = `${districtName} - ${code}`
+
+  const categoryLabel = project.categoryName[lang] ?? project.categoryName.ar
+  const locationText = project.location[lang] ?? project.location.ar
+  const compound = categoryLabel.includes(' - ')
+    ? categoryLabel.split(' - ')[0].trim()
+    : lang === 'ar'
+      ? 'بيت الوطن'
+      : 'Beit El-Watan'
+
+  let settlement = lang === 'ar' ? 'التجمع الخامس' : 'Fifth Settlement'
+  if (lang === 'ar' && !locationText.includes('التجمع الخامس')) {
+    settlement = locationText.split('،').pop()?.trim() || settlement
+  } else if (lang === 'en' && !locationText.includes('Fifth Settlement')) {
+    settlement = locationText.split(',').pop()?.trim() || settlement
+  }
+
+  const locationLine = `${compound} - ${settlement}`
+
+  return { companyName, districtLine, locationLine }
+}
+
 export function getProjectDisplayTitle(project, lang) {
   const companyName = company.name[lang] ?? company.name.ar
   const category = projectCategories.find((c) => c.id === project.category)

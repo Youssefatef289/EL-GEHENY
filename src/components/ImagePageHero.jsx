@@ -9,27 +9,29 @@ export default function ImagePageHero({
   imageAlt,
   eyebrow,
   title,
+  titleStack,
   description,
   breadcrumb = [],
   children,
   className = '',
 }) {
   return (
-    <section className={`relative w-full bg-ink ${className}`}>
-      <div className="relative min-h-[calc(13.5rem+5.75rem)] w-full sm:min-h-[calc(15rem+6.5rem)] lg:min-h-[calc(16.5rem+7.25rem)] xl:min-h-[calc(16.5rem+7.75rem)]">
-        <div className="absolute inset-0 overflow-hidden shadow-[0_28px_80px_-45px_rgba(0,0,0,0.85)]">
+    <section className={`image-page-hero relative w-full bg-ink ${className}`}>
+      <div className="image-page-hero-shell relative min-h-[calc(16rem+5.75rem)] w-full sm:min-h-[calc(18rem+6.5rem)] lg:min-h-[calc(20rem+7.25rem)] xl:min-h-[calc(21rem+7.75rem)]">
+        <div className="image-page-hero-media absolute inset-0 overflow-hidden">
           <img
             src={image}
             alt={imageAlt || title || ''}
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="pointer-events-none absolute inset-0 bg-ink/40" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-ink/70 via-ink/30 to-transparent sm:h-40" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/88 via-ink/45 to-transparent" />
+          <div className="image-page-hero-shadow image-page-hero-shadow--base" aria-hidden="true" />
+          <div className="image-page-hero-shadow image-page-hero-shadow--top" aria-hidden="true" />
+          <div className="image-page-hero-shadow image-page-hero-shadow--bottom" aria-hidden="true" />
+          <div className="image-page-hero-shadow image-page-hero-shadow--vignette" aria-hidden="true" />
         </div>
 
-        <div className="relative z-10 flex min-h-[inherit] flex-col justify-end px-5 pb-6 pt-[5.75rem] sm:px-8 sm:pb-7 sm:pt-[6.5rem] lg:px-12 lg:pb-8 lg:pt-[7.25rem] xl:pt-[7.75rem]">
-          <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+        <div className="image-page-hero-content relative z-10 flex min-h-[inherit] flex-col justify-end overflow-visible px-5 pb-10 pt-[5.75rem] sm:px-8 sm:pb-12 sm:pt-[6.5rem] lg:px-12 lg:pb-14 lg:pt-[7.25rem] xl:pt-[7.75rem]">
+          <div className="mx-auto flex w-full max-w-3xl flex-col items-center overflow-visible text-center">
             {breadcrumb.length > 0 && (
               <motion.nav
                 initial={{ opacity: 0, y: 8 }}
@@ -56,29 +58,44 @@ export default function ImagePageHero({
               </motion.nav>
             )}
 
-            {eyebrow && (
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.04 }}
-                className="eyebrow mb-3 border-white/25 bg-white/10 text-white backdrop-blur-md"
-              >
-                {eyebrow}
-              </motion.span>
-            )}
-
-            {title && (
-              <motion.h1
+            {titleStack ? (
+              <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.08 }}
-                className="heading-md w-full text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)] sm:text-3xl lg:text-4xl"
+                className="project-hero-stack w-full"
               >
-                {title}
-              </motion.h1>
+                <p className="project-hero-company text-gradient-primary">{titleStack.company}</p>
+                <h1 className="project-hero-district">{titleStack.district}</h1>
+                <p className="project-hero-location">{titleStack.location}</p>
+              </motion.div>
+            ) : (
+              <>
+                {eyebrow && (
+                  <motion.span
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.04 }}
+                    className="eyebrow mb-3 border-white/25 bg-white/10 text-white backdrop-blur-md"
+                  >
+                    {eyebrow}
+                  </motion.span>
+                )}
+
+                {title && (
+                  <motion.h1
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.08 }}
+                    className="heading-md w-full text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)] sm:text-3xl lg:text-4xl"
+                  >
+                    {title}
+                  </motion.h1>
+                )}
+              </>
             )}
 
-            {description && (
+            {!titleStack && description && (
               <motion.p
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}

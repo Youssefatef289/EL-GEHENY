@@ -273,6 +273,7 @@ export const translations = {
       whatsapp: 'تواصل عبر واتساب',
       whatsappMsg: 'مرحباً، أرغب في الاستفسار',
       mapTitle: 'موقع الجهيني للتطوير العقاري',
+      openMap: 'افتح الموقع على خرائط Google',
     },
     contactBlock: {
       titlePrefix: 'لنبدأ رحلتك',
@@ -614,6 +615,7 @@ export const translations = {
       whatsapp: 'Chat on WhatsApp',
       whatsappMsg: 'Hello, I would like to inquire',
       mapTitle: 'El-Geheny Real Estate location',
+      openMap: 'Open location in Google Maps',
     },
     contactBlock: {
       titlePrefix: "Let's start your",

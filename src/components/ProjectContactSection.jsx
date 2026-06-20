@@ -173,6 +173,14 @@ export default function ProjectContactSection({ projectTitle }) {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     />
+                    <a
+                      href={company.mapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="journey-contact-map-link"
+                    >
+                      {t('contact.openMap')}
+                    </a>
                   </div>
                 </form>
               )}
@@ -217,7 +225,14 @@ export default function ProjectContactSection({ projectTitle }) {
                     </svg>
                   </span>
                   <div>
-                    <p className="journey-contact-info-link leading-relaxed">{L(company.address, lang)}</p>
+                    <a
+                      href={company.mapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="journey-contact-info-link leading-relaxed transition-colors hover:text-primary-300"
+                    >
+                      {L(company.address, lang)}
+                    </a>
                     <p className="mt-1 text-sm text-white/55">{t('contactBlock.cityLabel')}</p>
                   </div>
                 </li>
