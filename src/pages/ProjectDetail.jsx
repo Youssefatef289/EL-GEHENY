@@ -439,15 +439,23 @@ export default function ProjectDetail() {
             <Reveal>
               <div>
                 <h2 className="heading-md mb-5 text-navy-900">{t('project.paymentTitle')}</h2>
-                <div className="grid gap-4 sm:grid-cols-3">
-                  {project.payment.map((p, pi) => (
-                    <div key={pi} className="glass-primary rounded-2xl p-6 text-center">
-                      <p className="font-display text-2xl font-extrabold text-gradient-primary">
-                        {L(p.value, lang)}
-                      </p>
-                      <p className="mt-2 body-sm text-body">{L(p.label, lang)}</p>
-                    </div>
-                  ))}
+                <div className="glass-primary rounded-3xl p-8 sm:p-10">
+                  <p className="font-display text-2xl font-extrabold text-gradient-primary sm:text-3xl">
+                    {t('project.paymentFlexible')}
+                  </p>
+                  <p className="mt-3 body-md text-body">{t('project.paymentContactNow')}</p>
+                  <a
+                    href={`tel:+${company.phoneIntl}`}
+                    className="btn-primary mt-6 inline-flex items-center gap-3"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 shrink-0">
+                      <path d="M3 5.5C3 4.12 4.12 3 5.5 3H7c.6 0 1.1.4 1.3 1l.9 3.2c.1.5 0 1-.4 1.4l-1.3 1.3a13 13 0 005.6 5.6l1.3-1.3c.4-.4.9-.5 1.4-.4l3.2.9c.6.2 1 .7 1 1.3v1.5c0 1.4-1.1 2.5-2.5 2.5C10.5 21 3 13.5 3 5.5z" />
+                    </svg>
+                    <span>{t('project.paymentCallBtn')}</span>
+                    <span className="font-bold" dir="ltr">
+                      {company.phone.replace(/(\d{3})(\d{4})(\d{4})/, '+20 $1 $2 $3')}
+                    </span>
+                  </a>
                 </div>
               </div>
             </Reveal>

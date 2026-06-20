@@ -3,7 +3,7 @@ import SectionTitle from '../components/SectionTitle'
 import { useCountUp } from '../hooks/useCountUp'
 import { useLang, L } from '../i18n'
 
-import aboutTeamImage from '../../images/من نحن.png'
+import aboutTeamImage from '../../images/من نحن.jpeg'
 
 const content = {
   eyebrow: { ar: 'من نحن', en: 'About Us' },
