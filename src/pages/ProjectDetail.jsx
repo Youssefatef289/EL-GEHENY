@@ -17,7 +17,8 @@ import {
   UNIT_TYPE_KEYS,
   UNIT_TYPE_LABELS,
   groupUnitDetails,
-  getProjectUnitPlans,
+  getProjectUnitDivisions,
+  getProjectAutocadPlans,
   getConstructionStageState,
   getActiveConstructionPhase,
 } from '../data/projects'
@@ -29,7 +30,8 @@ export default function ProjectDetail() {
   const project = getProjectById(id)
   const [activeImg, setActiveImg] = useState(0)
   const [activeUnitType, setActiveUnitType] = useState('ground')
-  const [activePlanImg, setActivePlanImg] = useState(0)
+  const [activeDivisionImg, setActiveDivisionImg] = useState(0)
+  const [activeAutocadImg, setActiveAutocadImg] = useState(0)
   const [layoutLightboxIndex, setLayoutLightboxIndex] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [sidebarSending, setSidebarSending] = useState(false)
@@ -40,8 +42,12 @@ export default function ProjectDetail() {
     () => groupUnitDetails(project?.unitDetails || []),
     [project?.unitDetails],
   )
-  const unitPlans = useMemo(
-    () => (project ? getProjectUnitPlans(project) : { ground: [], repeated: [], roof: [] }),
+  const unitDivisions = useMemo(
+    () => (project ? getProjectUnitDivisions(project) : { ground: [], repeated: [], roof: [] }),
+    [project],
+  )
+  const autocadPlans = useMemo(
+    () => (project ? getProjectAutocadPlans(project) : { ground: [], repeated: [], roof: [] }),
     [project],
   )
   const layoutPlans = useMemo(
@@ -49,14 +55,19 @@ export default function ProjectDetail() {
     [project],
   )
 
-  const activeTypePlans = useMemo(
-    () => layoutPlans.filter((plan) => plan.type === activeUnitType),
-    [layoutPlans, activeUnitType],
+  const activeTypeDivisions = useMemo(
+    () => unitDivisions[activeUnitType] || [],
+    [unitDivisions, activeUnitType],
+  )
+  const activeTypeAutocad = useMemo(
+    () => autocadPlans[activeUnitType] || [],
+    [autocadPlans, activeUnitType],
   )
 
   useEffect(() => {
     setActiveUnitType('ground')
-    setActivePlanImg(0)
+    setActiveDivisionImg(0)
+    setActiveAutocadImg(0)
   }, [project?.id])
 
   if (!project) return <Navigate to="/projects" replace />
@@ -69,12 +80,14 @@ export default function ProjectDetail() {
   const displayTitle = getProjectDisplayTitle(project, lang)
   const heroContent = getProjectHeroContent(project, lang)
   const activeUnits = unitGroups[activeUnitType] || []
-  const activePlans = unitPlans[activeUnitType] || []
   const activeUnitLabel = L(UNIT_TYPE_LABELS[activeUnitType], lang)
+  const typePlanCount =
+    (unitDivisions[activeUnitType]?.length ?? 0) + (autocadPlans[activeUnitType]?.length ?? 0)
 
   const handleUnitTypeChange = (type) => {
     setActiveUnitType(type)
-    setActivePlanImg(0)
+    setActiveDivisionImg(0)
+    setActiveAutocadImg(0)
   }
 
   const handleSubmit = async (e) => {
@@ -97,13 +110,22 @@ export default function ProjectDetail() {
   }
 
   const openLayoutLightbox = (plan) => {
-    const planIndex = layoutPlans.findIndex((item) => item.src === plan.src && item.type === plan.type)
+    const planIndex = layoutPlans.findIndex(
+      (item) => item.src === plan.src && item.type === plan.type && item.variant === plan.variant,
+    )
     setLayoutLightboxIndex(planIndex >= 0 ? planIndex : 0)
   }
 
-  const openActivePlanLightbox = (index = activePlanImg) => {
-    const plan = activeTypePlans[index]
-    if (plan) openLayoutLightbox(plan)
+  const openDivisionLightbox = (index = activeDivisionImg) => {
+    const src = activeTypeDivisions[index]
+    if (!src) return
+    openLayoutLightbox({ src, type: activeUnitType, variant: 'division' })
+  }
+
+  const openAutocadLightbox = (index = activeAutocadImg) => {
+    const src = activeTypeAutocad[index]
+    if (!src) return
+    openLayoutLightbox({ src, type: activeUnitType, variant: 'autocad' })
   }
 
   return (
@@ -193,7 +215,7 @@ export default function ProjectDetail() {
 
                 <div className="unit-type-tabs mb-6">
                   {UNIT_TYPE_KEYS.map((type) => {
-                    const count = unitPlans[type]?.length ?? 0
+                    const count = (unitDivisions[type]?.length ?? 0) + (autocadPlans[type]?.length ?? 0)
                     return (
                       <button
                         key={type}
@@ -217,21 +239,38 @@ export default function ProjectDetail() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="space-y-6"
+                    className="space-y-8"
                   >
-                    {activePlans.length > 0 ? (
+                    {activeTypeDivisions.length > 0 ? (
                       <UnitPlanCarousel
-                        images={activePlans}
-                        activeIndex={activePlanImg}
-                        onIndexChange={setActivePlanImg}
-                        onOpenLightbox={openActivePlanLightbox}
+                        images={activeTypeDivisions}
+                        activeIndex={activeDivisionImg}
+                        onIndexChange={setActiveDivisionImg}
+                        onOpenLightbox={openDivisionLightbox}
                         title={displayTitle}
                         unitLabel={activeUnitLabel}
                         lang={lang}
-                        plansTitle={t('project.unitPlansTitle')}
+                        plansTitle={t('project.unitDivisionsTitle')}
                         viewLabel={lang === 'ar' ? 'عرض' : 'View'}
                       />
-                    ) : (
+                    ) : null}
+
+                    {activeTypeAutocad.length > 0 ? (
+                      <UnitPlanCarousel
+                        images={activeTypeAutocad}
+                        activeIndex={activeAutocadImg}
+                        onIndexChange={setActiveAutocadImg}
+                        onOpenLightbox={openAutocadLightbox}
+                        title={displayTitle}
+                        unitLabel={activeUnitLabel}
+                        lang={lang}
+                        plansTitle={t('project.layoutPlansTitle')}
+                        viewLabel={lang === 'ar' ? 'عرض' : 'View'}
+                        variant="autocad"
+                      />
+                    ) : null}
+
+                    {typePlanCount === 0 && (
                       <p className="rounded-2xl border border-dashed border-navy-200 bg-navy-50/50 px-6 py-10 text-center body-sm text-muted">
                         {t('project.unitsEmpty')}
                       </p>
@@ -502,6 +541,7 @@ function UnitPlanCarousel({
   lang,
   plansTitle,
   viewLabel,
+  variant = 'division',
 }) {
   const reduceMotion = useReducedMotion()
   const [paused, setPaused] = useState(false)
@@ -529,7 +569,7 @@ function UnitPlanCarousel({
       </div>
 
       <div
-        className="unit-plan-carousel"
+        className={`unit-plan-carousel ${variant === 'autocad' ? 'unit-plan-carousel--autocad' : ''}`}
         onMouseEnter={() => setPaused(true)}
         onFocus={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
@@ -553,8 +593,8 @@ function UnitPlanCarousel({
               <LazyImage
                 src={currentSrc}
                 alt={`${title} - ${unitLabel} ${activeIndex + 1}`}
-                className="h-full w-full bg-navy-50"
-                imgClassName="object-contain p-3 sm:p-4 transition-transform duration-500 group-hover:scale-[1.02]"
+                className={`h-full w-full ${variant === 'autocad' ? 'bg-black' : 'bg-navy-50'}`}
+                imgClassName={`object-contain p-3 sm:p-4 transition-transform duration-500 group-hover:scale-[1.02] ${variant === 'autocad' ? 'bg-black' : ''}`}
               />
             </motion.div>
           </AnimatePresence>

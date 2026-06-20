@@ -24,6 +24,146 @@ for (const key of Object.keys(galleries)) {
     .map((item) => item.url)
 }
 
+const websiteImageModules = import.meta.glob(
+  [
+    '../../images/Elgeheny development_/ويب سايت_/**/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+    '../../images/ويب سايت_/**/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+  ],
+  { eager: true, import: 'default' },
+)
+
+const sourceProjectModules = import.meta.glob(
+  '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/**/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+  { eager: true, import: 'default' },
+)
+
+const websiteUnitFolderPatterns = {
+  j290: /\/J290_\//i,
+  m75: /\/M 75\//i,
+  e80: /\/E80\//i,
+  m36: /\/M 36_/i,
+  a149: /\/A 149_\//i,
+}
+
+const sourceFolderPatterns = {
+  j290: /الحي التاني j290/i,
+  m75: /الحي التالت m75/i,
+  e80: /الحي الخامس E80/i,
+  m36: /الحي الخامس M36/i,
+  a149: /الحي التكميلي A149/i,
+}
+
+/** تقسيمات الوحدات — تصميمات 3D بخلفية بيضاء (مجلد ويب سايت) */
+const unitDivisionFileMap = {
+  j290: {
+    ground: ['6.png', '8.png', '7.png'],
+    repeated: ['9.png', '11.png', '10.png'],
+    roof: ['12.png', '13.png', '14.png'],
+  },
+  m75: {
+    ground: ['21.png'],
+    repeated: ['22.png'],
+    roof: [],
+  },
+  e80: {
+    ground: ['29.png'],
+    repeated: ['30.png'],
+    roof: [],
+  },
+  m36: {
+    ground: ['29.png'],
+    repeated: ['30.png'],
+    roof: [],
+  },
+  a149: {
+    ground: ['47.png'],
+    repeated: ['48.png'],
+    roof: [],
+  },
+  orchid179: {
+    ground: ['plan-ground-right.png', 'plan-ground-left.png'],
+    repeated: ['plan-repeated-right.png', 'plan-repeated-left.png'],
+    roof: ['plan-roof-right.png', 'plan-roof-left.png'],
+  },
+}
+
+/** مخططات الأوتوكاد — خلفية سوداء (مجلد المشاريع الأصلي) */
+const unitAutocadFileMap = {
+  j290: {
+    ground: ['14.jpg', '16.jpg', '15.jpg'],
+    repeated: ['17.jpg', '19.jpg', '18.jpg'],
+    roof: [],
+  },
+  m75: {
+    ground: ['تقسيم الوحدات الارضي.jpg'],
+    repeated: ['تقسيم الوحدات المتكرر.jpg'],
+    roof: [],
+  },
+  e80: {
+    ground: ['43.jpg', '44.jpg', '42.jpg'],
+    repeated: ['45.jpg'],
+    roof: [],
+  },
+  m36: {
+    ground: ['34.jpg'],
+    repeated: ['35.jpg'],
+    roof: [],
+  },
+  a149: {
+    ground: ['تقسيم الوحدات الارضي.jpg'],
+    repeated: ['تقسيم الوحدات المتكرر.jpg'],
+    roof: [],
+  },
+  orchid179: {
+    ground: ['plan-ground-right.png', 'plan-ground-left.png'],
+    repeated: ['plan-repeated-right.png', 'plan-repeated-left.png'],
+    roof: ['plan-roof-right.png', 'plan-roof-left.png'],
+  },
+}
+
+function resolveWebsiteUnitAsset(folder, filename) {
+  const pattern = websiteUnitFolderPatterns[folder]
+  if (!pattern) return projectImageUrl(folder, filename)
+  const entry = Object.entries(websiteImageModules).find(([path]) => {
+    const normalized = path.replace(/\\/g, '/')
+    return pattern.test(normalized) && normalized.endsWith(`/${filename}`)
+  })
+  return entry ? entry[1] : projectImageUrl(folder, filename)
+}
+
+function resolveSourceUnitAsset(folder, filename) {
+  const pattern = sourceFolderPatterns[folder]
+  if (!pattern) return null
+  const entry = Object.entries(sourceProjectModules).find(([path]) => {
+    const normalized = path.replace(/\\/g, '/')
+    return pattern.test(normalized) && normalized.endsWith(`/${filename}`)
+  })
+  return entry ? entry[1] : null
+}
+
+function resolveUnitAssets(folder, fileMap) {
+  const map = fileMap[folder] || { ground: [], repeated: [], roof: [] }
+  const resolve = (files, resolver) => files.map((file) => resolver(folder, file)).filter(Boolean)
+  return {
+    ground: resolve(map.ground, resolveWebsiteUnitAsset),
+    repeated: resolve(map.repeated, resolveWebsiteUnitAsset),
+    roof: resolve(map.roof, resolveWebsiteUnitAsset),
+  }
+}
+
+function resolveAutocadAssets(folder, fileMap) {
+  const map = fileMap[folder] || { ground: [], repeated: [], roof: [] }
+  const resolve = (files) =>
+    files
+      .map((file) => resolveSourceUnitAsset(folder, file) || projectImageUrl(folder, file))
+      .filter(Boolean)
+  return {
+    ground: resolve(map.ground),
+    repeated: resolve(map.repeated),
+    roof: resolve(map.roof),
+  }
+}
+
 // معرض صور المشروع حسب اسم مجلده (الصورة الأولى = الغلاف)
 const galleryFor = (folder) => galleries[folder] || []
 
@@ -35,23 +175,6 @@ function galleryForProject(folder, { excludePlanFiles = false } = {}) {
 
 const projectFolderById = {
   'north-orchid-179': 'orchid179',
-}
-
-const unitPlanFileMap = {
-  j290: {
-    ground: ['06.jpg', '07.jpg', '08.jpg'],
-    repeated: ['09.jpg', '10.jpg', '11.jpg'],
-    roof: ['21.jpeg', '22.jpeg', '23.jpeg'],
-  },
-  m75: { ground: ['13.jpg'], repeated: ['14.jpg'], roof: [] },
-  e80: { ground: ['06.jpg'], repeated: ['08.jpg'], roof: [] },
-  m36: { ground: ['05.jpg'], repeated: ['06.jpg'], roof: [] },
-  a149: { ground: ['06.jpg'], repeated: ['07.jpg'], roof: [] },
-  orchid179: {
-    ground: ['plan-ground-right.png', 'plan-ground-left.png'],
-    repeated: ['plan-repeated-right.png', 'plan-repeated-left.png'],
-    roof: ['plan-roof-right.png', 'plan-roof-left.png'],
-  },
 }
 
 function projectImageUrl(folder, filename) {
@@ -89,15 +212,38 @@ export function groupUnitDetails(unitDetails = []) {
   return groups
 }
 
-export function getProjectUnitPlans(project) {
+export function getProjectUnitDivisions(project) {
   const folder = projectFolderById[project.id] || project.id
-  const map = unitPlanFileMap[folder] || { ground: [], repeated: [], roof: [] }
-  const resolve = (files) => files.map((file) => projectImageUrl(folder, file)).filter(Boolean)
-  return {
-    ground: resolve(map.ground),
-    repeated: resolve(map.repeated),
-    roof: resolve(map.roof),
-  }
+  return resolveUnitAssets(folder, unitDivisionFileMap)
+}
+
+export function getProjectAutocadPlans(project) {
+  const folder = projectFolderById[project.id] || project.id
+  return resolveAutocadAssets(folder, unitAutocadFileMap)
+}
+
+/** @deprecated use getProjectUnitDivisions */
+export function getProjectUnitPlans(project) {
+  return getProjectUnitDivisions(project)
+}
+
+export function getAllProjectLayoutPlans(project) {
+  const divisions = getProjectUnitDivisions(project)
+  const autocad = getProjectAutocadPlans(project)
+  return UNIT_TYPE_KEYS.flatMap((type) => [
+    ...divisions[type].map((src) => ({
+      type,
+      src,
+      variant: 'division',
+      label: UNIT_TYPE_LABELS[type],
+    })),
+    ...autocad[type].map((src) => ({
+      type,
+      src,
+      variant: 'autocad',
+      label: UNIT_TYPE_LABELS[type],
+    })),
+  ])
 }
 
 function parseAreaSqm(value) {
@@ -144,17 +290,6 @@ export function getProjectUnitsLabel(project, lang) {
 export function getProjectUnitTypesSummary(project, lang) {
   const types = project.unitTypes ?? defaultUnitTypes
   return typeof types === 'object' ? types[lang] ?? types.ar : types
-}
-
-export function getAllProjectLayoutPlans(project) {
-  const plans = getProjectUnitPlans(project)
-  return UNIT_TYPE_KEYS.flatMap((type) =>
-    plans[type].map((src) => ({
-      type,
-      src,
-      label: UNIT_TYPE_LABELS[type],
-    })),
-  )
 }
 
 /** مراحل الإنشاء المعتمدة — تُطابق نسبة الإنجاز المعروضة */
