@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import emailjs from '@emailjs/browser'
+import { sendInquiryEmail } from '../lib/email'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
@@ -56,20 +56,14 @@ export default function Contact() {
     setSending(true)
     setError(false)
     try {
-      await emailjs.send(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS credentials
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS credentials
-        {
-          from_name: form.name,
-          phone: form.phone,
-          email: form.email,
-          reply_to: form.email,
-          to_email: company.email,
-          subject: form.subject,
-          message: form.message,
-        },
-        'YOUR_PUBLIC_KEY', // Replace with your EmailJS credentials
-      )
+      await sendInquiryEmail({
+        toEmail: company.email,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.subject,
+        message: form.message,
+      })
       setSubmitted(true)
     } catch (err) {
       setError(true)

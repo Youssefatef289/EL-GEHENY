@@ -5,9 +5,12 @@ import LazyImage from '../components/LazyImage'
 import PlanLightbox from '../components/PlanLightbox'
 import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
 import Reveal from '../components/Reveal'
+import ProjectContactSection from '../components/ProjectContactSection'
+import { sendInquiryEmail } from '../lib/email'
 import {
   getProjectById,
   getProjectDisplayTitle,
+  getProjectSalesEmail,
   formatProjectCode,
   getProjectAreaRange,
   getProjectUnitsLabel,
@@ -32,6 +35,7 @@ export default function ProjectDetail() {
   const [activePlanImg, setActivePlanImg] = useState(0)
   const [layoutLightboxIndex, setLayoutLightboxIndex] = useState(null)
   const [submitted, setSubmitted] = useState(false)
+  const [sidebarSending, setSidebarSending] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
   const { t, lang } = useLang()
 
@@ -68,9 +72,23 @@ export default function ProjectDetail() {
     setActivePlanImg(0)
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
+    setSidebarSending(true)
+    try {
+      await sendInquiryEmail({
+        toEmail: getProjectSalesEmail(),
+        name: form.name,
+        phone: form.phone,
+        message: form.message,
+        projectName: displayTitle,
+      })
+      setSubmitted(true)
+    } catch {
+      // keep form visible on failure
+    } finally {
+      setSidebarSending(false)
+    }
   }
 
   const openLayoutLightbox = (plan) => {
@@ -444,6 +462,16 @@ export default function ProjectDetail() {
                   <p className="mt-2 body-sm text-muted">
                     {t('project.bookDesc')}
                   </p>
+                  <a
+                    href={`mailto:${company.email}`}
+                    className="mt-3 inline-flex items-center gap-2 rounded-lg border border-primary-400/25 bg-primary-500/10 px-3 py-2 text-xs font-semibold text-primary-500"
+                    dir="ltr"
+                  >
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                      <path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm9 7L4 7v1l8 5 8-5V7l-8 5z" />
+                    </svg>
+                    {company.email}
+                  </a>
 
                   {submitted ? (
                     <motion.div
@@ -490,8 +518,8 @@ export default function ProjectDetail() {
                           className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
                         />
                       </div>
-                      <button type="submit" className="btn-primary w-full">
-                        {t('project.submitRequest')}
+                      <button type="submit" disabled={sidebarSending} className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60">
+                        {sidebarSending ? (lang === 'ar' ? 'جارِ الإرسال...' : 'Sending...') : t('project.submitRequest')}
                       </button>
                     </form>
                   )}
@@ -515,6 +543,8 @@ export default function ProjectDetail() {
           </div>
         </div>
       </section>
+
+      <ProjectContactSection projectTitle={displayTitle} />
 
       {/* مشاريع مشابهة */}
       <section className="section-pad pt-0">

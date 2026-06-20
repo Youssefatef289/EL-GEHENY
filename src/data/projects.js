@@ -968,3 +968,8 @@ export function getProjectDisplayTitle(project, lang) {
 }
 
 export const getProjectById = (id) => projects.find((p) => p.id === id)
+
+/** بريد استقبال استفسارات المشاريع */
+export function getProjectSalesEmail() {
+  return company.email
+}
