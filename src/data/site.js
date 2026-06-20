@@ -15,10 +15,12 @@ export const company = {
   whatsapp: '201070312000',
   mapEmbed: 'https://maps.google.com/maps?q=30.0131,31.4961&z=17&output=embed',
   social: {
-    facebook: 'https://facebook.com',
-    instagram: 'https://instagram.com',
-    linkedin: 'https://linkedin.com',
-    youtube: 'https://youtube.com',
+    x: 'https://x.com/elgehenyd64877',
+    tiktok: 'https://www.tiktok.com/@elgehenydevelopment',
+    youtube: 'https://www.youtube.com/@el-gehenydevelopment',
+    facebook: 'https://www.facebook.com/profile.php?id=61589951937782',
+    instagram: 'https://www.instagram.com/elgehenydevelopment/',
+    linkedin: 'https://www.linkedin.com/in/elgeheny-development-a09122357',
   },
 }
 

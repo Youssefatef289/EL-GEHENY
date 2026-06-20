@@ -2,6 +2,7 @@
 
 import { company } from './site'
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
+import orchid179Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/حي شمال الاوركيد 179/الوجهات_(1).jpg'
 
 // تحميل جميع صور المشاريع تلقائياً من مجلد كل مشروع داخل images/projects/<folder>/
 const imageModules = import.meta.glob(
@@ -807,8 +808,8 @@ export const projects = [
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'تحت الإنشاء', en: 'Under construction' },
     unitTypes: defaultUnitTypes,
-    cover: projectImageUrl('orchid179', '01-facade-front-day.png') || galleryForProject('orchid179', { excludePlanFiles: true })[0],
-    gallery: galleryForProject('orchid179', { excludePlanFiles: true }),
+    cover: orchid179Cover,
+    gallery: [orchid179Cover, ...galleryForProject('orchid179', { excludePlanFiles: true })],
     shortDescription: {
       ar: 'مشروع سكني عصري في شمال الأوركيد — ناصية صريحة على منطقة الخدمات بمساحات من 120 إلى 180 م².',
       en: 'A modern residential project in North Orchid — a corner plot overlooking the services zone, with areas from 120 to 180 m².',

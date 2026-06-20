@@ -145,6 +145,7 @@ export const translations = {
       contact: 'تواصل معنا',
       rights: 'جميع الحقوق محفوظة.',
       devLine: 'تطوير عقاري بخبرة منذ عام {year} — القاهرة الجديدة',
+      followUs: 'تابعنا',
     },
     pageHeader: {
       pillSince: 'منذ',
@@ -256,6 +257,7 @@ export const translations = {
       address: 'العنوان',
       formTitle: 'أرسل لنا رسالة',
       formDesc: 'املأ النموذج وسنعاود الاتصال بك في أقرب وقت ممكن.',
+      defaultSubject: 'استفسار من الموقع',
       successTitle: 'شكراً لتواصلك معنا!',
       successDesc: 'تم استلام رسالتك وسيتواصل معك فريقنا قريباً.',
       sendAnother: 'إرسال رسالة أخرى',
@@ -271,6 +273,17 @@ export const translations = {
       whatsapp: 'تواصل عبر واتساب',
       whatsappMsg: 'مرحباً، أرغب في الاستفسار',
       mapTitle: 'موقع الجهيني للتطوير العقاري',
+    },
+    contactBlock: {
+      titlePrefix: 'لنبدأ رحلتك',
+      titleHighlight: 'العقارية',
+      infoTitlePrefix: 'لنبني مستقبلك العقاري',
+      infoTitleHighlight: 'معًا',
+      infoTitleSuffix: '',
+      infoDesc:
+        'نحن هنا لمساعدتك في اختيار مشروعك العقاري المناسب. تواصل معنا اليوم لمعرفة المزيد عن مشاريعنا وخطط السداد المرنة.',
+      districtLabel: 'استفسارك عن الحي',
+      cityLabel: 'Cairo, Egypt',
     },
     blog: {
       eyebrow: 'المدونة',
@@ -473,6 +486,7 @@ export const translations = {
       contact: 'Contact Us',
       rights: 'All rights reserved.',
       devLine: 'Real estate development with experience since {year} — New Cairo',
+      followUs: 'Follow us',
     },
     pageHeader: {
       pillSince: 'Since',
@@ -584,6 +598,7 @@ export const translations = {
       address: 'Address',
       formTitle: 'Send us a message',
       formDesc: 'Fill in the form and we will get back to you as soon as possible.',
+      defaultSubject: 'Website inquiry',
       successTitle: 'Thank you for contacting us!',
       successDesc: 'Your message has been received and our team will contact you soon.',
       sendAnother: 'Send another message',
@@ -599,6 +614,17 @@ export const translations = {
       whatsapp: 'Chat on WhatsApp',
       whatsappMsg: 'Hello, I would like to inquire',
       mapTitle: 'El-Geheny Real Estate location',
+    },
+    contactBlock: {
+      titlePrefix: "Let's start your",
+      titleHighlight: 'real estate journey',
+      infoTitlePrefix: "Let's build your real estate future",
+      infoTitleHighlight: 'together',
+      infoTitleSuffix: '',
+      infoDesc:
+        'We are here to help you choose the right project. Contact us today to learn more about our developments and flexible payment plans.',
+      districtLabel: 'Your inquiry about the district',
+      cityLabel: 'Cairo, Egypt',
     },
     blog: {
       eyebrow: 'Blog',

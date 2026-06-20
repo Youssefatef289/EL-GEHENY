@@ -5,6 +5,7 @@ import Vision from '../sections/Vision'
 import Services from '../sections/Services'
 import ExploreProjects from '../sections/ExploreProjects'
 import Partners from '../sections/Partners'
+import ProjectContactSection from '../components/ProjectContactSection'
 import SectionReveal from '../components/SectionReveal'
 
 export default function Home() {
@@ -20,6 +21,9 @@ export default function Home() {
       </SectionReveal>
       <SectionReveal>
         <Partners />
+      </SectionReveal>
+      <SectionReveal>
+        <ProjectContactSection />
       </SectionReveal>
     </>
   )

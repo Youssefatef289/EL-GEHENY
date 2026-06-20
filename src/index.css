@@ -1019,86 +1019,165 @@
   }
 }
 
-/* ── Project contact section (detail page footer) ── */
-.project-contact-section {
-  @apply relative overflow-hidden;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.08), transparent 42%),
-    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.06), transparent 38%),
-    rgb(var(--canvas));
+/* ── Journey contact section (home + project detail) ── */
+.journey-contact {
+  @apply relative overflow-hidden bg-ink;
 }
 
-.project-contact-section::before {
-  content: '';
-  @apply pointer-events-none absolute inset-0 opacity-30;
-  background-image: radial-gradient(rgba(212, 175, 55, 0.18) 1px, transparent 1px);
-  background-size: 22px 22px;
+.journey-contact-heading-wrap {
+  @apply mb-8 text-center sm:mb-10;
 }
 
-.project-contact-grid {
-  @apply relative grid gap-6 lg:grid-cols-[1.35fr_0.85fr] lg:items-stretch;
+.journey-contact-heading {
+  @apply font-display text-3xl font-extrabold text-white sm:text-4xl lg:text-[2.65rem];
 }
 
-.project-contact-form-card {
-  @apply rounded-[1.75rem] border border-navy-200/80 bg-navy-50 p-8 shadow-[0_30px_80px_-45px_rgba(0,0,0,0.55)] sm:p-10;
+.journey-contact-box {
+  @apply grid gap-8 rounded-[1.35rem] border border-white/90 p-5 sm:p-7 lg:grid-cols-2 lg:gap-10 lg:p-9;
 }
 
-.project-contact-form-title {
-  @apply font-display text-2xl font-bold text-navy-900 sm:text-3xl;
+.journey-contact-form-col {
+  @apply min-w-0;
 }
 
-.project-contact-form-desc {
-  @apply mt-2 text-sm text-navy-600 sm:text-base;
+.journey-contact-info-col {
+  @apply flex min-w-0 flex-col;
 }
 
-.project-contact-form-email {
-  @apply mt-4 inline-flex items-center gap-2 rounded-xl border border-primary-400/30 bg-primary-500/10 px-4 py-2.5 text-sm font-semibold text-primary-600 transition-colors hover:border-primary-400/50 hover:bg-primary-500/15;
+.journey-contact-info-title {
+  @apply font-display text-2xl font-extrabold leading-snug text-white sm:text-3xl;
 }
 
-.project-contact-label {
-  @apply mb-2 block text-sm font-semibold text-navy-700;
+.journey-contact-info-desc {
+  @apply mt-4 text-sm leading-8 text-white/75 sm:text-base;
 }
 
-.project-contact-input {
-  @apply w-full border-0 border-b border-navy-300 bg-transparent px-0 py-3 text-sm text-navy-900 placeholder:text-navy-400 outline-none transition-colors focus:border-primary-400;
+.journey-contact-info-list {
+  @apply mt-8 space-y-5;
 }
 
-.project-contact-textarea {
-  @apply w-full resize-none border-0 border-b border-navy-300 bg-transparent px-0 py-3 text-sm text-navy-900 placeholder:text-navy-400 outline-none transition-colors focus:border-primary-400;
-}
-
-.project-contact-submit {
-  @apply inline-flex items-center gap-3 rounded-full bg-primary-gradient px-7 py-3.5 text-sm font-bold text-ink shadow-gold-sm transition-all hover:-translate-y-0.5 hover:shadow-gold;
-}
-
-.project-contact-submit-icon {
-  @apply flex h-8 w-8 items-center justify-center rounded-full bg-ink/15;
-}
-
-.project-contact-info-card {
-  @apply flex flex-col justify-between rounded-[1.75rem] border border-primary-400/20 bg-ink p-8 text-white shadow-[0_30px_80px_-45px_rgba(212,175,55,0.35)] sm:p-10;
-}
-
-.project-contact-info-row {
+.journey-contact-info-item {
   @apply flex items-center gap-4;
 }
 
-.project-contact-info-body {
-  @apply min-w-0 flex-1;
+.journey-contact-icon {
+  @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/85 bg-transparent text-white;
 }
 
-.project-contact-info-icon {
-  @apply inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-500/15 text-primary-300 ring-1 ring-primary-400/30;
+.journey-contact-info-link {
+  @apply text-base font-semibold text-white transition-colors hover:text-primary-300 sm:text-lg;
 }
 
-.project-contact-info-value {
-  @apply mt-1 block font-display text-lg font-bold text-white transition-colors hover:text-primary-200 sm:text-xl;
+.journey-contact-social {
+  @apply mt-10 flex flex-wrap items-center gap-3;
 }
 
-.project-contact-info-value-email {
-  @apply text-sm font-semibold text-primary-300 sm:text-base;
+.journey-contact-social-link {
+  @apply inline-flex h-10 w-10 items-center justify-center rounded-full border border-transparent text-base text-white transition-transform hover:scale-105;
 }
 
-.project-contact-whatsapp {
-  @apply mt-2 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:bg-[#20bd5a];
+.journey-contact-social-link--facebook {
+  background-color: #1877f2;
+}
+
+.journey-contact-social-link--instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.journey-contact-social-link--youtube {
+  background-color: #ff0000;
+}
+
+.journey-contact-social-link--tiktok {
+  background-color: #010101;
+}
+
+.journey-contact-social-link--x {
+  background-color: #000000;
+}
+
+.journey-contact-social-link--linkedin {
+  background-color: #0a66c2;
+}
+
+.journey-contact-label {
+  @apply mb-2 block text-sm font-semibold text-white;
+}
+
+.journey-contact-input {
+  @apply w-full rounded-md border border-white/85 bg-transparent px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/45 focus:border-primary-400;
+}
+
+.journey-contact-select {
+  @apply w-full appearance-none rounded-md border border-white/85 bg-transparent px-4 py-3.5 pe-10 text-sm font-semibold text-primary-300 outline-none transition-colors focus:border-primary-400 focus:ring-1 focus:ring-primary-400/35;
+  accent-color: #d4af37;
+  color-scheme: dark;
+}
+
+.journey-contact-select option {
+  background-color: #1d1d1b;
+  color: #fff;
+}
+
+.journey-contact-select option:checked,
+.journey-contact-select option:hover {
+  background-color: #d4af37;
+  color: #1d1d1b;
+}
+
+.journey-contact-select-wrap {
+  @apply relative;
+}
+
+.journey-contact-select-icon {
+  @apply pointer-events-none absolute end-4 top-1/2 h-4 w-4 -translate-y-1/2 text-primary-300;
+}
+
+.journey-contact-submit {
+  @apply inline-flex items-center justify-center rounded-md bg-primary-gradient px-6 py-3.5 text-sm font-bold text-ink shadow-gold-sm transition-all hover:-translate-y-0.5 hover:shadow-gold;
+}
+
+.journey-contact-map {
+  @apply mt-2 h-52 overflow-hidden rounded-md border border-white/25 sm:h-60 lg:h-64;
+}
+
+.journey-contact-map iframe {
+  @apply h-full w-full grayscale-[0.35] invert-[0.92] hue-rotate-180;
+}
+
+.journey-contact-success {
+  @apply rounded-xl border border-white/20 bg-white/5 p-8 text-center;
+}
+
+/* ── Project detail — about panel ── */
+.project-about-panel {
+  @apply overflow-hidden rounded-[1.35rem] border border-white/15 bg-ink shadow-[0_30px_80px_-45px_rgba(0,0,0,0.75)];
+}
+
+.project-about-grid {
+  @apply grid lg:grid-cols-2 lg:items-stretch;
+}
+
+.project-about-content {
+  @apply flex flex-col justify-center p-6 text-start sm:p-8 lg:p-10 xl:p-12;
+}
+
+.project-about-title {
+  @apply mb-5 font-display text-2xl font-extrabold leading-snug text-white sm:text-3xl lg:text-[2rem];
+}
+
+.project-about-desc {
+  @apply text-sm leading-8 text-white/85 sm:text-base sm:leading-9;
+}
+
+.project-about-media {
+  @apply relative overflow-hidden bg-ink;
+}
+
+.project-sidebar-form {
+  @apply rounded-[1.35rem] border border-white/90 bg-ink p-6 sm:p-8;
+}
+
+.project-sidebar-sticky {
+  @apply sticky top-36 mt-4 sm:top-40 sm:mt-6 lg:top-44 lg:mt-8;
 }

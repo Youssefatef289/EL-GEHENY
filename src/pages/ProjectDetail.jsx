@@ -5,7 +5,6 @@ import LazyImage from '../components/LazyImage'
 import PlanLightbox from '../components/PlanLightbox'
 import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
 import Reveal from '../components/Reveal'
-import ProjectContactSection from '../components/ProjectContactSection'
 import { sendInquiryEmail } from '../lib/email'
 import {
   getProjectById,
@@ -96,6 +95,10 @@ export default function ProjectDetail() {
     setLayoutLightboxIndex(planIndex >= 0 ? planIndex : 0)
   }
 
+  const scrollToAbout = () => {
+    document.getElementById('project-about')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <>
       <PlanLightbox
@@ -143,30 +146,31 @@ export default function ProjectDetail() {
             {/* معلومات سريعة */}
             <Reveal>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <InfoBox label={t('project.unitTypes')} value={unitTypesSummary} />
-                <InfoBox label={t('project.areaRange')} value={areaRangeLabel} />
-                <InfoBox label={t('project.units')} value={unitsLabel} />
-                <InfoBox label={t('project.deliveryStatus')} value={deliveryLabel} />
+                <InfoBox label={t('project.unitTypes')} value={unitTypesSummary} onClick={scrollToAbout} />
+                <InfoBox label={t('project.areaRange')} value={areaRangeLabel} onClick={scrollToAbout} />
+                <InfoBox label={t('project.units')} value={unitsLabel} onClick={scrollToAbout} />
+                <InfoBox label={t('project.deliveryStatus')} value={deliveryLabel} onClick={scrollToAbout} />
               </div>
             </Reveal>
 
-            {/* واجهة المشروع */}
             <Reveal>
-              <figure className="overflow-hidden rounded-[1.35rem] border border-white/10 shadow-[0_30px_80px_-45px_rgba(0,0,0,0.7)] sm:rounded-[1.75rem]">
-                <LazyImage
-                  src={project.cover}
-                  alt={displayTitle}
-                  className="aspect-[16/10] w-full bg-ink sm:aspect-[21/10]"
-                  imgClassName="h-full w-full object-cover object-center"
-                />
-              </figure>
-            </Reveal>
-
-            {/* الوصف */}
-            <Reveal>
-              <div>
-                <h2 className="heading-md mb-4 text-navy-900">{t('project.about')}</h2>
-                <p className="body-md text-body">{L(project.description, lang)}</p>
+              <div id="project-about" className="project-about-panel">
+                <div className="project-about-grid">
+                  <div className="project-about-content">
+                    <h2 className="project-about-title">
+                      <span className="text-gradient-primary">{t('project.about')}</span>
+                    </h2>
+                    <p className="project-about-desc">{L(project.description, lang)}</p>
+                  </div>
+                  <figure className="project-about-media">
+                    <LazyImage
+                      src={project.cover}
+                      alt={displayTitle}
+                      className="h-full min-h-[16rem] w-full sm:min-h-[20rem] lg:min-h-[22rem]"
+                      imgClassName="h-full w-full object-cover object-center"
+                    />
+                  </figure>
+                </div>
               </div>
             </Reveal>
 
@@ -463,40 +467,30 @@ export default function ProjectDetail() {
 
           {/* العمود الأيسر - نموذج الحجز */}
           <div className="lg:col-span-1">
-            <div className="sticky top-28">
+            <div className="project-sidebar-sticky">
               <Reveal direction="left">
-                <div className="glass rounded-3xl p-8">
-                  <h3 className="font-display text-xl font-bold text-navy-900">{t('project.bookTitle')}</h3>
-                  <p className="mt-2 body-sm text-muted">
+                <div className="project-sidebar-form">
+                  <h3 className="font-display text-xl font-bold text-white sm:text-2xl">{t('project.bookTitle')}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/70">
                     {t('project.bookDesc')}
                   </p>
-                  <a
-                    href={`mailto:${company.email}`}
-                    className="mt-3 inline-flex items-center gap-2 rounded-lg border border-primary-400/25 bg-primary-500/10 px-3 py-2 text-xs font-semibold text-primary-500"
-                    dir="ltr"
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-                      <path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm9 7L4 7v1l8 5 8-5V7l-8 5z" />
-                    </svg>
-                    {company.email}
-                  </a>
 
                   {submitted ? (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="mt-6 rounded-2xl bg-emerald-500/15 p-6 text-center ring-1 ring-emerald-400/30"
+                      className="journey-contact-success mt-6"
                     >
-                      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">
+                      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-primary-400/40 bg-primary-500/10 text-primary-300">
                         <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
                           <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
-                      <p className="font-semibold text-navy-900">{t('project.successTitle')}</p>
-                      <p className="mt-1 body-sm text-body">{t('project.successDesc')}</p>
+                      <p className="font-display text-lg font-bold text-white">{t('project.successTitle')}</p>
+                      <p className="mt-1 text-sm text-white/70">{t('project.successDesc')}</p>
                     </motion.div>
                   ) : (
-                    <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                    <form onSubmit={handleSubmit} className="mt-6 space-y-5">
                       <Field
                         label={t('project.fieldName')}
                         value={form.name}
@@ -509,50 +503,36 @@ export default function ProjectDetail() {
                         type="tel"
                         value={form.phone}
                         onChange={(v) => setForm({ ...form, phone: v })}
-                        placeholder="01xxxxxxxxx"
+                        placeholder={t('project.fieldPhone')}
                         required
                         isPhone
                         lang={lang}
                       />
                       <div>
-                        <label className="mb-1.5 block text-sm font-medium text-navy-700">
-                          {t('project.fieldMessage')}
-                        </label>
+                        <label className="journey-contact-label">{t('project.fieldMessage')}</label>
                         <textarea
                           rows={3}
                           value={form.message}
                           onChange={(e) => setForm({ ...form, message: e.target.value })}
                           placeholder={t('project.fieldMessagePh')}
-                          className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
+                          className="journey-contact-input min-h-[6.5rem] resize-y"
                         />
                       </div>
-                      <button type="submit" disabled={sidebarSending} className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60">
-                        {sidebarSending ? (lang === 'ar' ? 'جارِ الإرسال...' : 'Sending...') : t('project.submitRequest')}
+                      <button
+                        type="submit"
+                        disabled={sidebarSending}
+                        className="journey-contact-submit w-full disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {sidebarSending ? t('project.contactSending') : t('project.submitRequest')}
                       </button>
                     </form>
                   )}
-
-                  <div className="mt-6 border-t border-navy-200 pt-6">
-                    <a
-                      href={`https://wa.me/${company.whatsapp}?text=${encodeURIComponent((lang === 'ar' ? 'استفسار عن مشروع: ' : 'Inquiry about project: ') + displayTitle)}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366]/15 px-4 py-3 text-sm font-semibold text-[#25D366] transition-colors hover:bg-[#25D366]/25"
-                    >
-                      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-                        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 004.79 1.22c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2z" />
-                      </svg>
-                      {t('contact.whatsapp')}
-                    </a>
-                  </div>
                 </div>
               </Reveal>
             </div>
           </div>
         </div>
       </section>
-
-      <ProjectContactSection projectTitle={displayTitle} />
 
       {/* مشاريع مشابهة */}
       <section className="section-pad pt-0">
@@ -569,12 +549,16 @@ export default function ProjectDetail() {
   )
 }
 
-function InfoBox({ label, value }) {
+function InfoBox({ label, value, onClick }) {
   return (
-    <div className="rounded-2xl border border-navy-200 bg-navy-50 p-4 text-center">
+    <button
+      type="button"
+      onClick={onClick}
+      className="rounded-2xl border border-navy-200 bg-navy-50 p-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary-400/50 hover:shadow-[0_12px_32px_-20px_rgba(202,161,63,0.45)]"
+    >
       <p className="text-xs text-navy-400">{label}</p>
       <p className="mt-1 font-bold text-navy-900">{value}</p>
-    </div>
+    </button>
   )
 }
 
@@ -590,7 +574,7 @@ function Field({ label, value, onChange, type = 'text', placeholder, required, i
 
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-navy-700">{label}</label>
+      <label className="journey-contact-label">{label}</label>
       <input
         type={type}
         value={value}
@@ -599,7 +583,7 @@ function Field({ label, value, onChange, type = 'text', placeholder, required, i
         required={required}
         pattern={isPhone ? '^(010|011|012|015)[0-9]{8}$' : undefined}
         title={isPhone ? phoneTitle : undefined}
-        className="w-full rounded-xl border border-navy-200 bg-navy-100 px-4 py-3 text-sm text-navy-900 placeholder:text-navy-500 outline-none transition-colors focus:border-primary-400/60"
+        className="journey-contact-input"
       />
       {phoneInvalid && (
         <p className="mt-1 text-xs text-red-400">{phoneErrorMsg}</p>
