@@ -71,6 +71,10 @@ const heritageProjects = [
     en: 'Excavation works at Tag Sultan Compound — Suez Road',
   },
   {
+    ar: '90 كيلو طريق عين الدله الفرافره',
+    en: '90 km — Ain El-Delta Road — Al Fayoum',
+  },
+  {
     ar: 'Il Monte Galala — العين السخنة — أعمال حفر وإنشاءات بالقرية',
     en: 'Il Monte Galala — Ain Sokhna — village excavation and construction works',
   },
