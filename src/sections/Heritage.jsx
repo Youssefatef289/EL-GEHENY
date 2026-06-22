@@ -11,7 +11,7 @@ import buildingImage from '../../images/hero-residential.png'
 
 const heritageProjects = [
   {
-    ar: 'إنشاء كمبوند فلور سيتى العجمى - الإسكندرية (1، 2، 3، 4)',
+    ar: 'إنشاء كمبوند فلاور سيتى العجمى - الإسكندرية (1، 2، 3، 4)',
     en: 'Development of Flor City Compound, Agami — Alexandria (Phases 1, 2, 3, 4)',
   },
   {
