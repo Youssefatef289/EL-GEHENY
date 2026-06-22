@@ -15,10 +15,10 @@ export default function Home() {
       <CompanyBrief />
       <AboutGeheny />
       <Vision />
-      <Services />
       <SectionReveal>
         <ExploreProjects />
       </SectionReveal>
+      <Services />
       <SectionReveal>
         <Partners />
       </SectionReveal>

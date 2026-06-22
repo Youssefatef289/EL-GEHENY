@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import FixedParallaxBackground from '../components/FixedParallaxBackground'
 import Reveal from '../components/Reveal'
@@ -14,12 +15,12 @@ const heritageProjects = [
     en: 'Development of Flor City Compound, Agami — Alexandria (Phases 1, 2, 3, 4)',
   },
   {
-    ar: 'إنشاء برج سكنى فلور سيتى 4 أكتوبر - الإسكندرية',
-    en: 'Construction of Flor City residential tower, 4 October — Alexandria',
+    ar: 'إنشاء برج سكنى 7  فلاور سيتى 4 أكتوبر - الإسكندرية',
+    en: 'Construction of 7 Flower City residential tower, 4 October — Alexandria',
   },
   {
-    ar: 'إنشاء فيلات سكنية بالتجمع الأول - القاهرة الجديدة',
-    en: 'Construction of residential villas in First Settlement — New Cairo',
+    ar: 'إنشاء فيلا سكنية بالتجمع الأول - القاهرة الجديدة',
+    en: 'Construction of a residential villa in First Settlement — New Cairo',
   },
   {
     ar: 'إنشاء برج سكنى فلاور تاور زهراء مدينة نصر',
@@ -38,8 +39,8 @@ const heritageProjects = [
     en: 'Execution and finishing of Al-Arqam Institute — Nasr City',
   },
   {
-    ar: 'السوق التجارى - المنطقة 9 - مدينة نصر',
-    en: 'Commercial Market — Zone 9, Nasr City',
+    ar: 'السوق التجارى - المنطقة 10 - مدينة نصر',
+    en: 'Commercial Market — Zone 10, Nasr City',
   },
   {
     ar: 'السوق التجارى القديم - شرم الشيخ',
@@ -153,6 +154,21 @@ export default function Heritage() {
               <HeritageItem key={i} item={item} index={i} />
             ))}
           </ul>
+
+          <Reveal delay={0.2} className="mt-12 flex justify-center sm:mt-14">
+            <Link to="/projects" className="btn-primary px-8 py-3.5 sm:px-10">
+              {t('heritage.cta')}
+              <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+          </Reveal>
         </motion.div>
       </div>
     </section>

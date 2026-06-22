@@ -21,7 +21,7 @@ const founder = {
 const teamMembers = [
   {
     name: { ar: 'م/ وليد كمال الجهيني', en: 'Eng. Waleed Kamal El Geheny' },
-    role: { ar: 'مدير الإشراف والتنفيذ', en: 'Supervision & Execution Director' },
+    role: { ar: 'مدير المشروعات', en: 'Project Manager' },
     bio: {
       ar: 'يدير وليد كمال الجهيني الإشراف على التنفيذ والمتابعة الميدانية للمشروعات، مع التركيز على الحفاظ على معايير الجودة، والالتزام بالجداول الزمنية، وضمان التسليم الناجح في كل مرحلة من مراحل التطوير.',
       en: 'Waleed Kamal El Geheny manages on-site supervision and project execution, with a focus on maintaining quality standards, meeting timelines, and ensuring successful delivery at every stage of development.',
@@ -39,7 +39,7 @@ const teamMembers = [
   },
   {
     name: { ar: 'م/ احمد صلاح الجهيني', en: 'Eng. Ahmed Salah El Geheny' },
-    role: { ar: 'إدارة المبيعات', en: 'Sales Management' },
+    role: { ar: ' الرئيس التنفيذي ومدير العمليات', en: 'CEO & Operations Manager' },
     bio: {
       ar: 'يقود أحمد صلاح الجهيني فريق المبيعات ويشرف على تطوير علاقات العملاء وتحقيق أهداف البيع، مع متابعة أداء كل فرد، وتصحيح مسار التواصل مع العملاء إذا لزم الأمر، لضمان تجربة احترافية تعكس قيمة مشروعات الجهيني.',
       en: 'Ahmed Salah El Geheny leads the sales team and oversees client relationships and sales targets, monitoring each member\'s performance and adjusting client communication when needed to ensure a professional experience that reflects the value of El Geheny projects.',

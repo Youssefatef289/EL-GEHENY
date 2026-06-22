@@ -84,6 +84,7 @@ export const translations = {
       title: 'سجل من الإنجازات يمتد لأكثر من 35 عاما',
       description:
         'منذ عام 1990، نفّذنا مشروعات سكنية وتجارية وبنية تحتية في أهم مواقع مصر — شاهد على خبرتنا وثقة عملائنا.',
+      cta: 'مشارعنا الحاليه',
     },
     vision: {
       eyebrow: 'رؤيتنا للمستقبل',
@@ -427,6 +428,7 @@ export const translations = {
       title: 'A track record spanning more than three decades',
       description:
         'Since 1990, we have delivered residential, commercial, and infrastructure projects across Egypt’s most strategic locations — proof of our experience and our clients’ trust.',
+      cta: 'Our Current Projects',
     },
     vision: {
       eyebrow: 'Our Vision for the Future',
