@@ -159,10 +159,10 @@ export default function Heritage() {
             ))}
           </ul>
 
-          <Reveal delay={0.2} className="mt-12 flex justify-center sm:mt-14">
-            <Link to="/projects" className="btn-primary px-8 py-3.5 sm:px-10">
+          <Reveal delay={0.2} className="relative z-20 mt-12 flex justify-center sm:mt-14">
+            <Link to="/projects" className="btn-primary w-full max-w-sm px-8 py-3.5 sm:w-auto sm:max-w-none sm:px-10">
               {t('heritage.cta')}
-              <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 rtl:rotate-180" aria-hidden="true">
                 <path
                   d="M5 12h14M13 6l6 6-6 6"
                   stroke="currentColor"

@@ -2,7 +2,6 @@ import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import ImagePageHero from '../components/ImagePageHero'
-import SectionReveal from '../components/SectionReveal'
 import { projects, projectCategories } from '../data/projects'
 import { useLang, L } from '../i18n'
 
@@ -31,13 +30,12 @@ export default function Projects() {
         compact
       />
 
-      <SectionReveal>
-      <section className="section-pad pt-10">
+      <section className="section-pad pb-24 pt-6 sm:pb-16 sm:pt-10">
         <div className="container-x">
           {/* الفلاتر */}
-          <div className="relative mb-12 flex justify-center">
-            <div className="pointer-events-none absolute inset-x-8 top-1/2 h-20 -translate-y-1/2 rounded-full bg-primary-500/10 blur-[70px]" />
-            <div className="project-filter-shell">
+          <div className="relative mb-8 flex justify-center sm:mb-12">
+            <div className="pointer-events-none absolute inset-x-4 top-1/2 h-20 -translate-y-1/2 rounded-full bg-primary-500/10 blur-[70px] sm:inset-x-8" />
+            <div className="project-filter-shell w-full max-w-full">
               <div className="project-filter-scroll">
                 <div className="project-filter-track">
                   {projectCategories.map((cat) => (
@@ -70,7 +68,7 @@ export default function Projects() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <ProjectCard project={project} index={i} />
+                  <ProjectCard project={project} index={i} instant />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -81,7 +79,6 @@ export default function Projects() {
           )}
         </div>
       </section>
-      </SectionReveal>
     </>
   )
 }

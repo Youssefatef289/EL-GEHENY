@@ -37,7 +37,7 @@ function ComingSoonCard({ project, index = 0 }) {
   )
 }
 
-export default function ProjectCard({ project, index = 0 }) {
+export default function ProjectCard({ project, index = 0, instant = false }) {
   const { lang } = useLang()
 
   if (project.comingSoon) {
@@ -48,13 +48,21 @@ export default function ProjectCard({ project, index = 0 }) {
   const deliveryLabel = L(project.deliveryStatus, lang)
   const title = L(project.title, lang)
 
+  const motionProps = instant
+    ? {
+        initial: revealFromBottom(),
+        animate: revealToVisible,
+        transition: cardTransition(index),
+      }
+    : {
+        initial: revealFromBottom(),
+        whileInView: revealToVisible,
+        viewport: revealViewport,
+        transition: cardTransition(index),
+      }
+
   return (
-    <motion.div
-      initial={revealFromBottom()}
-      whileInView={revealToVisible}
-      viewport={revealViewport}
-      transition={cardTransition(index)}
-    >
+    <motion.div {...motionProps}>
       <Link
         to={`/projects/${project.id}`}
         className="group relative block w-full overflow-hidden rounded-3xl border border-primary-200/60 bg-ink text-start shadow-[0_24px_70px_-50px_rgba(15,23,34,0.5)] transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-400/60 hover:shadow-[0_34px_85px_-45px_rgba(202,161,63,0.5)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/60"

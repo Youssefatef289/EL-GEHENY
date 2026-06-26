@@ -387,7 +387,7 @@
   }
 
   .project-filter-shell {
-    @apply relative isolate max-w-full overflow-hidden rounded-2xl border border-primary-500/30;
+    @apply relative isolate w-full max-w-full overflow-hidden rounded-2xl border border-primary-500/30;
     background: linear-gradient(
       145deg,
       rgba(40, 40, 37, 0.95) 0%,
