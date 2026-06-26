@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import ScrollToTopButton from './components/ScrollToTopButton'
+import FloatingContactButtons from './components/FloatingContactButtons'
 import Seo from './components/Seo'
 import Loader from './components/Loader'
 import IntroLoader from './components/IntroLoader'
@@ -130,6 +131,7 @@ export default function App() {
       </ErrorBoundary>
 
       <Footer />
+      <FloatingContactButtons />
       <ScrollToTopButton />
     </div>
   )

@@ -1,7 +1,11 @@
-﻿// بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
+// بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
 import { company } from './site'
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
+import m75Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التالت m75/الوجهات_(1).jpg'
+import e80Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي الخامس E80/WhatsApp Image 2026-06-03 at 1.12.04 PM.jpeg'
+import m36Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي الخامس M36/WhatsApp Image 2026-06-03 at 1.15.13 PM.jpeg'
+import a149Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التكميلي A149/الحي التكميلي A149.jpg'
 import orchid179Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/حي شمال الاوركيد 179/الوجهات_(1).jpg'
 
 // تحميل جميع صور المشاريع تلقائياً من مجلد كل مشروع داخل images/projects/<folder>/
@@ -61,23 +65,23 @@ const unitDivisionFileMap = {
     roof: ['12.png', '13.png', '14.png'],
   },
   m75: {
-    ground: ['21.png'],
-    repeated: ['22.png'],
+    ground: ['New folder/WhatsApp Image 2026-06-26 at 5.28.26 PM.jpeg'],
+    repeated: ['New folder/34.png'],
     roof: [],
   },
   e80: {
-    ground: ['29.png'],
-    repeated: ['30.png'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   m36: {
-    ground: ['29.png'],
-    repeated: ['30.png'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   a149: {
-    ground: ['47.png'],
-    repeated: ['48.png'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   orchid179: {
@@ -87,31 +91,31 @@ const unitDivisionFileMap = {
   },
 }
 
-/** مخططات الأوتوكاد — خلفية سوداء (مجلد المشاريع الأصلي) */
+/** مخططات الأوتوكاد — مخططات تقسيم الوحدات (مجلد المشاريع الأصلي) */
 const unitAutocadFileMap = {
   j290: {
-    ground: ['14.jpg', '16.jpg', '15.jpg'],
-    repeated: ['17.jpg', '19.jpg', '18.jpg'],
-    roof: [],
+    ground: ['New folder/19.png', 'New folder/21.png'],
+    repeated: ['New folder/22.png', 'New folder/23.png', 'New folder/24.png'],
+    roof: ['New folder/25.png', 'New folder/26.png', 'New folder/27.png'],
   },
   m75: {
-    ground: ['تقسيم الوحدات الارضي.jpg'],
-    repeated: ['تقسيم الوحدات المتكرر.jpg'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   e80: {
-    ground: ['43.jpg', '44.jpg', '42.jpg'],
-    repeated: ['45.jpg'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   m36: {
-    ground: ['34.jpg'],
-    repeated: ['35.jpg'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   a149: {
-    ground: ['تقسيم الوحدات الارضي.jpg'],
-    repeated: ['تقسيم الوحدات المتكرر.jpg'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   orchid179: {
@@ -141,13 +145,189 @@ function resolveSourceUnitAsset(folder, filename) {
   return entry ? entry[1] : null
 }
 
+function resolveSourceProjectAsset(folder, relativePath) {
+  const pattern = sourceFolderPatterns[folder]
+  if (!pattern) return null
+  const suffix = `/${relativePath.replace(/\\/g, '/')}`
+  const entry = Object.entries(sourceProjectModules).find(([path]) => {
+    const normalized = path.replace(/\\/g, '/')
+    return pattern.test(normalized) && normalized.endsWith(suffix)
+  })
+  return entry ? entry[1] : null
+}
+
+const J290_GALLERY_FILES = [
+  'الوجهات_(1).jpg',
+  'الوجهات_.jpg',
+  'New folder/16.png',
+  'New folder/17.png',
+  'New folder/18.png',
+  'New folder/19.png',
+  'New folder/21.png',
+  'New folder/22.png',
+  'New folder/23.png',
+  'New folder/24.png',
+  'New folder/25.png',
+  'New folder/26.png',
+  'New folder/27.png',
+  'New folder/29.png',
+  'New folder/28.png',
+]
+
+const j290Gallery = J290_GALLERY_FILES.map((file) => resolveSourceProjectAsset('j290', file)).filter(Boolean)
+
+const J290_FACADE_FILES = ['الوجهات_(1).jpg', 'الوجهات_.jpg']
+
+const j290Facades = J290_FACADE_FILES.map((file) => resolveSourceProjectAsset('j290', file)).filter(Boolean)
+
+const M75_FACADE_FILES = ['الوجهات_(1).jpg', 'الوجهات_(2).jpg', 'الوجهات_.jpg', 'الوجهات_.png']
+
+const M75_GALLERY_FILES = [
+  ...M75_FACADE_FILES,
+  'New folder/30.png',
+  'New folder/31.png',
+  'New folder/32.png',
+  'New folder/33.png',
+  'New folder/35.png',
+  'New folder/36.png',
+]
+
+const m75Facades = M75_FACADE_FILES.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean)
+const m75Gallery = M75_GALLERY_FILES.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean)
+
+const M75_DIVISION_FILES = {
+  ground: ['New folder/WhatsApp Image 2026-06-26 at 5.28.26 PM.jpeg'],
+  repeated: ['New folder/34.png'],
+  roof: [],
+}
+
+const m75Divisions = {
+  ground: M75_DIVISION_FILES.ground.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean),
+  repeated: M75_DIVISION_FILES.repeated.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean),
+  roof: [],
+}
+
+const E80_FACADE_FILES = ['WhatsApp Image 2026-06-03 at 1.12.04 PM.jpeg']
+
+const E80_GALLERY_FILES = [
+  ...E80_FACADE_FILES,
+  'New folder/47.png',
+  'New folder/48.png',
+  'New folder/49.png',
+  'New folder/56.png',
+  'New folder/55.png',
+]
+
+const e80Facades = E80_FACADE_FILES.map((file) => resolveSourceProjectAsset('e80', file)).filter(Boolean)
+const e80Gallery = E80_GALLERY_FILES.map((file) => resolveSourceProjectAsset('e80', file)).filter(Boolean)
+
+const E80_DIVISION_FILES = {
+  ground: ['New folder/51.png', 'New folder/52.png', 'New folder/50.png'],
+  repeated: ['New folder/53.png'],
+  roof: [],
+}
+
+const e80Divisions = {
+  ground: E80_DIVISION_FILES.ground.map((file) => resolveSourceProjectAsset('e80', file)).filter(Boolean),
+  repeated: E80_DIVISION_FILES.repeated.map((file) => resolveSourceProjectAsset('e80', file)).filter(Boolean),
+  roof: [],
+}
+
+const M36_FACADE_FILES = ['WhatsApp Image 2026-06-03 at 1.15.13 PM.jpeg']
+
+const M36_GALLERY_FILES = [
+  ...M36_FACADE_FILES,
+  'New folder/37.png',
+  'New folder/38.png',
+  'New folder/39.png',
+  'New folder/40.png',
+  'New folder/44.png',
+  'New folder/45.png',
+]
+
+const m36Facades = M36_FACADE_FILES.map((file) => resolveSourceProjectAsset('m36', file)).filter(Boolean)
+const m36Gallery = M36_GALLERY_FILES.map((file) => resolveSourceProjectAsset('m36', file)).filter(Boolean)
+
+const M36_DIVISION_FILES = {
+  ground: ['New folder/42.png', 'New folder/41.png'],
+  repeated: ['New folder/43.png'],
+  roof: [],
+}
+
+const m36Divisions = {
+  ground: M36_DIVISION_FILES.ground.map((file) => resolveSourceProjectAsset('m36', file)).filter(Boolean),
+  repeated: M36_DIVISION_FILES.repeated.map((file) => resolveSourceProjectAsset('m36', file)).filter(Boolean),
+  roof: [],
+}
+
+const A149_FACADE_FILES = ['الحي التكميلي A149.jpg']
+
+const A149_GALLERY_FILES = [
+  'الحي التكميلي A149.jpg',
+  'New folder/56.png',
+  'New folder/57.png',
+  'New folder/58.png',
+  'New folder/59.png',
+  'New folder/63.png',
+  'New folder/64.png',
+]
+
+const a149Facades = A149_FACADE_FILES.map((file) => resolveSourceProjectAsset('a149', file)).filter(Boolean)
+const a149Gallery = A149_GALLERY_FILES.map((file) => resolveSourceProjectAsset('a149', file)).filter(Boolean)
+
+const A149_DIVISION_FILES = {
+  ground: ['New folder/61.png'],
+  repeated: ['New folder/62.png'],
+  roof: ['New folder/60.png'],
+}
+
+const a149Divisions = {
+  ground: A149_DIVISION_FILES.ground.map((file) => resolveSourceProjectAsset('a149', file)).filter(Boolean),
+  repeated: A149_DIVISION_FILES.repeated.map((file) => resolveSourceProjectAsset('a149', file)).filter(Boolean),
+  roof: A149_DIVISION_FILES.roof.map((file) => resolveSourceProjectAsset('a149', file)).filter(Boolean),
+}
+
+function resolveProjectFacadeAssets(folder) {
+  const pattern = sourceFolderPatterns[folder]
+  if (!pattern) return []
+  return Object.entries(sourceProjectModules)
+    .filter(([path]) => {
+      const normalized = path.replace(/\\/g, '/')
+      return pattern.test(normalized) && /\/الوجهات[^/]*\.(jpe?g|png)$/i.test(normalized)
+    })
+    .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+    .map(([, url]) => url)
+}
+
+export function getProjectFacades(project) {
+  if (!project) return []
+  if (project.facades?.length) return project.facades
+  if (project.id === 'j290' && j290Facades.length > 0) return j290Facades
+  if (project.id === 'm75' && m75Facades.length > 0) return m75Facades
+  if (project.id === 'e80' && e80Facades.length > 0) return e80Facades
+  if (project.id === 'm36' && m36Facades.length > 0) return m36Facades
+  if (project.id === 'a149' && a149Facades.length > 0) return a149Facades
+  const folder = projectFolderById[project.id] || project.id
+  const autoFacades = resolveProjectFacadeAssets(folder)
+  if (autoFacades.length > 0) return autoFacades
+  return project.cover ? [project.cover] : []
+}
+
 function resolveUnitAssets(folder, fileMap) {
   const map = fileMap[folder] || { ground: [], repeated: [], roof: [] }
-  const resolve = (files, resolver) => files.map((file) => resolver(folder, file)).filter(Boolean)
+  const resolve = (files) =>
+    files
+      .map((file) => {
+        if (file.includes('/')) {
+          return resolveSourceProjectAsset(folder, file)
+        }
+        return resolveWebsiteUnitAsset(folder, file)
+      })
+      .filter(Boolean)
   return {
-    ground: resolve(map.ground, resolveWebsiteUnitAsset),
-    repeated: resolve(map.repeated, resolveWebsiteUnitAsset),
-    roof: resolve(map.roof, resolveWebsiteUnitAsset),
+    ground: resolve(map.ground),
+    repeated: resolve(map.repeated),
+    roof: resolve(map.roof),
   }
 }
 
@@ -155,7 +335,12 @@ function resolveAutocadAssets(folder, fileMap) {
   const map = fileMap[folder] || { ground: [], repeated: [], roof: [] }
   const resolve = (files) =>
     files
-      .map((file) => resolveSourceUnitAsset(folder, file) || projectImageUrl(folder, file))
+      .map((file) => {
+        if (file.includes('/')) {
+          return resolveSourceProjectAsset(folder, file)
+        }
+        return resolveSourceUnitAsset(folder, file) || projectImageUrl(folder, file)
+      })
       .filter(Boolean)
   return {
     ground: resolve(map.ground),
@@ -213,6 +398,10 @@ export function groupUnitDetails(unitDetails = []) {
 }
 
 export function getProjectUnitDivisions(project) {
+  if (project?.id === 'm75') return m75Divisions
+  if (project?.id === 'e80') return e80Divisions
+  if (project?.id === 'm36') return m36Divisions
+  if (project?.id === 'a149') return a149Divisions
   const folder = projectFolderById[project.id] || project.id
   return resolveUnitAssets(folder, unitDivisionFileMap)
 }
@@ -424,7 +613,7 @@ export const projects = [
     deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
     unitTypes: defaultUnitTypes,
     cover: j290Cover,
-    gallery: [j290Cover, ...galleryFor('j290')],
+    gallery: j290Gallery.length > 0 ? j290Gallery : [j290Cover],
     shortDescription: {
       ar: 'مشروع سكني فاخر في بيت الوطن بواجهات كلاسيكية أنيقة وإضاءة مميزة.',
       en: 'A luxury residential project in Beit El-Watan with elegant classic facades and distinctive lighting.',
@@ -595,37 +784,45 @@ export const projects = [
     progress: 72,
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
-    unitTypes: defaultUnitTypes,
-    cover: galleryFor('m75')[0],
-    gallery: galleryFor('m75'),
+    unitTypes: { ar: 'أرضي بحديقة · متكرر', en: 'Ground with garden · Repeated' },
+    cover: m75Cover,
+    gallery: m75Gallery.length > 0 ? m75Gallery : [m75Cover],
+    facades: m75Facades.length > 0 ? m75Facades : [m75Cover],
     unitDetails: [
       {
-        name: { ar: 'الوحدة الأولى', en: 'Unit 1' },
-        area: { ar: '250 م²', en: '250 m²' },
+        name: { ar: 'نموذج أرضي – يمين الواجهة', en: 'Ground model – right facade' },
+        area: { ar: '225 م²', en: '225 m²' },
+        extra: { ar: 'جاردن 60 م²', en: '60 m² garden' },
         status: { ar: 'تحت الإنشاء', en: 'Under construction' },
         rooms: [
-          { ar: 'ريسبشن 3 قطع', en: 'Reception (3 pieces)' },
-          { ar: 'مطبخ', en: 'Kitchen' },
-          { ar: 'ليفينج روم', en: 'Living room' },
-          { ar: '3 حمامات', en: '3 bathrooms' },
-          { ar: '3 غرف نوم', en: '3 bedrooms' },
-          { ar: 'دريسنج روم', en: 'Dressing room' },
-          { ar: 'تراس', en: 'Terrace' },
-          { ar: 'جاردن 60 م²', en: 'Garden 60 m²' },
+          { name: { ar: 'ريسبشن (2) قطع', en: 'Reception (2 pieces)' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'ليفينج روم', en: 'Living room' } },
+          { name: { ar: 'حمام', en: 'Bathroom' } },
+          { name: { ar: 'حمام', en: 'Bathroom' } },
+          { name: { ar: 'غرفة نوم', en: 'Bedroom' } },
+          { name: { ar: 'غرفة نوم', en: 'Bedroom' } },
+          { name: { ar: 'غرفة نوم', en: 'Bedroom' } },
+          { name: { ar: 'دريسنج روم', en: 'Dressing room' } },
+          { name: { ar: 'حديقة خاصة', en: 'Private garden' } },
         ],
       },
       {
-        name: { ar: 'نموذج أرضي – يمين الواجهة', en: 'Ground-floor model – right facade' },
-        area: { ar: '225 م²', en: '225 m²' },
+        name: { ar: 'نموذج متكرر – يمين الواجهة', en: 'Repeated model – right facade' },
+        area: { ar: '250 م²', en: '250 m²' },
         status: { ar: 'تحت الإنشاء', en: 'Under construction' },
         rooms: [
-          { ar: 'ريسبشن قطعتين', en: 'Reception (2 pieces)' },
-          { ar: 'مطبخ', en: 'Kitchen' },
-          { ar: 'ليفينج روم', en: 'Living room' },
-          { ar: 'حمامان', en: '2 bathrooms' },
-          { ar: '3 غرف نوم', en: '3 bedrooms' },
-          { ar: 'دريسنج روم', en: 'Dressing room' },
-          { ar: 'حديقة خاصة', en: 'Private garden' },
+          { name: { ar: 'ريسبشن (3) قطع', en: 'Reception (3 pieces)' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'ليفينج روم', en: 'Living room' } },
+          { name: { ar: 'حمام', en: 'Bathroom' } },
+          { name: { ar: 'حمام', en: 'Bathroom' } },
+          { name: { ar: 'حمام', en: 'Bathroom' } },
+          { name: { ar: 'غرفة نوم', en: 'Bedroom' } },
+          { name: { ar: 'غرفة نوم', en: 'Bedroom' } },
+          { name: { ar: 'غرفة نوم', en: 'Bedroom' } },
+          { name: { ar: 'دريسنج روم', en: 'Dressing room' } },
+          { name: { ar: 'تراس', en: 'Terrace' } },
         ],
       },
     ],
@@ -654,8 +851,9 @@ export const projects = [
     statusKey: 'delivered',
     deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
     unitTypes: defaultUnitTypes,
-    cover: galleryFor('e80')[0],
-    gallery: galleryFor('e80'),
+    cover: e80Cover,
+    gallery: e80Gallery.length > 0 ? e80Gallery : [e80Cover],
+    facades: e80Facades.length > 0 ? e80Facades : [e80Cover],
     shortDescription: {
       ar: 'تصميمات أوروبية ذكية ومبتكرة في الحي الخامس ببيت الوطن — استلام فوري.',
       en: 'Smart, innovative European designs in the Fifth District of Beit El-Watan — immediate delivery.',
@@ -753,8 +951,9 @@ export const projects = [
     statusKey: 'delivered',
     deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
     unitTypes: defaultUnitTypes,
-    cover: galleryFor('m36')[0],
-    gallery: galleryFor('m36'),
+    cover: m36Cover,
+    gallery: m36Gallery.length > 0 ? m36Gallery : [m36Cover],
+    facades: m36Facades.length > 0 ? m36Facades : [m36Cover],
     shortDescription: {
       ar: 'تصميمات أوروبية ذكية ومبتكرة في الحي الخامس ببيت الوطن — استلام فوري.',
       en: 'Smart, innovative European designs in the Fifth District of Beit El-Watan — immediate delivery.',
@@ -824,8 +1023,9 @@ export const projects = [
     statusKey: 'delivered',
     deliveryStatus: { ar: 'استلام فوري', en: 'Immediate delivery' },
     unitTypes: defaultUnitTypes,
-    cover: galleryFor('a149')[0],
-    gallery: galleryFor('a149'),
+    cover: a149Cover,
+    gallery: a149Gallery.length > 0 ? a149Gallery : [a149Cover],
+    facades: a149Facades.length > 0 ? a149Facades : [a149Cover],
     shortDescription: {
       ar: 'تصميمات أوروبية ذكية ومبتكرة في الحي التكميلي ببيت الوطن — استلام فوري.',
       en: 'Smart, innovative European designs in the Supplementary District of Beit El-Watan — immediate delivery.',
@@ -926,6 +1126,19 @@ export const projects = [
           { name: { ar: '3 غرف نوم', en: '3 bedrooms' } },
           { name: { ar: 'دريسنج روم', en: 'Dressing room' } },
           { name: { ar: 'تراس', en: 'Terrace' } },
+        ],
+      },
+      {
+        name: { ar: 'نموذج روف', en: 'Roof model' },
+        area: { ar: '120 م²', en: '120 m²' },
+        extra: { ar: 'تراس 40 م²', en: '40 m² terrace' },
+        status: { ar: 'استلام فوري', en: 'Immediate delivery' },
+        rooms: [
+          { name: { ar: 'ريسبشن (2) قطع', en: 'Reception (2 pieces)' } },
+          { name: { ar: 'مطبخ', en: 'Kitchen' } },
+          { name: { ar: 'حمام', en: 'Bathroom' } },
+          { name: { ar: 'غرفتان نوم', en: '2 bedrooms' } },
+          { name: { ar: 'تراس خاص', en: 'Private terrace' } },
         ],
       },
     ],

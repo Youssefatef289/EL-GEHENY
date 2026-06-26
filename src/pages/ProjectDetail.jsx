@@ -3,6 +3,7 @@ import { Link, useParams, Navigate } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
 import PlanLightbox from '../components/PlanLightbox'
+import ProjectFacadeCarousel from '../components/ProjectFacadeCarousel'
 import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
 import Reveal from '../components/Reveal'
 import { sendInquiryEmail } from '../lib/email'
@@ -19,6 +20,7 @@ import {
   groupUnitDetails,
   getProjectUnitDivisions,
   getProjectAutocadPlans,
+  getProjectFacades,
   getConstructionStageState,
   getActiveConstructionPhase,
 } from '../data/projects'
@@ -33,6 +35,8 @@ export default function ProjectDetail() {
   const [activeDivisionImg, setActiveDivisionImg] = useState(0)
   const [activeAutocadImg, setActiveAutocadImg] = useState(0)
   const [layoutLightboxIndex, setLayoutLightboxIndex] = useState(null)
+  const [facadeLightboxIndex, setFacadeLightboxIndex] = useState(null)
+  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [sidebarSending, setSidebarSending] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
@@ -53,6 +57,36 @@ export default function ProjectDetail() {
   const layoutPlans = useMemo(
     () => (project ? getAllProjectLayoutPlans(project) : []),
     [project],
+  )
+  const facadeImages = useMemo(
+    () => (project ? getProjectFacades(project) : []),
+    [project],
+  )
+  const facadeLightboxItems = useMemo(
+    () =>
+      facadeImages.map((src, i) => ({
+        src,
+        type: 'facade',
+        variant: 'facade',
+        label: {
+          ar: `واجهة ${i + 1}`,
+          en: `Facade ${i + 1}`,
+        },
+      })),
+    [facadeImages],
+  )
+  const galleryItems = useMemo(
+    () =>
+      (project?.gallery || []).map((src, i) => ({
+        src,
+        type: 'gallery',
+        variant: 'facade',
+        label: {
+          ar: `صورة ${i + 1}`,
+          en: `Image ${i + 1}`,
+        },
+      })),
+    [project?.gallery],
   )
 
   const activeTypeDivisions = useMemo(
@@ -128,6 +162,16 @@ export default function ProjectDetail() {
     openLayoutLightbox({ src, type: activeUnitType, variant: 'autocad' })
   }
 
+  const openGalleryLightbox = (index = activeImg) => {
+    if (!galleryItems[index]) return
+    setGalleryLightboxIndex(index)
+  }
+
+  const openFacadeLightbox = (index = 0) => {
+    if (!facadeLightboxItems[index]) return
+    setFacadeLightboxIndex(index)
+  }
+
   return (
     <>
       <PlanLightbox
@@ -136,10 +180,32 @@ export default function ProjectDetail() {
         onClose={() => setLayoutLightboxIndex(null)}
         onChange={setLayoutLightboxIndex}
         title={displayTitle}
+        imageVariant={
+          layoutLightboxIndex !== null && layoutPlans[layoutLightboxIndex]?.variant === 'autocad'
+            ? 'autocad'
+            : 'default'
+        }
+      />
+      <PlanLightbox
+        items={facadeLightboxItems}
+        index={facadeLightboxIndex}
+        onClose={() => setFacadeLightboxIndex(null)}
+        onChange={setFacadeLightboxIndex}
+        title={displayTitle}
+        imageVariant="gallery"
+      />
+      <PlanLightbox
+        items={galleryItems}
+        index={galleryLightboxIndex}
+        onClose={() => setGalleryLightboxIndex(null)}
+        onChange={setGalleryLightboxIndex}
+        title={displayTitle}
+        imageVariant="gallery"
       />
       <ImagePageHero
         image={heroProjectImage}
         imageAlt={displayTitle}
+        compact
         titleStack={{
           company: heroContent.companyName,
           district: heroContent.districtLine,
@@ -174,7 +240,7 @@ export default function ProjectDetail() {
       <section className="section-pad pt-10">
         <div className="container-x grid gap-10 lg:grid-cols-3">
           {/* العمود الأيمن - التفاصيل */}
-          <div className="space-y-12 lg:col-span-2">
+          <div className="project-detail-main space-y-12 lg:col-span-2">
             <Reveal>
               <div id="project-about" className="project-about-panel">
                 <div className="project-about-grid">
@@ -185,11 +251,11 @@ export default function ProjectDetail() {
                     <p className="project-about-desc">{L(project.description, lang)}</p>
                   </div>
                   <figure className="project-about-media">
-                    <LazyImage
-                      src={project.cover}
+                    <ProjectFacadeCarousel
+                      key={project.id}
+                      images={facadeImages}
                       alt={displayTitle}
-                      className="h-full min-h-[16rem] w-full sm:min-h-[20rem] lg:min-h-[22rem]"
-                      imgClassName="h-full w-full object-cover object-center"
+                      onImageClick={openFacadeLightbox}
                     />
                   </figure>
                 </div>
@@ -251,7 +317,8 @@ export default function ProjectDetail() {
                         unitLabel={activeUnitLabel}
                         lang={lang}
                         plansTitle={t('project.unitDivisionsTitle')}
-                        viewLabel={lang === 'ar' ? 'عرض' : 'View'}
+                        viewLabel={lang === 'ar' ? 'عرض بالحجم الكامل' : 'View full size'}
+                        variant={['m75', 'e80', 'm36', 'a149'].includes(project.id) ? 'gallery' : 'division'}
                       />
                     ) : null}
 
@@ -265,10 +332,24 @@ export default function ProjectDetail() {
                         unitLabel={activeUnitLabel}
                         lang={lang}
                         plansTitle={t('project.layoutPlansTitle')}
-                        viewLabel={lang === 'ar' ? 'عرض' : 'View'}
+                        viewLabel={lang === 'ar' ? 'عرض بالحجم الكامل' : 'View full size'}
                         variant="autocad"
                       />
                     ) : null}
+
+                    {project.gallery?.length > 0 && (
+                      <UnitPlanCarousel
+                        images={project.gallery}
+                        activeIndex={activeImg}
+                        onIndexChange={setActiveImg}
+                        onOpenLightbox={openGalleryLightbox}
+                        title={displayTitle}
+                        lang={lang}
+                        plansTitle={t('project.galleryTitle')}
+                        viewLabel={lang === 'ar' ? 'عرض بالحجم الكامل' : 'View full size'}
+                        variant="gallery"
+                      />
+                    )}
 
                     {typePlanCount === 0 && (
                       <p className="rounded-2xl border border-dashed border-navy-200 bg-navy-50/50 px-6 py-10 text-center body-sm text-muted">
@@ -389,33 +470,6 @@ export default function ProjectDetail() {
                       </span>
                       <span className="body-sm text-body">{L(f, lang)}</span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            {/* معرض الصور والمخططات */}
-            <Reveal>
-              <div>
-                <h2 className="heading-md mb-5 text-navy-900">{t('project.galleryTitle')}</h2>
-                <div className="overflow-hidden rounded-3xl border border-navy-200">
-                  <LazyImage
-                    src={project.gallery[activeImg]}
-                    alt={`${displayTitle} - ${activeImg + 1}`}
-                    className="aspect-video w-full"
-                  />
-                </div>
-                <div className="mt-4 grid grid-cols-3 gap-3">
-                  {project.gallery.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImg(i)}
-                      className={`overflow-hidden rounded-2xl border-2 transition-all ${
-                        activeImg === i ? 'border-primary-400' : 'border-transparent opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <LazyImage src={img} alt={`${displayTitle} ${i + 1}`} className="aspect-video w-full" />
-                    </button>
                   ))}
                 </div>
               </div>
@@ -559,17 +613,35 @@ function UnitPlanCarousel({
   const goPrev = () => onIndexChange((activeIndex - 1 + total) % total)
   const goNext = () => onIndexChange((activeIndex + 1) % total)
 
+  const isAutocad = variant === 'autocad'
+  const isGallery = variant === 'gallery'
+  const isFacade = variant === 'facade' || variant === 'division'
+  const carouselClass = isAutocad
+    ? 'unit-plan-carousel--autocad'
+    : isGallery
+      ? 'unit-plan-carousel--gallery'
+      : isFacade
+        ? 'unit-plan-carousel--facade'
+        : ''
+
+  const selectImage = (index) => {
+    onIndexChange(index)
+    onOpenLightbox(index)
+  }
+
   return (
-    <div>
+    <div className="project-media-panel">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-display text-lg font-bold text-navy-900">{plansTitle}</h3>
-        <span className="rounded-full border border-primary-300/40 bg-primary-500/10 px-4 py-1 text-xs font-bold text-primary-400">
-          {unitLabel}
-        </span>
+        {unitLabel && (
+          <span className="rounded-full border border-primary-300/40 bg-primary-500/10 px-4 py-1 text-xs font-bold text-primary-400">
+            {unitLabel}
+          </span>
+        )}
       </div>
 
       <div
-        className={`unit-plan-carousel ${variant === 'autocad' ? 'unit-plan-carousel--autocad' : ''}`}
+        className={`unit-plan-carousel ${carouselClass}`}
         onMouseEnter={() => setPaused(true)}
         onFocus={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
@@ -578,7 +650,7 @@ function UnitPlanCarousel({
         <button
           type="button"
           onClick={() => onOpenLightbox(activeIndex)}
-          className="unit-plan-carousel-stage group"
+          className={`unit-plan-carousel-stage group ${isGallery ? 'unit-plan-carousel-stage--fullwidth' : ''}`}
           aria-label={`${viewLabel} ${activeIndex + 1}`}
         >
           <AnimatePresence mode="wait">
@@ -588,17 +660,27 @@ function UnitPlanCarousel({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.02 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="absolute inset-0"
+              className={isGallery ? 'w-full' : 'absolute inset-0 flex items-center justify-center'}
             >
               <LazyImage
                 src={currentSrc}
-                alt={`${title} - ${unitLabel} ${activeIndex + 1}`}
-                className={`h-full w-full ${variant === 'autocad' ? 'bg-black' : 'bg-navy-50'}`}
-                imgClassName={`object-contain p-3 sm:p-4 transition-transform duration-500 group-hover:scale-[1.02] ${variant === 'autocad' ? 'bg-black' : ''}`}
+                alt={`${title} - ${unitLabel || plansTitle} ${activeIndex + 1}`}
+                fit="contain"
+                className={`w-full bg-transparent ${isGallery ? '' : 'h-full'}`}
+                imgClassName={
+                  isGallery
+                    ? 'w-full'
+                    : 'h-full w-full object-contain p-1 transition-transform duration-500 group-hover:scale-[1.01] sm:p-3'
+                }
               />
             </motion.div>
           </AnimatePresence>
-          <span className="unit-plan-carousel-view">{viewLabel}</span>
+          <span className="unit-plan-carousel-view">
+            <svg viewBox="0 0 24 24" fill="none" className="me-1.5 h-3.5 w-3.5" aria-hidden="true">
+              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {viewLabel}
+          </span>
         </button>
 
         {total > 1 && (
@@ -630,17 +712,31 @@ function UnitPlanCarousel({
               />
             ))}
           </div>
-          <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {images.map((img, i) => (
               <button
                 key={`${img}-${i}`}
                 type="button"
-                onClick={() => onIndexChange(i)}
-                className={`overflow-hidden rounded-2xl border-2 transition-all ${
-                  activeIndex === i ? 'border-primary-400 ring-2 ring-primary-400/25' : 'border-transparent opacity-70 hover:opacity-100'
+                onClick={() => selectImage(i)}
+                className={`unit-plan-carousel-thumb group/thumb overflow-hidden rounded-2xl border-2 transition-all ${
+                  isGallery
+                    ? 'unit-plan-carousel-thumb--gallery'
+                    : isAutocad
+                      ? 'unit-plan-carousel-thumb--plan'
+                      : 'unit-plan-carousel-thumb--facade'
+                } ${
+                  activeIndex === i
+                    ? 'border-primary-400 ring-2 ring-primary-400/25'
+                    : 'border-white/10 opacity-80 hover:border-primary-400/50 hover:opacity-100'
                 }`}
               >
-                <LazyImage src={img} alt="" className="aspect-[4/3] w-full bg-navy-50" imgClassName="object-contain p-1" />
+                <LazyImage
+                  src={img}
+                  alt=""
+                  fit="contain"
+                  className="h-full w-full bg-transparent"
+                  imgClassName="w-full transition-transform duration-300 group-hover/thumb:scale-[1.03]"
+                />
               </button>
             ))}
           </div>
@@ -690,22 +786,22 @@ function RelatedCard({ project, index, lang }) {
     >
       <Link
         to={`/projects/${project.id}`}
-        className="group block overflow-hidden rounded-3xl border border-navy-200 bg-navy-50 transition-all hover:-translate-y-1 hover:border-primary-400/40"
+        className="group block overflow-hidden rounded-3xl border border-primary-200/60 bg-ink transition-all hover:-translate-y-1 hover:border-primary-400/60 hover:shadow-[0_24px_70px_-45px_rgba(202,161,63,0.35)]"
       >
         <div className="relative aspect-[4/3] overflow-hidden">
           <LazyImage
             src={project.cover}
             alt={L(project.title, lang)}
             className="h-full w-full"
-            imgClassName="transition-transform duration-700 group-hover:scale-110"
+            imgClassName="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent dark:from-navy-950 dark:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent" />
         </div>
         <div className="p-5">
-          <h3 className="font-display text-lg font-bold text-navy-900 group-hover:text-primary-600">
+          <h3 className="font-display text-lg font-bold text-white transition-colors group-hover:text-primary-300">
             {L(project.title, lang)}
           </h3>
-          <p className="mt-1 body-sm text-muted">{L(project.categoryName, lang)}</p>
+          <p className="mt-1 body-sm text-hero-muted">{L(project.categoryName, lang)}</p>
         </div>
       </Link>
     </motion.div>

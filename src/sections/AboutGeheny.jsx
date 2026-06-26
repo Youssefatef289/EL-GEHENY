@@ -108,7 +108,7 @@ export default function AboutGeheny() {
               <SectionTitle className="mb-5">{L(content.eyebrow, lang)}</SectionTitle>
 
               <Reveal direction="start" delay={0.14}>
-                <p className="body-md font-semibold leading-relaxed text-navy-900 sm:body-lg">{L(content.p1, lang)}</p>
+                <p className="body-md font-semibold leading-relaxed text-white sm:body-lg">{L(content.p1, lang)}</p>
               </Reveal>
 
               <Reveal direction="start" delay={0.2}>

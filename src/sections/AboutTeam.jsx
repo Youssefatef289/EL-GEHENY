@@ -110,7 +110,7 @@ function MemberTextBlock({ name, role, bio, align = 'center' }) {
     <div className={alignClass}>
       <h3 className="text-2xl font-extrabold text-gradient-primary sm:text-3xl lg:text-[2.15rem]">{name}</h3>
       <p className="mt-3 font-display text-lg font-bold text-primary-300 sm:text-xl lg:text-2xl">{role}</p>
-      <p className="mt-6 max-w-prose text-base leading-relaxed text-hero-body sm:text-lg lg:text-xl lg:leading-9">{bio}</p>
+      <p className="mt-6 max-w-prose text-base leading-relaxed text-white sm:text-lg lg:text-xl lg:leading-9">{bio}</p>
     </div>
   )
 }
@@ -164,7 +164,7 @@ export default function AboutTeam() {
           <SideReveal from="end" delay={0.1} className="w-full flex-1 text-center lg:text-start">
             <h2 className="text-3xl font-extrabold text-gradient-primary sm:text-4xl lg:text-5xl">{founderName}</h2>
             <p className="mt-4 font-display text-xl font-bold text-primary-300 sm:text-2xl">{founderRole}</p>
-            <p className="mt-7 max-w-3xl text-base leading-relaxed text-hero-body sm:text-lg lg:text-xl lg:leading-9">{founderBio}</p>
+            <p className="mt-7 max-w-3xl text-base leading-relaxed text-white sm:text-lg lg:text-xl lg:leading-9">{founderBio}</p>
           </SideReveal>
         </div>
 

@@ -14,10 +14,19 @@ export default function ImagePageHero({
   breadcrumb = [],
   children,
   className = '',
+  compact = false,
 }) {
   return (
-    <section className={`image-page-hero relative w-full bg-ink ${className}`}>
-      <div className="image-page-hero-shell relative min-h-[calc(16rem+5.75rem)] w-full sm:min-h-[calc(18rem+6.5rem)] lg:min-h-[calc(20rem+7.25rem)] xl:min-h-[calc(21rem+7.75rem)]">
+    <section
+      className={`image-page-hero relative w-full bg-ink ${compact ? 'image-page-hero--compact' : ''} ${titleStack ? 'image-page-hero--project' : ''} ${className}`}
+    >
+      <div
+        className={`image-page-hero-shell relative w-full ${
+          compact
+            ? 'min-h-[calc(11rem+5.75rem)] sm:min-h-[calc(12rem+6.5rem)] lg:min-h-[calc(13rem+7.25rem)] xl:min-h-[calc(14rem+7.75rem)]'
+            : 'min-h-[calc(16rem+5.75rem)] sm:min-h-[calc(18rem+6.5rem)] lg:min-h-[calc(20rem+7.25rem)] xl:min-h-[calc(21rem+7.75rem)]'
+        }`}
+      >
         <div className="image-page-hero-media absolute inset-0 overflow-hidden">
           <img
             src={image}

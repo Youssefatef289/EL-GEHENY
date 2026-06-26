@@ -28,6 +28,7 @@ export default function Projects() {
         title={t('projectsPage.title')}
         description={t('projectsPage.desc')}
         imageAlt={t('projectsPage.title')}
+        compact
       />
 
       <SectionReveal>

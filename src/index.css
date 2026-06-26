@@ -89,7 +89,7 @@
 
   body {
     font-family: var(--font-sans);
-    @apply bg-ink text-navy-900 font-sans antialiased;
+    @apply bg-ink font-sans text-white antialiased;
     overflow-x: hidden;
     transition: background-color 0.4s ease, color 0.4s ease;
   }
@@ -253,32 +253,32 @@
   }
 
   .body-lg {
-    @apply text-lg leading-relaxed sm:text-xl;
+    @apply text-lg leading-relaxed text-white sm:text-xl;
   }
 
   .body-md {
-    @apply text-base leading-relaxed sm:text-lg;
+    @apply text-base leading-relaxed text-white sm:text-lg;
   }
 
   .body-sm {
-    @apply text-sm leading-relaxed;
+    @apply text-sm leading-relaxed text-white;
   }
 
   /* ألوان النص على الخلفية الداكنة (#1D1D1B) */
   .text-body {
-    @apply text-navy-700;
+    @apply text-white;
   }
 
   .text-muted {
-    @apply text-navy-600;
+    @apply text-white/90;
   }
 
   .text-subtle {
-    @apply text-navy-500;
+    @apply text-white/80;
   }
 
   .text-faint {
-    @apply text-navy-400;
+    @apply text-white/70;
   }
 
   /* ألوان النص فوق الصور والطبقات الداكنة */
@@ -287,11 +287,11 @@
   }
 
   .text-hero-body {
-    @apply text-white/85;
+    @apply text-white;
   }
 
   .text-hero-muted {
-    @apply text-white/70;
+    @apply text-white/90;
   }
 
   .label-caps {
@@ -302,10 +302,52 @@
     @apply uppercase tracking-[0.2em];
   }
 
-  html.lang-ar .label-caps,
-  html.lang-ar .eyebrow {
-    letter-spacing: normal;
+  /* العربية — إلغاء تباعد الحروف والكلمات وتحويل الأحرف الكبيرة (تسبب فراغات بصرية) */
+  html.lang-ar {
+    letter-spacing: 0;
     word-spacing: normal;
+  }
+
+  html.lang-ar body {
+    letter-spacing: 0;
+    word-spacing: normal;
+  }
+
+  html.lang-ar :not([dir='ltr']):not(.ltr):not(.tabular-nums) {
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    text-transform: none !important;
+  }
+
+  html.lang-ar [dir='ltr'],
+  html.lang-ar [dir='ltr'] *,
+  html.lang-ar .ltr,
+  html.lang-ar .ltr * {
+    letter-spacing: revert;
+    word-spacing: revert;
+    text-transform: revert;
+  }
+
+  html.lang-ar .label-caps,
+  html.lang-ar .eyebrow,
+  html.lang-ar .btn,
+  html.lang-ar .btn-primary,
+  html.lang-ar .btn-outline,
+  html.lang-ar .hero-slide-eyebrow,
+  html.lang-ar .hero-slide-title,
+  html.lang-ar .project-hero-company,
+  html.lang-ar .text-gradient-primary {
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    text-transform: none !important;
+  }
+
+  html.lang-ar .text-gradient-primary,
+  html.lang-ar .hero-slide-title {
+    display: inline;
+    padding-bottom: 0;
+    -webkit-box-decoration-break: slice;
+    box-decoration-break: slice;
   }
 
   html.lang-en .eyebrow {
@@ -321,7 +363,11 @@
   }
 
   .section-desc {
-    @apply body-md max-w-2xl text-muted;
+    @apply body-md max-w-2xl text-white;
+  }
+
+  section p {
+    @apply text-white;
   }
 
   .section-title-line {
@@ -1061,11 +1107,15 @@
 }
 
 .journey-contact-icon {
-  @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/85 bg-transparent text-white;
+  @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/85 bg-transparent text-white transition-colors duration-300;
+}
+
+.journey-contact-info-item:hover .journey-contact-icon {
+  @apply border-black bg-black text-white;
 }
 
 .journey-contact-info-link {
-  @apply text-base font-semibold text-white transition-colors hover:text-primary-300 sm:text-lg;
+  @apply text-base font-semibold text-white transition-colors hover:text-white sm:text-lg;
 }
 
 .journey-contact-social {
@@ -1179,11 +1229,33 @@
 }
 
 .project-about-desc {
-  @apply text-sm leading-8 text-white/85 sm:text-base sm:leading-9;
+  @apply text-sm leading-8 text-white sm:text-base sm:leading-9;
 }
 
 .project-about-media {
-  @apply relative overflow-hidden bg-ink;
+  @apply relative flex items-center justify-center overflow-hidden bg-transparent;
+}
+
+.project-facade-carousel {
+  @apply relative w-full;
+}
+
+.project-facade-carousel-stage {
+  @apply relative block w-full cursor-zoom-in overflow-hidden rounded-2xl border border-white/10 bg-ink/40;
+  aspect-ratio: 4 / 5;
+  max-height: min(68vh, 520px);
+}
+
+.project-facade-carousel-dots {
+  @apply mt-4 flex items-center justify-center gap-2;
+}
+
+.project-facade-carousel-dot {
+  @apply h-1.5 w-1.5 rounded-full bg-white/30 transition-all duration-500;
+}
+
+.project-facade-carousel-dot-active {
+  @apply w-7 bg-primary-400;
 }
 
 .project-sidebar-form {
@@ -1232,6 +1304,41 @@
   background: radial-gradient(ellipse 90% 85% at 50% 45%, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
 }
 
+.image-page-hero--compact .image-page-hero-shadow--base {
+  background: rgba(29, 29, 27, 0.48);
+}
+
+.image-page-hero--compact .image-page-hero-shadow--bottom {
+  background: linear-gradient(
+    to top,
+    rgba(29, 29, 27, 0.96) 0%,
+    rgba(29, 29, 27, 0.72) 32%,
+    rgba(29, 29, 27, 0.28) 58%,
+    transparent 100%
+  );
+}
+
+.image-page-hero--project .image-page-hero-media {
+  box-shadow:
+    inset 0 -100px 110px -40px rgba(0, 0, 0, 0.88),
+    inset 0 0 100px rgba(0, 0, 0, 0.45),
+    0 20px 60px -40px rgba(0, 0, 0, 0.9);
+}
+
+.image-page-hero--project .image-page-hero-shadow--base {
+  background: rgba(29, 29, 27, 0.5);
+}
+
+.image-page-hero--project .image-page-hero-shadow--bottom {
+  background: linear-gradient(
+    to top,
+    rgba(29, 29, 27, 0.98) 0%,
+    rgba(29, 29, 27, 0.78) 30%,
+    rgba(29, 29, 27, 0.32) 60%,
+    transparent 100%
+  );
+}
+
 /* ── Project detail hero stack ── */
 .project-hero-stack {
   @apply w-full space-y-3 overflow-visible pb-1 sm:space-y-3.5;
@@ -1240,23 +1347,46 @@
 .project-hero-company {
   @apply block w-full font-display text-2xl font-extrabold leading-[1.45] tracking-wide sm:text-3xl lg:text-4xl xl:text-[2.85rem];
   padding-bottom: 0.22em;
+  filter: drop-shadow(0 3px 16px rgba(0, 0, 0, 0.85));
 }
 
 .project-hero-district {
-  @apply font-display text-xl font-bold leading-[1.5] text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.65)] sm:text-2xl lg:text-[1.75rem];
+  @apply font-display text-xl font-bold leading-[1.5] text-white sm:text-2xl lg:text-[1.75rem];
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.65);
 }
 
 .project-hero-location {
   @apply pb-0.5 text-sm font-medium leading-relaxed text-primary-200 sm:text-base;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
 }
 
-/* ── Project detail — unit plan carousel ── */
+/* ── Project detail — media panels (plans, facades, gallery) ── */
+.project-media-panel + .project-media-panel {
+  @apply mt-10 border-t border-white/10 pt-10;
+}
+
 .unit-plan-carousel {
-  @apply relative overflow-hidden rounded-3xl border border-primary-400/25 bg-navy-50/40 shadow-[0_24px_60px_-40px_rgba(202,161,63,0.35)];
+  @apply relative overflow-hidden rounded-3xl border border-primary-400/25 bg-transparent shadow-[0_24px_60px_-40px_rgba(202,161,63,0.35)];
 }
 
 .unit-plan-carousel-stage {
-  @apply relative block aspect-[4/3] w-full overflow-hidden sm:aspect-[16/10];
+  @apply relative flex w-full cursor-zoom-in items-center justify-center overflow-hidden bg-transparent;
+  min-height: clamp(18rem, 58vh, 34rem);
+}
+
+.unit-plan-carousel--facade .unit-plan-carousel-stage {
+  min-height: clamp(20rem, 64vh, 38rem);
+}
+
+.unit-plan-carousel--gallery .unit-plan-carousel-stage,
+.unit-plan-carousel-stage--fullwidth {
+  @apply block w-full bg-transparent p-0;
+  min-height: 0;
+  height: auto;
+}
+
+.unit-plan-carousel--gallery .unit-plan-carousel-stage {
+  max-height: none;
 }
 
 .unit-plan-carousel-nav {
@@ -1272,7 +1402,19 @@
 }
 
 .unit-plan-carousel-view {
-  @apply absolute bottom-3 end-3 rounded-full border border-primary-400/40 bg-ink/75 px-3 py-1 text-xs font-semibold text-primary-300 opacity-0 transition-opacity group-hover:opacity-100;
+  @apply absolute bottom-3 end-3 inline-flex items-center rounded-full border border-primary-400/40 bg-ink/85 px-3 py-1.5 text-xs font-semibold text-primary-200 opacity-0 shadow-lg transition-opacity group-hover:opacity-100;
+}
+
+.unit-plan-carousel-thumb--facade {
+  @apply aspect-[3/4] min-h-[7.5rem] sm:min-h-[9rem];
+}
+
+.unit-plan-carousel-thumb--gallery {
+  @apply aspect-video bg-transparent;
+}
+
+.unit-plan-carousel-thumb--plan {
+  @apply aspect-[4/3] min-h-[6.5rem] bg-transparent sm:min-h-[7.5rem];
 }
 
 .unit-plan-carousel-dot {
@@ -1284,9 +1426,56 @@
 }
 
 .unit-plan-carousel--autocad {
-  @apply border-primary-400/35 bg-black shadow-[0_24px_60px_-40px_rgba(0,0,0,0.85)];
+  @apply border-primary-400/35 bg-transparent shadow-[0_24px_60px_-40px_rgba(0,0,0,0.85)];
 }
 
 .unit-plan-carousel--autocad .unit-plan-carousel-stage {
-  @apply bg-black;
+  min-height: clamp(16rem, 52vh, 30rem);
+  @apply bg-transparent;
+}
+
+/* ── Floating contact — phone & WhatsApp (all pages) ── */
+.floating-contact {
+  @apply fixed bottom-6 z-40 flex items-center;
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
+.floating-contact--phone {
+  @apply start-6 text-ink;
+}
+
+.floating-contact--whatsapp {
+  @apply end-6;
+}
+
+.floating-contact-icon {
+  @apply relative flex h-14 w-14 items-center justify-center rounded-full bg-primary-gradient text-black shadow-[0_10px_30px_-5px_rgba(202,161,63,0.55)] transition-all duration-300 group-hover:scale-110;
+}
+
+.floating-contact--phone:hover .floating-contact-icon {
+  @apply bg-black text-white shadow-[0_10px_30px_-5px_rgba(0,0,0,0.45)];
+}
+
+.floating-contact-icon--whatsapp {
+  @apply bg-[#25D366] text-black shadow-[0_10px_30px_-5px_rgba(37,211,102,0.6)];
+}
+
+.floating-contact-ping {
+  @apply absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-30;
+}
+
+.floating-contact-tooltip {
+  @apply pointer-events-none absolute top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold opacity-0 shadow-lg backdrop-blur-md transition-all duration-300 group-hover:opacity-100 sm:block;
+}
+
+.floating-contact-tooltip--phone {
+  @apply start-full ms-3 bg-black text-white;
+}
+
+.floating-contact-tooltip--whatsapp {
+  @apply end-full me-3 bg-navy-100 text-navy-900;
+}
+
+.scroll-top-btn {
+  bottom: max(5.75rem, calc(env(safe-area-inset-bottom) + 4.25rem));
 }

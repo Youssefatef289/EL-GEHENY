@@ -106,7 +106,7 @@ function HeritageItem({ item, index }) {
           />
         </svg>
       </span>
-      <span className="body-md font-medium leading-relaxed text-white/92 sm:text-lg">{L(item, lang)}</span>
+      <span className="body-md font-medium leading-relaxed text-white sm:text-lg">{L(item, lang)}</span>
     </motion.li>
   )
 }
@@ -148,7 +148,7 @@ export default function Heritage() {
           </Reveal>
 
           <Reveal delay={0.14}>
-            <p className="body-lg mt-5 max-w-3xl font-medium leading-relaxed text-white/92 sm:text-xl">
+            <p className="body-lg mt-5 max-w-3xl font-medium leading-relaxed text-white sm:text-xl">
               {t('heritage.description')}
             </p>
           </Reveal>

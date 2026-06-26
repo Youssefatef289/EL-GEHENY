@@ -45,7 +45,7 @@ function FeaturedProjectCard({ project, lang, index }) {
 
             <div className="translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
               <h3 className="font-display text-2xl font-bold text-white sm:text-[1.65rem]">{label}</h3>
-              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-white/82 sm:text-base">{description}</p>
+              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-white sm:text-base">{description}</p>
               <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-primary-300 sm:text-base">
                 {t('projectsShowcase.viewMore')}
                 <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">

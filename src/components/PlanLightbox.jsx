@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import LazyImage from './LazyImage'
 import { useLang, L } from '../i18n'
 
-export default function PlanLightbox({ items, index, onClose, onChange, title }) {
+export default function PlanLightbox({ items, index, onClose, onChange, title, imageVariant = 'default' }) {
   const { t, lang } = useLang()
   const open = index !== null && index >= 0 && index < items.length
   const current = open ? items[index] : null
@@ -50,13 +50,13 @@ export default function PlanLightbox({ items, index, onClose, onChange, title })
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[300] flex items-center justify-center p-4 sm:p-8"
+          className="fixed inset-0 z-[300] flex items-center justify-center p-3 sm:p-6"
         >
           <button
             type="button"
             aria-label={t('common.close')}
             onClick={onClose}
-            className="absolute inset-0 bg-black/85 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/92 backdrop-blur-md"
           />
 
           <motion.div
@@ -64,9 +64,13 @@ export default function PlanLightbox({ items, index, onClose, onChange, title })
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="relative z-10 flex w-full max-w-6xl flex-col"
+            className={`relative z-10 flex w-full flex-col ${
+              imageVariant === 'gallery'
+                ? 'max-w-[min(99vw,1680px)]'
+                : 'h-[min(96vh,940px)] max-w-[min(98vw,1360px)]'
+            }`}
           >
-            <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="mb-3 flex shrink-0 items-center justify-between gap-4 sm:mb-4">
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-gradient-primary">{title}</p>
                 <p className="mt-1 text-xs font-medium text-primary-200/85">
@@ -85,7 +89,11 @@ export default function PlanLightbox({ items, index, onClose, onChange, title })
               </button>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-primary-400/25 bg-ink/20 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.75)] backdrop-blur-md">
+            <div
+              className={`relative flex items-center justify-center overflow-hidden rounded-2xl border border-primary-400/25 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.85)] bg-transparent ${
+                imageVariant === 'gallery' ? 'w-full' : 'min-h-0 flex-1'
+              }`}
+            >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={current.src}
@@ -93,12 +101,20 @@ export default function PlanLightbox({ items, index, onClose, onChange, title })
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -24 }}
                   transition={{ duration: 0.28, ease: 'easeOut' }}
+                  className={`flex w-full items-center justify-center ${
+                    imageVariant === 'gallery' ? 'p-1 sm:p-2' : 'h-full p-2 sm:p-4'
+                  }`}
                 >
                   <LazyImage
                     src={current.src}
                     alt={`${title} - ${L(current.label, lang)}`}
-                    className="max-h-[min(78vh,820px)] w-full bg-transparent"
-                    imgClassName="mx-auto h-full max-h-[min(78vh,820px)] w-full object-contain p-3 sm:p-5"
+                    fit="contain"
+                    className="w-full bg-transparent"
+                    imgClassName={
+                      imageVariant === 'gallery'
+                        ? 'max-h-[min(90vh,960px)] w-full'
+                        : 'mx-auto max-h-[min(82vh,860px)] w-full max-w-full'
+                    }
                   />
                 </motion.div>
               </AnimatePresence>
