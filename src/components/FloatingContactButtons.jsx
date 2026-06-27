@@ -11,7 +11,7 @@ export default function FloatingContactButtons() {
   const spring = { type: 'spring', stiffness: 260, damping: 20 }
 
   return (
-    <>
+    <div className="floating-contact-stack">
       <motion.a
         href={phoneHref}
         aria-label={t('nav.callNow')}
@@ -49,6 +49,6 @@ export default function FloatingContactButtons() {
           </svg>
         </span>
       </motion.a>
-    </>
+    </div>
   )
 }

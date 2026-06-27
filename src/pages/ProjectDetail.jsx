@@ -27,11 +27,21 @@ import {
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
+function formatRoomLabel(room, lang) {
+  const raw = room.name ? L(room.name, lang) : L(room, lang)
+  return raw
+    .replace(/\(\d+\)\s*/g, '')
+    .replace(/^\d+\s+/g, '')
+    .replace(/\s*\(\d+\s*[^)]*\)/g, '')
+    .trim()
+}
+
 export default function ProjectDetail() {
   const { id } = useParams()
   const project = getProjectById(id)
   const [activeImg, setActiveImg] = useState(0)
-  const [activeUnitType, setActiveUnitType] = useState('ground')
+  const [activeUnitType, setActiveUnitType] = useState('all')
+  const [activeUnitIndex, setActiveUnitIndex] = useState(0)
   const [activeDivisionImg, setActiveDivisionImg] = useState(0)
   const [activeAutocadImg, setActiveAutocadImg] = useState(0)
   const [layoutLightboxIndex, setLayoutLightboxIndex] = useState(null)
@@ -89,17 +99,32 @@ export default function ProjectDetail() {
     [project?.gallery],
   )
 
-  const activeTypeDivisions = useMemo(
-    () => unitDivisions[activeUnitType] || [],
-    [unitDivisions, activeUnitType],
+  const hasAnyDivisions = useMemo(
+    () => UNIT_TYPE_KEYS.some((type) => (unitDivisions[type]?.length ?? 0) > 0),
+    [unitDivisions],
   )
-  const activeTypeAutocad = useMemo(
-    () => autocadPlans[activeUnitType] || [],
-    [autocadPlans, activeUnitType],
+  const visibleDivisionItems = useMemo(() => {
+    if (activeUnitType === 'all') {
+      return UNIT_TYPE_KEYS.flatMap((type) =>
+        (unitDivisions[type] || []).map((src) => ({ src, type })),
+      )
+    }
+    return (unitDivisions[activeUnitType] || []).map((src) => ({ src, type: activeUnitType }))
+  }, [activeUnitType, unitDivisions])
+  const visibleDivisionImages = useMemo(
+    () => visibleDivisionItems.map((item) => item.src),
+    [visibleDivisionItems],
   )
+  const activeTypeAutocad = useMemo(() => {
+    if (activeUnitType === 'all') {
+      return UNIT_TYPE_KEYS.flatMap((type) => autocadPlans[type] || [])
+    }
+    return autocadPlans[activeUnitType] || []
+  }, [autocadPlans, activeUnitType])
 
   useEffect(() => {
-    setActiveUnitType('ground')
+    setActiveUnitType('all')
+    setActiveUnitIndex(0)
     setActiveDivisionImg(0)
     setActiveAutocadImg(0)
   }, [project?.id])
@@ -113,15 +138,40 @@ export default function ProjectDetail() {
   const deliveryLabel = L(project.deliveryStatus, lang)
   const displayTitle = getProjectDisplayTitle(project, lang)
   const heroContent = getProjectHeroContent(project, lang)
-  const activeUnits = unitGroups[activeUnitType] || []
-  const activeUnitLabel = L(UNIT_TYPE_LABELS[activeUnitType], lang)
-  const typePlanCount =
-    (unitDivisions[activeUnitType]?.length ?? 0) + (autocadPlans[activeUnitType]?.length ?? 0)
+  const activeUnits = activeUnitType === 'all'
+    ? UNIT_TYPE_KEYS.flatMap((type) => unitGroups[type] || [])
+    : unitGroups[activeUnitType] || []
+  const activeUnitLabel = activeUnitType === 'all'
+    ? t('project.unitTypeAll')
+    : L(UNIT_TYPE_LABELS[activeUnitType], lang)
+  const selectedUnit = activeUnits[activeUnitIndex] || activeUnits[0]
+  const selectedUnitLabel = selectedUnit ? L(selectedUnit.name, lang) : activeUnitLabel
+  const typePlanCount = activeUnitType === 'all'
+    ? UNIT_TYPE_KEYS.reduce(
+        (total, type) =>
+          total + (unitDivisions[type]?.length ?? 0) + (autocadPlans[type]?.length ?? 0),
+        0,
+      )
+    : (unitDivisions[activeUnitType]?.length ?? 0) + (autocadPlans[activeUnitType]?.length ?? 0)
 
   const handleUnitTypeChange = (type) => {
     setActiveUnitType(type)
+    setActiveUnitIndex(0)
     setActiveDivisionImg(0)
     setActiveAutocadImg(0)
+  }
+
+  const handleUnitSelect = (index) => {
+    setActiveUnitIndex(index)
+    setActiveDivisionImg(index)
+  }
+
+  const handleDivisionIndexChange = (next) => {
+    const index = typeof next === 'function' ? next(activeDivisionImg) : next
+    setActiveDivisionImg(index)
+    if (activeUnitType !== 'all' && activeUnits[index]) {
+      setActiveUnitIndex(index)
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -151,10 +201,17 @@ export default function ProjectDetail() {
   }
 
   const openDivisionLightbox = (index = activeDivisionImg) => {
-    const src = activeTypeDivisions[index]
-    if (!src) return
-    openLayoutLightbox({ src, type: activeUnitType, variant: 'division' })
+    const item = visibleDivisionItems[index]
+    if (!item) return
+    openLayoutLightbox({ src: item.src, type: item.type, variant: 'division' })
   }
+
+  const activeDivisionUnitLabel = (() => {
+    const item = visibleDivisionItems[activeDivisionImg]
+    if (!item) return selectedUnitLabel
+    if (activeUnitType === 'all') return L(UNIT_TYPE_LABELS[item.type], lang)
+    return selectedUnitLabel
+  })()
 
   const openAutocadLightbox = (index = activeAutocadImg) => {
     const src = activeTypeAutocad[index]
@@ -280,22 +337,16 @@ export default function ProjectDetail() {
                 </div>
 
                 <div className="unit-type-tabs mb-6">
-                  {UNIT_TYPE_KEYS.map((type) => {
-                    const count = (unitDivisions[type]?.length ?? 0) + (autocadPlans[type]?.length ?? 0)
-                    return (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => handleUnitTypeChange(type)}
-                        className={activeUnitType === type ? 'unit-type-tab-active' : 'unit-type-tab-idle'}
-                      >
-                        {L(UNIT_TYPE_LABELS[type], lang)}
-                        {count > 0 && (
-                          <span className="ms-1.5 text-[0.65rem] opacity-75">({count})</span>
-                        )}
-                      </button>
-                    )
-                  })}
+                  {['all', ...UNIT_TYPE_KEYS].map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => handleUnitTypeChange(type)}
+                      className={activeUnitType === type ? 'unit-type-tab-active' : 'unit-type-tab-idle'}
+                    >
+                      {type === 'all' ? t('project.unitTypeAll') : L(UNIT_TYPE_LABELS[type], lang)}
+                    </button>
+                  ))}
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -307,18 +358,19 @@ export default function ProjectDetail() {
                     transition={{ duration: 0.35, ease: 'easeOut' }}
                     className="space-y-8"
                   >
-                    {activeTypeDivisions.length > 0 ? (
+                    {hasAnyDivisions && visibleDivisionImages.length > 0 ? (
                       <UnitPlanCarousel
-                        images={activeTypeDivisions}
+                        images={visibleDivisionImages}
                         activeIndex={activeDivisionImg}
-                        onIndexChange={setActiveDivisionImg}
+                        onIndexChange={handleDivisionIndexChange}
                         onOpenLightbox={openDivisionLightbox}
                         title={displayTitle}
-                        unitLabel={activeUnitLabel}
+                        unitLabel={activeDivisionUnitLabel}
                         lang={lang}
                         plansTitle={t('project.unitDivisionsTitle')}
                         viewLabel={lang === 'ar' ? 'عرض بالحجم الكامل' : 'View full size'}
-                        variant={['m75', 'e80', 'm36', 'a149'].includes(project.id) ? 'gallery' : 'division'}
+                        variant={['m75', 'e80', 'm36', 'a149', 'north-orchid-179'].includes(project.id) ? 'gallery' : 'division'}
+                        autoPlay={activeUnits.length === 0}
                       />
                     ) : null}
 
@@ -359,8 +411,19 @@ export default function ProjectDetail() {
 
                     {activeUnits.length > 0 && (
                       <div className="grid gap-5 sm:grid-cols-2">
-                        {activeUnits.map((unit, ui) => (
-                          <div key={ui} className="glass rounded-3xl p-6 sm:p-7">
+                        {activeUnits.map((unit, ui) => {
+                          const isSelected = activeUnitIndex === ui
+                          return (
+                          <button
+                            key={ui}
+                            type="button"
+                            onClick={() => handleUnitSelect(ui)}
+                            className={`glass rounded-3xl p-6 text-start transition-all duration-300 sm:p-7 ${
+                              isSelected
+                                ? 'ring-2 ring-primary-400 shadow-gold-sm'
+                                : 'hover:ring-1 hover:ring-primary-300/50'
+                            }`}
+                          >
                             <h4 className="font-display text-xl font-bold leading-snug text-navy-900">{L(unit.name, lang)}</h4>
                             <div className="mt-4 space-y-2 border-b border-navy-200 pb-4">
                               {unit.area && (
@@ -386,18 +449,14 @@ export default function ProjectDetail() {
                               <ul className="mt-4 space-y-2.5">
                                 {unit.rooms.map((room, ri) => (
                                   <li key={ri} className="flex items-start justify-between gap-3 text-sm sm:text-base">
-                                    <span className="text-body">{room.name ? L(room.name, lang) : L(room, lang)}</span>
-                                    {room.dim && (
-                                      <span className="flex-shrink-0 font-mono text-xs text-muted sm:text-sm" dir="ltr">
-                                        {room.dim}
-                                      </span>
-                                    )}
+                                    <span className="text-body">{formatRoomLabel(room, lang)}</span>
                                   </li>
                                 ))}
                               </ul>
                             )}
-                          </div>
-                        ))}
+                          </button>
+                          )
+                        })}
                       </div>
                     )}
                   </motion.div>
@@ -596,6 +655,7 @@ function UnitPlanCarousel({
   plansTitle,
   viewLabel,
   variant = 'division',
+  autoPlay = true,
 }) {
   const reduceMotion = useReducedMotion()
   const [paused, setPaused] = useState(false)
@@ -603,12 +663,12 @@ function UnitPlanCarousel({
   const currentSrc = images[activeIndex]
 
   useEffect(() => {
-    if (reduceMotion || paused || total <= 1) return undefined
+    if (!autoPlay || reduceMotion || paused || total <= 1) return undefined
     const id = setInterval(() => {
       onIndexChange((i) => (i + 1) % total)
     }, 4500)
     return () => clearInterval(id)
-  }, [reduceMotion, paused, total, onIndexChange])
+  }, [autoPlay, reduceMotion, paused, total, onIndexChange])
 
   const goPrev = () => onIndexChange((activeIndex - 1 + total) % total)
   const goNext = () => onIndexChange((activeIndex + 1) % total)

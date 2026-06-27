@@ -233,6 +233,7 @@ export const translations = {
       fieldPhone: 'رقم الهاتف',
       fieldMessage: 'رسالتك',
       fieldMessagePh: 'استفسارك عن المشروع...',
+      unitTypeAll: 'الكل',
       unitTypeGround: 'أرضي بحديقة',
       unitTypeRepeated: 'متكرر',
       unitTypeRoof: 'روف',
@@ -311,10 +312,10 @@ export const translations = {
     seo: {
       siteName: 'الجهيني للتطوير العقاري',
       keywords:
-        'الجهيني للتطوير العقاري, تطوير عقاري, عقارات القاهرة الجديدة, التجمع الخامس, بيت الوطن, مشاريع سكنية, استثمار عقاري, شركات عقارات مصر',
+        'الجهيني للتطوير العقاري, تطوير عقاري, عقارات القاهرة الجديدة, بيت الوطن, مشاريع سكنية, استثمار عقاري, شركات عقارات مصر',
       home: {
         description:
-          'الجهيني للتطوير العقاري — منذ عام 1990 نطوّر مشاريع سكنية واستثمارية متميزة في القاهرة الجديدة والتجمع الخامس. اكتشف مشاريعنا وتواصل معنا.',
+          'الجهيني للتطوير العقاري — منذ عام 1990 نطوّر مشاريع سكنية واستثمارية متميزة في القاهرة الجديدة. اكتشف مشاريعنا وتواصل معنا.',
       },
       about: {
         title: 'من نحن',
@@ -324,7 +325,7 @@ export const translations = {
       projects: {
         title: 'المشاريع',
         description:
-          'استعرض مشاريع الجهيني للتطوير العقاري السكنية والاستثمارية في بيت الوطن والتجمع الخامس — وحدات متنوعة وأنظمة سداد مرنة.',
+          'استعرض مشاريع الجهيني للتطوير العقاري السكنية والاستثمارية في بيت الوطن بالقاهرة الجديدة — وحدات متنوعة وأنظمة سداد مرنة.',
       },
       blog: {
         title: 'المدونة',
@@ -334,7 +335,7 @@ export const translations = {
       contact: {
         title: 'اتصل بنا',
         description:
-          'تواصل مع الجهيني للتطوير العقاري للاستفسار عن المشاريع، الحجز، أو زيارة المكتب في التجمع الخامس — هاتف، بريد، وواتساب.',
+          'تواصل مع الجهيني للتطوير العقاري للاستفسار عن المشاريع، الحجز، أو زيارة المكتب في القاهرة الجديدة — هاتف، بريد، وواتساب.',
       },
       notFound: {
         title: 'الصفحة غير موجودة',
@@ -577,6 +578,7 @@ export const translations = {
       fieldPhone: 'Phone number',
       fieldMessage: 'Your message',
       fieldMessagePh: 'Your inquiry about the project...',
+      unitTypeAll: 'All',
       unitTypeGround: 'Ground with garden',
       unitTypeRepeated: 'Repeated floor',
       unitTypeRoof: 'Roof',
@@ -655,10 +657,10 @@ export const translations = {
     seo: {
       siteName: 'El-Geheny Real Estate Development',
       keywords:
-        'El-Geheny Real Estate, real estate development, New Cairo properties, Fifth Settlement, Beit El-Watan, residential projects, property investment, Egypt real estate',
+        'El-Geheny Real Estate, real estate development, New Cairo properties, Beit El-Watan, residential projects, property investment, Egypt real estate',
       home: {
         description:
-          'El-Geheny Real Estate Development — since 1990 we deliver distinguished residential and investment projects in New Cairo and the Fifth Settlement. Explore our projects and contact us.',
+          'El-Geheny Real Estate Development — since 1990 we deliver distinguished residential and investment projects in New Cairo. Explore our projects and contact us.',
       },
       about: {
         title: 'About Us',
@@ -668,7 +670,7 @@ export const translations = {
       projects: {
         title: 'Projects',
         description:
-          'Browse El-Geheny residential and investment projects in Beit El-Watan and the Fifth Settlement — varied units and flexible payment plans.',
+          'Browse El-Geheny residential and investment projects in Beit El-Watan, New Cairo — varied units and flexible payment plans.',
       },
       blog: {
         title: 'Blog',
@@ -678,7 +680,7 @@ export const translations = {
       contact: {
         title: 'Contact Us',
         description:
-          'Contact El-Geheny Real Estate Development to inquire about projects, bookings, or visit our Fifth Settlement office — phone, email, and WhatsApp.',
+          'Contact El-Geheny Real Estate Development to inquire about projects, bookings, or visit our New Cairo office — phone, email, and WhatsApp.',
       },
       notFound: {
         title: 'Page Not Found',

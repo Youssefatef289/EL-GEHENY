@@ -55,6 +55,7 @@ const sourceFolderPatterns = {
   e80: /الحي الخامس E80/i,
   m36: /الحي الخامس M36/i,
   a149: /الحي التكميلي A149/i,
+  orchid179: /شمال الاوركيد 179|حي شمال الاوركيد/i,
 }
 
 /** تقسيمات الوحدات — تصميمات 3D بخلفية بيضاء (مجلد ويب سايت) */
@@ -65,8 +66,8 @@ const unitDivisionFileMap = {
     roof: ['12.png', '13.png', '14.png'],
   },
   m75: {
-    ground: ['New folder/WhatsApp Image 2026-06-26 at 5.28.26 PM.jpeg'],
-    repeated: ['New folder/34.png'],
+    ground: [],
+    repeated: [],
     roof: [],
   },
   e80: {
@@ -85,16 +86,16 @@ const unitDivisionFileMap = {
     roof: [],
   },
   orchid179: {
-    ground: ['plan-ground-right.png', 'plan-ground-left.png'],
-    repeated: ['plan-repeated-right.png', 'plan-repeated-left.png'],
-    roof: ['plan-roof-right.png', 'plan-roof-left.png'],
+    ground: [],
+    repeated: [],
+    roof: [],
   },
 }
 
 /** مخططات الأوتوكاد — مخططات تقسيم الوحدات (مجلد المشاريع الأصلي) */
 const unitAutocadFileMap = {
   j290: {
-    ground: ['New folder/19.png', 'New folder/21.png'],
+    ground: ['New folder/19.png', 'New folder/21.png', 'New folder/جاردن 150.png'],
     repeated: ['New folder/22.png', 'New folder/23.png', 'New folder/24.png'],
     roof: ['New folder/25.png', 'New folder/26.png', 'New folder/27.png'],
   },
@@ -119,9 +120,9 @@ const unitAutocadFileMap = {
     roof: [],
   },
   orchid179: {
-    ground: ['plan-ground-right.png', 'plan-ground-left.png'],
-    repeated: ['plan-repeated-right.png', 'plan-repeated-left.png'],
-    roof: ['plan-roof-right.png', 'plan-roof-left.png'],
+    ground: [],
+    repeated: [],
+    roof: [],
   },
 }
 
@@ -190,21 +191,22 @@ const M75_GALLERY_FILES = [
   'New folder/33.png',
   'New folder/35.png',
   'New folder/36.png',
+  'New folder/WhatsApp Image 2026-06-27 at 2.12.47 PM 2.jpeg',
 ]
-
-const m75Facades = M75_FACADE_FILES.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean)
-const m75Gallery = M75_GALLERY_FILES.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean)
 
 const M75_DIVISION_FILES = {
   ground: ['New folder/WhatsApp Image 2026-06-26 at 5.28.26 PM.jpeg'],
   repeated: ['New folder/34.png'],
-  roof: [],
+  roof: ['New folder/WhatsApp Image 2026-06-27 at 2.12.47 PM 2.jpeg'],
 }
+
+const m75Facades = M75_FACADE_FILES.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean)
+const m75Gallery = M75_GALLERY_FILES.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean)
 
 const m75Divisions = {
   ground: M75_DIVISION_FILES.ground.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean),
   repeated: M75_DIVISION_FILES.repeated.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean),
-  roof: [],
+  roof: M75_DIVISION_FILES.roof.map((file) => resolveSourceProjectAsset('m75', file)).filter(Boolean),
 }
 
 const E80_FACADE_FILES = ['WhatsApp Image 2026-06-03 at 1.12.04 PM.jpeg']
@@ -287,6 +289,49 @@ const a149Divisions = {
   roof: A149_DIVISION_FILES.roof.map((file) => resolveSourceProjectAsset('a149', file)).filter(Boolean),
 }
 
+const ORCHID179_FACADE_FILES = [
+  'الوجهات_.jpg',
+  'الوجهات_(1).jpg',
+  'الوجهات_(2).jpg',
+  'الوجهات_(3).jpg',
+  'الوجهات_(4).jpg',
+  'الوجهات_(5).jpg',
+]
+
+const ORCHID179_GALLERY_FILES = [
+  '2.png',
+  '3.png',
+  '4.png',
+  '5.png',
+  '6.png',
+  '7.png',
+  '8.png',
+  '9.png',
+  '10.png',
+  '11.png',
+  '12.png',
+  '22.png',
+  '23.png',
+  '24.png',
+  '25.png',
+]
+
+const ORCHID179_DIVISION_FILES = {
+  ground: ['13.png', '14.png'],
+  repeated: ['15.png', '16.png'],
+  roof: ['17.png', '18.png'],
+}
+
+const orchid179Facades = ORCHID179_FACADE_FILES.map((file) => resolveSourceProjectAsset('orchid179', file)).filter(Boolean)
+
+const orchid179Gallery = ORCHID179_GALLERY_FILES.map((file) => resolveSourceProjectAsset('orchid179', file)).filter(Boolean)
+
+const orchid179Divisions = {
+  ground: ORCHID179_DIVISION_FILES.ground.map((file) => resolveSourceProjectAsset('orchid179', file)).filter(Boolean),
+  repeated: ORCHID179_DIVISION_FILES.repeated.map((file) => resolveSourceProjectAsset('orchid179', file)).filter(Boolean),
+  roof: ORCHID179_DIVISION_FILES.roof.map((file) => resolveSourceProjectAsset('orchid179', file)).filter(Boolean),
+}
+
 function resolveProjectFacadeAssets(folder) {
   const pattern = sourceFolderPatterns[folder]
   if (!pattern) return []
@@ -307,6 +352,7 @@ export function getProjectFacades(project) {
   if (project.id === 'e80' && e80Facades.length > 0) return e80Facades
   if (project.id === 'm36' && m36Facades.length > 0) return m36Facades
   if (project.id === 'a149' && a149Facades.length > 0) return a149Facades
+  if (project.id === 'north-orchid-179' && orchid179Facades.length > 0) return orchid179Facades
   const folder = projectFolderById[project.id] || project.id
   const autoFacades = resolveProjectFacadeAssets(folder)
   if (autoFacades.length > 0) return autoFacades
@@ -402,6 +448,7 @@ export function getProjectUnitDivisions(project) {
   if (project?.id === 'e80') return e80Divisions
   if (project?.id === 'm36') return m36Divisions
   if (project?.id === 'a149') return a149Divisions
+  if (project?.id === 'north-orchid-179') return orchid179Divisions
   const folder = projectFolderById[project.id] || project.id
   return resolveUnitAssets(folder, unitDivisionFileMap)
 }
@@ -522,7 +569,7 @@ export const projectCategories = [
 const defaultFeatures = [
   { ar: 'تصميم معماري عصري', en: 'Modern architectural design' },
   { ar: 'تشطيبات عالية الجودة', en: 'High-quality finishes' },
-  { ar: 'موقع متميز بالتجمع الخامس', en: 'Prime location in the Fifth Settlement' },
+  { ar: 'موقع متميز بالقاهرة الجديدة', en: 'Prime location in New Cairo' },
   { ar: 'واجهات أنيقة وإضاءة مميزة', en: 'Elegant facades and distinctive lighting' },
   { ar: 'جراج ومداخل منظمة', en: 'Organized garage and entrances' },
   { ar: 'قرب من الخدمات والمحاور', en: 'Close to services and main axes' },
@@ -600,11 +647,11 @@ const fifthDistrictHighlights = [
 export const projects = [
   {
     id: 'j290',
-    title: { ar: 'الجهيني للتطوير العقاري J290 - الحي الثاني', en: 'El-Geheny Real Estate Development J290 - Second District' },
+    title: { ar: 'J290 - الحي الثاني', en: 'J290 - Second District' },
     category: 'hay-thani',
     categoryName: { ar: 'بيت الوطن - الحي الثاني', en: 'Beit El-Watan - Second District' },
-    location: { ar: 'بيت الوطن، الحي الثاني، التجمع الخامس', en: 'Beit El-Watan, Second District, Fifth Settlement' },
-    type: { ar: 'عمارة سكنية', en: 'Residential building' },
+    location: { ar: 'بيت الوطن، الحي الثاني، القاهرة الجديدة', en: 'Beit El-Watan, Second District, New Cairo' },
+    type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 120 م² إلى 187 م²', en: 'From 120 m² to 187 m²' },
     unitsCount: 15,
     units: { ar: '15 شقة', en: '15 apartments' },
@@ -619,8 +666,8 @@ export const projects = [
       en: 'A luxury residential project in Beit El-Watan with elegant classic facades and distinctive lighting.',
     },
     description: {
-      ar: 'عمارة سكنية متميزة في الحي الثاني ببيت الوطن (القطعة 290 ز)، تجمع بين الطابع الكلاسيكي الفاخر والتشطيبات الحديثة، في موقع حيوي قريب من الخدمات والمحاور الرئيسية بالتجمع الخامس.',
-      en: 'A distinctive residential building in the Second District of Beit El-Watan (Plot 290-Z), combining a luxurious classic character with modern finishes, in a vibrant location close to services and main axes in the Fifth Settlement.',
+      ar: 'مشروع سكني متميز في الحي الثاني ببيت الوطن (القطعة 290 ز)، تجمع بين الطابع الكلاسيكي الفاخر والتشطيبات الحديثة، في موقع حيوي قريب من الخدمات والمحاور الرئيسية بالقاهرة الجديدة.',
+      en: 'A distinctive residential building in the Second District of Beit El-Watan (Plot 290-Z), combining a luxurious classic character with modern finishes, in a vibrant location close to services and main axes in the New Cairo.',
     },
     features: defaultFeatures,
     payment: defaultPayment,
@@ -774,17 +821,17 @@ export const projects = [
   },
   {
     id: 'm75',
-    title: { ar: 'الجهيني للتطوير العقاري M75 - الحي الثالث', en: 'El-Geheny Real Estate Development M75 - Third District' },
+    title: { ar: 'M75 - الحي الثالث', en: 'M75 - Third District' },
     category: 'hay-thalith',
     categoryName: { ar: 'بيت الوطن - الحي الثالث', en: 'Beit El-Watan - Third District' },
-    location: { ar: 'بيت الوطن، الحي الثالث، التجمع الخامس', en: 'Beit El-Watan, Third District, Fifth Settlement' },
-    type: { ar: 'عمارة سكنية', en: 'Residential building' },
+    location: { ar: 'بيت الوطن، الحي الثالث، القاهرة الجديدة', en: 'Beit El-Watan, Third District, New Cairo' },
+    type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 225 م² إلى 250 م²', en: 'From 225 m² to 250 m²' },
     units: { ar: '10 شقق', en: '10 apartments' },
     progress: 72,
     statusKey: 'in-progress',
     deliveryStatus: { ar: 'قيد التسليم', en: 'Under delivery' },
-    unitTypes: { ar: 'أرضي بحديقة · متكرر', en: 'Ground with garden · Repeated' },
+    unitTypes: { ar: 'أرضي بحديقة · متكرر · روف · دوبلكس على حديقة', en: 'Ground with garden · Repeated · Roof · Garden duplex' },
     cover: m75Cover,
     gallery: m75Gallery.length > 0 ? m75Gallery : [m75Cover],
     facades: m75Facades.length > 0 ? m75Facades : [m75Cover],
@@ -827,12 +874,12 @@ export const projects = [
       },
     ],
     shortDescription: {
-      ar: 'وحدات سكنية بتصميم عصري ومساحات مدروسة في الحي الثالث ببيت الوطن.',
-      en: 'Residential units with a modern design and well-studied spaces in the Third District of Beit El-Watan.',
+      ar: 'وحدات سكنية بتصميم عصري في الحي الثالث ببيت الوطن، مع توفر نموذج دوبلكس على حديقة.',
+      en: 'Residential units with a modern design in the Third District of Beit El-Watan, including a garden duplex model.',
     },
     description: {
-      ar: 'مشروع سكني في الحي الثالث ببيت الوطن يقدم وحدات بمساحات متنوعة وتشطيبات راقية، بتصميم معماري يجمع بين الأناقة والعملية في موقع مميز.',
-      en: 'A residential project in the Third District of Beit El-Watan offering units of various sizes with elegant finishes, with an architectural design combining elegance and practicality in a prime location.',
+      ar: 'مشروع سكني في الحي الثالث ببيت الوطن يقدم وحدات بمساحات متنوعة وتشطيبات راقية، مع توفر نموذج دوبلكس على حديقة، بتصميم معماري يجمع بين الأناقة والعملية في موقع مميز.',
+      en: 'A residential project in the Third District of Beit El-Watan offering units of various sizes with elegant finishes, including a garden duplex model, with an architectural design combining elegance and practicality in a prime location.',
     },
     features: defaultFeatures,
     payment: defaultPayment,
@@ -840,11 +887,11 @@ export const projects = [
   },
   {
     id: 'e80',
-    title: { ar: 'الجهيني للتطوير العقاري E80 - الحي الخامس', en: 'El-Geheny Real Estate Development E80 - Fifth District' },
+    title: { ar: 'E80 - الحي الخامس', en: 'E80 - Fifth District' },
     category: 'hay-khamis',
     categoryName: { ar: 'بيت الوطن - الحي الخامس', en: 'Beit El-Watan - Fifth District' },
-    location: { ar: 'بيت الوطن، الحي الخامس، التجمع الخامس', en: 'Beit El-Watan, Fifth District, Fifth Settlement' },
-    type: { ar: 'عمارة سكنية', en: 'Residential building' },
+    location: { ar: 'بيت الوطن، الحي الخامس، القاهرة الجديدة', en: 'Beit El-Watan, Fifth District, New Cairo' },
+    type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 130 م² إلى 300 م²', en: 'From 130 m² to 300 m²' },
     units: { ar: '10 شقق', en: '10 apartments' },
     progress: 100,
@@ -859,8 +906,8 @@ export const projects = [
       en: 'Smart, innovative European designs in the Fifth District of Beit El-Watan — immediate delivery.',
     },
     description: {
-      ar: 'عمارة سكنية بتصميمات أوروبية ذكية ومبتكرة في الحي الخامس ببيت الوطن (القطعة E80)، بمساحات تبدأ من 170 م² وحتى دوبلكس 300 م²، في لوكيشن مميز جدًا الأقرب للخدمات والطرق الرئيسية، والاستلام فوري.',
-      en: 'A residential building with smart, innovative European designs in the Fifth District of Beit El-Watan (Plot E80), with areas from 170 m² up to a 300 m² duplex, in a prime location closest to services and main roads, with immediate delivery.',
+      ar: 'مشروع سكني بتصميمات أوروبية ذكية ومبتكرة في الحي الخامس ببيت الوطن (القطعة E80)، بمساحات تبدأ من 130 م² وحتى دوبلكس 300 م²، في لوكيشن مميز جدًا الأقرب للخدمات والطرق الرئيسية، والاستلام فوري.',
+      en: 'A residential project with smart, innovative European designs in the Fifth District of Beit El-Watan (Plot E80), with areas from 130 m² up to a 300 m² duplex, in a prime location closest to services and main roads, with immediate delivery.',
     },
     features: defaultFeatures,
     payment: defaultPayment,
@@ -940,11 +987,11 @@ export const projects = [
   },
   {
     id: 'm36',
-    title: { ar: 'الجهيني للتطوير العقاري M36 - الحي الخامس', en: 'El-Geheny Real Estate Development M36 - Fifth District' },
+    title: { ar: 'M36 - الحي الخامس', en: 'M36 - Fifth District' },
     category: 'hay-khamis',
     categoryName: { ar: 'الحي الخامس', en: 'Fifth District' },
-    location: { ar: 'الحي الخامس، التجمع الخامس، القاهرة الجديدة', en: 'Fifth District, Fifth Settlement, New Cairo' },
-    type: { ar: 'عمارة سكنية', en: 'Residential building' },
+    location: { ar: 'الحي الخامس، القاهرة الجديدة، القاهرة الجديدة', en: 'Fifth District, New Cairo, New Cairo' },
+    type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 190 م² إلى 220 م²', en: 'From 190 m² to 220 m²' },
     units: { ar: '10 شقق', en: '10 apartments' },
     progress: 100,
@@ -959,8 +1006,8 @@ export const projects = [
       en: 'Smart, innovative European designs in the Fifth District of Beit El-Watan — immediate delivery.',
     },
     description: {
-      ar: 'عمارة سكنية بتصميمات أوروبية ذكية ومبتكرة في الحي الخامس ببيت الوطن (القطعة M36)، بمساحات تبدأ من 190 م² وحتى 220 م²، في لوكيشن مميز جدًا الأقرب للفيو زون والخدمات والطرق الرئيسية، والاستلام فوري.',
-      en: 'A residential building with smart, innovative European designs in the Fifth District of Beit El-Watan (Plot M36), with areas from 190 m² up to 220 m², in a prime location closest to the View Zone, services, and main roads, with immediate delivery.',
+      ar: 'مشروع سكني بتصميمات أوروبية ذكية ومبتكرة في الحي الخامس ببيت الوطن (القطعة M36)، بمساحات تبدأ من 190 م² وحتى 220 م²، في لوكيشن مميز جدًا الأقرب للفيو زون والخدمات والطرق الرئيسية، والاستلام فوري.',
+      en: 'A residential project with smart, innovative European designs in the Fifth District of Beit El-Watan (Plot M36), with areas from 190 m² up to 220 m², in a prime location closest to the View Zone, services, and main roads, with immediate delivery.',
     },
     features: defaultFeatures,
     payment: defaultPayment,
@@ -1012,11 +1059,11 @@ export const projects = [
   },
   {
     id: 'a149',
-    title: { ar: 'الجهيني للتطوير العقاري A149 - الحي التكميلي', en: 'El-Geheny Real Estate Development A149 - Supplementary District' },
+    title: { ar: 'A149 - الحي التكميلي', en: 'A149 - Supplementary District' },
     category: 'hay-takmili',
     categoryName: { ar: 'بيت الوطن - الحي التكميلي', en: 'Beit El-Watan - Supplementary District' },
-    location: { ar: 'بيت الوطن، الحي التكميلي، التجمع الخامس', en: 'Beit El-Watan, Supplementary District, Fifth Settlement' },
-    type: { ar: 'عمارة سكنية', en: 'Residential building' },
+    location: { ar: 'بيت الوطن، الحي التكميلي، القاهرة الجديدة', en: 'Beit El-Watan, Supplementary District, New Cairo' },
+    type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 150 م² إلى 160 م²', en: 'From 150 m² to 160 m²' },
     units: { ar: '10 شقق', en: '10 apartments' },
     progress: 100,
@@ -1031,8 +1078,8 @@ export const projects = [
       en: 'Smart, innovative European designs in the Supplementary District of Beit El-Watan — immediate delivery.',
     },
     description: {
-      ar: 'عمارة سكنية بتصميمات أوروبية ذكية ومبتكرة في الحي التكميلي (جنوب السويس) ببيت الوطن (القطعة A149)، بمساحات تبدأ من 150 م² وحتى 160 م²، في لوكيشن مميز جدًا الأقرب للطرق الرئيسية وشارع التسعين الشمالي، والاستلام فوري.',
-      en: 'A residential building with smart, innovative European designs in the Supplementary District (South Suez) of Beit El-Watan (Plot A149), with areas from 150 m² up to 160 m², in a prime location closest to main roads and North 90th Street, with immediate delivery.',
+      ar: 'مشروع سكني بتصميمات أوروبية ذكية ومبتكرة في الحي التكميلي (جنوب السويس) ببيت الوطن (القطعة A149)، بمساحات تبدأ من 150 م² وحتى 160 م²، في لوكيشن مميز جدًا الأقرب للطرق الرئيسية وشارع التسعين الشمالي، والاستلام فوري.',
+      en: 'A residential project with smart, innovative European designs in the Supplementary District (South Suez) of Beit El-Watan (Plot A149), with areas from 150 m² up to 160 m², in a prime location closest to main roads and North 90th Street, with immediate delivery.',
     },
     features: defaultFeatures,
     payment: defaultPayment,
@@ -1145,11 +1192,11 @@ export const projects = [
   },
   {
     id: 'north-orchid-179',
-    title: { ar: 'الجهيني للتطوير العقاري 179 - شمال الأوركيد', en: 'El-Geheny Real Estate Development 179 - North Orchid' },
+    title: { ar: '179 - شمال الأوركيد', en: '179 - North Orchid' },
     category: 'north-orchid',
     categoryName: { ar: 'بيت الوطن - شمال الأوركيد', en: 'Beit El-Watan - North Orchid' },
-    location: { ar: 'بيت الوطن، شمال الأوركيد، التجمع الخامس، القاهرة الجديدة', en: 'Beit El-Watan, North Orchid, Fifth Settlement, New Cairo' },
-    type: { ar: 'عمارة سكنية', en: 'Residential building' },
+    location: { ar: 'بيت الوطن، شمال الأوركيد، القاهرة الجديدة، القاهرة الجديدة', en: 'Beit El-Watan, North Orchid, New Cairo, New Cairo' },
+    type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 120 م² إلى 180 م²', en: 'From 120 m² to 180 m²' },
     units: { ar: '10 شقق', en: '10 apartments' },
     progress: 42,
@@ -1157,14 +1204,15 @@ export const projects = [
     deliveryStatus: { ar: 'تحت الإنشاء', en: 'Under construction' },
     unitTypes: defaultUnitTypes,
     cover: orchid179Cover,
-    gallery: [orchid179Cover, ...galleryForProject('orchid179', { excludePlanFiles: true })],
+    gallery: orchid179Gallery.length > 0 ? orchid179Gallery : [orchid179Cover],
+    facades: orchid179Facades.length > 0 ? orchid179Facades : [orchid179Cover],
     shortDescription: {
       ar: 'مشروع سكني عصري في شمال الأوركيد — ناصية صريحة على منطقة الخدمات بمساحات من 120 إلى 180 م².',
       en: 'A modern residential project in North Orchid — a corner plot overlooking the services zone, with areas from 120 to 180 m².',
     },
     description: {
-      ar: 'عمارة سكنية في حي شمال الأوركيد ببيت الوطن (القطعة 179) بتصميم معماري مودرن يجمع بين الخطوط العصرية والخامات المميزة. يتميز المشروع بواجهات مدروسة بإطلالات بانورامية، وموقع ناصية بالقرب من منطقة الخدمات والطرق الرئيسية وكمبوندات Mountain View و Address East.',
-      en: 'A residential building in North Orchid, Beit El-Watan (Plot 179), with a modern architectural design combining contemporary lines and premium materials. The project features carefully designed facades with panoramic views, on a corner plot near the services zone, main roads, and compounds such as Mountain View and Address East.',
+      ar: 'مشروع سكني في حي شمال الأوركيد ببيت الوطن (القطعة 179) بتصميم معماري مودرن يجمع بين الخطوط العصرية والخامات المميزة. يتميز المشروع بواجهات مدروسة بإطلالات بانورامية، وموقع ناصية بالقرب من منطقة الخدمات والطرق الرئيسية وكمبوندات Mountain View و Address East.',
+      en: 'A residential project in North Orchid, Beit El-Watan (Plot 179), with a modern architectural design combining contemporary lines and premium materials. The project features carefully designed facades with panoramic views, on a corner plot near the services zone, main roads, and compounds such as Mountain View and Address East.',
     },
     features: [
       { ar: 'تصميم معماري مودرن بواجهات بانورامية', en: 'Modern design with panoramic facades' },
@@ -1192,8 +1240,8 @@ export const projects = [
         {
           title: { ar: 'موقع استراتيجي مميز', en: 'Prime strategic location' },
           desc: {
-            ar: 'قريب من طريق السويس والطريق الدائري الأوسطي، مما يسهّل الوصول لمناطق التجمع الخامس والعاصمة الإدارية.',
-            en: 'Close to Suez Road and the Middle Ring Road, easing access to the Fifth Settlement and the Administrative Capital.',
+            ar: 'قريب من طريق السويس والطريق الدائري الأوسطي، مما يسهّل الوصول لمناطق القاهرة الجديدة والعاصمة الإدارية.',
+            en: 'Close to Suez Road and the Middle Ring Road, easing access to the New Cairo and the Administrative Capital.',
           },
         },
         {
@@ -1325,10 +1373,10 @@ export function getProjectHeroContent(project, lang) {
       ? 'بيت الوطن'
       : 'Beit El-Watan'
 
-  let settlement = lang === 'ar' ? 'التجمع الخامس' : 'Fifth Settlement'
-  if (lang === 'ar' && !locationText.includes('التجمع الخامس')) {
+  let settlement = lang === 'ar' ? 'القاهرة الجديدة' : 'New Cairo'
+  if (lang === 'ar' && !locationText.includes('القاهرة الجديدة')) {
     settlement = locationText.split('،').pop()?.trim() || settlement
-  } else if (lang === 'en' && !locationText.includes('Fifth Settlement')) {
+  } else if (lang === 'en' && !locationText.includes('New Cairo')) {
     settlement = locationText.split(',').pop()?.trim() || settlement
   }
 
@@ -1338,11 +1386,10 @@ export function getProjectHeroContent(project, lang) {
 }
 
 export function getProjectDisplayTitle(project, lang) {
-  const companyName = company.name[lang] ?? company.name.ar
   const category = projectCategories.find((c) => c.id === project.category)
-  const district = category ? category.name[lang] : project.categoryName[lang]
+  const district = category ? category.name[lang] ?? category.name.ar : project.categoryName[lang] ?? project.categoryName.ar
   const code = formatProjectCode(project.id)
-  return `${companyName} - ${district} ${code}`
+  return `${district} - ${code}`
 }
 
 export const getProjectById = (id) => projects.find((p) => p.id === id)

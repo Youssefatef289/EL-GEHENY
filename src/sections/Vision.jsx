@@ -148,18 +148,20 @@ export default function Vision() {
               </div>
 
               <div className="mt-8 sm:mt-10">
-                <Link to="/about" className="btn-primary">
-                  {t('vision.cta')}
-                  <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" aria-hidden="true">
-                    <path
-                      d="M19 12H5M12 19l-7-7 7-7"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
+                {slide.key !== 'message' && (
+                  <Link to="/about" className="btn-primary">
+                    {t('vision.cta')}
+                    <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 rtl:rotate-180" aria-hidden="true">
+                      <path
+                        d="M19 12H5M12 19l-7-7 7-7"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

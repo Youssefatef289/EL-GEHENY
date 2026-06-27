@@ -112,7 +112,7 @@ export default function BrandLoaderContent({ progress = 0, indeterminate = false
             duration: 0.5,
             delay: reduceMotion ? 0 : WORD_START_DELAY + DEVELOPMENT.length * LETTER_STAGGER + 0.25,
           }}
-          className="loader-dots text-xs font-semibold uppercase tracking-[0.32em] text-navy-500"
+          className="loader-dots text-xs font-semibold uppercase tracking-[0.32em] text-white"
           aria-live="polite"
         >
           {t('common.loading')}

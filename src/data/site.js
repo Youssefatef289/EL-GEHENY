@@ -9,8 +9,8 @@ export const company = {
   phoneIntl: '201070312000',
   email: 'info@elgeheny.com',
   address: {
-    ar: '22 شارع شمال الشويفات، التجمع الخامس، القاهرة الجديدة',
-    en: '22 North El-Shweifat St., Fifth Settlement, New Cairo',
+    ar: '22 شارع شمال الشويفات، القاهرة الجديدة',
+    en: '22 North El-Shweifat St., New Cairo',
   },
   whatsapp: '201070312000',
   mapUrl: 'https://maps.app.goo.gl/Y8D1P3tHM1mKXv2y9',

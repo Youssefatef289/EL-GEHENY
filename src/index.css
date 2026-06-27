@@ -387,27 +387,27 @@
   }
 
   .project-filter-shell {
-    @apply relative isolate w-full max-w-full overflow-hidden rounded-2xl border border-primary-500/30;
+    @apply relative isolate mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-primary-500/25;
     background: linear-gradient(
-      145deg,
-      rgba(40, 40, 37, 0.95) 0%,
-      rgba(29, 29, 27, 0.98) 45%,
-      rgba(32, 28, 20, 0.96) 100%
+      160deg,
+      rgba(36, 34, 30, 0.97) 0%,
+      rgba(24, 24, 22, 0.99) 50%,
+      rgba(30, 26, 18, 0.98) 100%
     );
     box-shadow:
-      0 24px 60px -28px rgba(212, 175, 55, 0.28),
-      inset 0 1px 0 rgba(255, 246, 197, 0.1),
-      inset 0 0 0 1px rgba(212, 175, 55, 0.06);
+      0 20px 50px -24px rgba(212, 175, 55, 0.22),
+      inset 0 1px 0 rgba(255, 246, 197, 0.08),
+      inset 0 0 0 1px rgba(212, 175, 55, 0.08);
   }
 
   .project-filter-shell::before {
     content: '';
     @apply pointer-events-none absolute inset-0 rounded-2xl;
-    background: radial-gradient(ellipse 80% 120% at 50% -20%, rgba(212, 175, 55, 0.14), transparent 55%);
+    background: radial-gradient(ellipse 90% 140% at 50% 0%, rgba(212, 175, 55, 0.16), transparent 60%);
   }
 
   .project-filter-scroll {
-    @apply relative z-[1] overflow-x-auto overscroll-x-contain p-1.5;
+    @apply relative z-[1] overflow-x-auto overscroll-x-contain p-2 sm:p-2.5;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -417,20 +417,23 @@
   }
 
   .project-filter-track {
-    @apply flex min-w-max items-center gap-1 sm:gap-1.5;
+    @apply mx-auto flex w-max min-w-full flex-nowrap items-stretch justify-center gap-2 sm:flex-wrap sm:gap-2.5;
   }
 
   .project-filter-tab-idle,
   .project-filter-tab-active {
-    @apply relative isolate flex-shrink-0 overflow-hidden whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-300 sm:px-5;
+    @apply relative isolate inline-flex min-h-[2.75rem] min-w-[7.25rem] flex-shrink-0 items-center justify-center overflow-hidden rounded-xl px-4 py-2.5 text-center text-sm font-semibold leading-tight transition-all duration-300 sm:min-w-[8.5rem] sm:rounded-full sm:px-5 sm:py-3;
   }
 
   .project-filter-tab-idle {
-    @apply z-0 border border-transparent text-navy-600 hover:border-primary-500/20 hover:bg-white/5 hover:text-primary-300;
+    @apply z-0 border border-white/10 bg-white/[0.04] text-white hover:border-primary-400/30 hover:bg-white hover:text-ink;
   }
 
   .project-filter-tab-active {
-    @apply z-10 border border-primary-400/40 gold-metallic text-ink shadow-gold-sm;
+    @apply z-10 border border-primary-400/50 gold-metallic text-ink shadow-gold-sm;
+    box-shadow:
+      0 4px 18px -6px rgba(212, 175, 55, 0.45),
+      inset 0 1px 0 rgba(255, 246, 197, 0.35);
   }
 
   .unit-type-tabs {
@@ -458,7 +461,7 @@
   }
 
   .unit-type-tab-idle {
-    @apply z-0 text-navy-600 hover:bg-white/5 hover:text-primary-300;
+    @apply z-0 text-white hover:bg-white hover:text-ink;
   }
 
   .unit-type-tab-active {
@@ -1435,29 +1438,29 @@
 }
 
 /* ── Floating contact — phone & WhatsApp (all pages) ── */
-.floating-contact {
-  @apply fixed bottom-6 z-40 flex items-center;
+.floating-contact-stack {
+  @apply fixed right-6 z-40 flex flex-col gap-3;
   bottom: max(1.5rem, env(safe-area-inset-bottom));
 }
 
-.floating-contact--phone {
-  @apply start-6 text-ink;
+.floating-contact {
+  @apply relative flex items-center;
 }
 
-.floating-contact--whatsapp {
-  @apply end-6;
+.floating-contact--phone {
+  @apply text-ink;
 }
 
 .floating-contact-icon {
-  @apply relative flex h-14 w-14 items-center justify-center rounded-full bg-primary-gradient text-black shadow-[0_10px_30px_-5px_rgba(202,161,63,0.55)] transition-all duration-300 group-hover:scale-110;
+  @apply relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-ink shadow-[0_10px_30px_-5px_rgba(0,0,0,0.18),0_4px_16px_-4px_rgba(255,255,255,0.4)] transition-all duration-300 group-hover:scale-110;
 }
 
 .floating-contact--phone:hover .floating-contact-icon {
-  @apply bg-black text-white shadow-[0_10px_30px_-5px_rgba(0,0,0,0.45)];
+  @apply bg-white text-ink shadow-[0_12px_32px_-6px_rgba(0,0,0,0.22),0_6px_20px_-6px_rgba(255,255,255,0.5)];
 }
 
 .floating-contact-icon--whatsapp {
-  @apply bg-[#25D366] text-black shadow-[0_10px_30px_-5px_rgba(37,211,102,0.6)];
+  @apply bg-[#25D366] text-white shadow-[0_10px_30px_-5px_rgba(37,211,102,0.55)];
 }
 
 .floating-contact-ping {
@@ -1469,13 +1472,13 @@
 }
 
 .floating-contact-tooltip--phone {
-  @apply start-full ms-3 bg-black text-white;
+  @apply right-full mr-3 bg-black text-white;
 }
 
 .floating-contact-tooltip--whatsapp {
-  @apply end-full me-3 bg-navy-100 text-navy-900;
+  @apply right-full mr-3 bg-navy-100 text-navy-900;
 }
 
 .scroll-top-btn {
-  bottom: max(5.75rem, calc(env(safe-area-inset-bottom) + 4.25rem));
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
 }

@@ -150,7 +150,7 @@ export function buildStructuredData(seo, lang) {
     sameAs: Object.values(company.social),
     areaServed: {
       '@type': 'AdministrativeArea',
-      name: lang === 'ar' ? 'التجمع الخامس، القاهرة الجديدة' : 'Fifth Settlement, New Cairo',
+      name: lang === 'ar' ? 'القاهرة الجديدة' : 'New Cairo',
     },
   }
 

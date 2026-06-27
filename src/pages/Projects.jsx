@@ -35,9 +35,9 @@ export default function Projects() {
           {/* الفلاتر */}
           <div className="relative mb-8 flex justify-center sm:mb-12">
             <div className="pointer-events-none absolute inset-x-4 top-1/2 h-20 -translate-y-1/2 rounded-full bg-primary-500/10 blur-[70px] sm:inset-x-8" />
-            <div className="project-filter-shell w-full max-w-full">
+            <div className="project-filter-shell">
               <div className="project-filter-scroll">
-                <div className="project-filter-track">
+                <div className="project-filter-track" role="tablist" aria-label={t('projectsPage.title')}>
                   {projectCategories.map((cat) => (
                     <button
                       key={cat.id}
@@ -45,10 +45,12 @@ export default function Projects() {
                         tabRefs.current[cat.id] = el
                       }}
                       type="button"
+                      role="tab"
+                      aria-selected={active === cat.id}
                       onClick={() => selectCategory(cat.id)}
                       className={active === cat.id ? 'project-filter-tab-active' : 'project-filter-tab-idle'}
                     >
-                      {L(cat.name, lang)}
+                      <span className="block w-full text-center">{L(cat.name, lang)}</span>
                     </button>
                   ))}
                 </div>

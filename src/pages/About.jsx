@@ -61,6 +61,7 @@ function AboutHero() {
       title={t('about.heroTitle')}
       description={t('about.heroDesc')}
       imageAlt={t('about.heroEyebrow')}
+      compact
     >
       <div className="flex flex-wrap justify-center gap-3">
         <span className="label-caps border-primary-500/40 bg-primary-500/15 text-primary-100 backdrop-blur-md">

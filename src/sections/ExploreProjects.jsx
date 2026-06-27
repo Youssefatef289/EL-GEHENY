@@ -9,7 +9,7 @@ const FEATURED_IDS = ['j290', 'e80', 'm75', 'north-orchid-179']
 
 function cardLabel(project, lang) {
   const code = project.id.replace('north-orchid-', '').toUpperCase()
-  return lang === 'ar' ? `عمارة ${code}` : `Building ${code}`
+  return lang === 'ar' ? `مشروع ${code}` : `Project ${code}`
 }
 
 function FeaturedProjectCard({ project, lang, index }) {
