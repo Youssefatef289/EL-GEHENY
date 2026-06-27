@@ -43,7 +43,7 @@ const slides = [
   },
 ]
 
-export default function Vision() {
+export default function Vision({ showCta = true }) {
   const { t, lang } = useLang()
   const reduceMotion = useReducedMotion()
   const [index, setIndex] = useState(0)
@@ -147,8 +147,8 @@ export default function Vision() {
                 ))}
               </div>
 
-              <div className="mt-8 sm:mt-10">
-                {slide.key !== 'message' && (
+              {showCta && (
+                <div className="mt-8 sm:mt-10">
                   <Link to="/about" className="btn-primary">
                     {t('vision.cta')}
                     <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 rtl:rotate-180" aria-hidden="true">
@@ -161,8 +161,8 @@ export default function Vision() {
                       />
                     </svg>
                   </Link>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </Reveal>

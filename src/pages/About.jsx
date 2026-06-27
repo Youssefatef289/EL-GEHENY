@@ -134,7 +134,7 @@ export default function About() {
 
       {/* رؤيتنا للمستقبل */}
       <SectionReveal>
-        <Vision />
+        <Vision showCta={false} />
       </SectionReveal>
 
       <SectionReveal>

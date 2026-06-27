@@ -23,8 +23,8 @@ const heritageProjects = [
     en: 'Construction of a residential villa in First Settlement — New Cairo',
   },
   {
-    ar: 'إنشاء برج سكنى فلاور تاور زهراء مدينة نصر',
-    en: 'Construction of Flower Tower residential building — Zahraa, Nasr City',
+    ar: 'إنشاء برج سكنى فلاور سيتى زهراء مدينة نصر',
+    en: 'Construction of Flower City residential building — Zahraa, Nasr City',
   },
   {
     ar: 'إنشاء مجموعة أبراج الجهيني للتطوير العقاري (1، 2، 3، 4، 5، 6، 7) - زهراء مدينة نصر',
