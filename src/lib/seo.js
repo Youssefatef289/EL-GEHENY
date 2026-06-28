@@ -1,5 +1,5 @@
 import { company } from '../data/site'
-import { getProjects, getProjectById } from '../data/projects'
+import { getProjectsSync, baseProjects, getProjectById } from '../data/projects'
 import { getBlogPosts } from '../data/blog'
 import { L } from '../i18n'
 
@@ -208,7 +208,7 @@ export function buildStructuredData(seo, lang) {
 
 export function getSitemapPaths() {
   const paths = ['/', '/about', '/projects', '/blog', '/contact']
-  getProjects().forEach((p) => paths.push(`/projects/${p.id}`))
+  baseProjects.forEach((p) => paths.push(`/projects/${p.id}`))
   getBlogPosts().forEach((p) => paths.push(`/blog/${p.id}`))
   return paths
 }

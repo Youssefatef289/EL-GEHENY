@@ -54,6 +54,7 @@ export async function loadSiteDataFromSupabase() {
   }
 
   setSiteCache(partial)
+  notifySiteDataUpdated('all')
   return partial
 }
 

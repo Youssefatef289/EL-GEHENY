@@ -2,23 +2,19 @@ import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import ImagePageHero from '../components/ImagePageHero'
-import { getProjects, projectCategories } from '../data/projects'
-import { useAdminDataRevision } from '../admin/useAdminDataRevision'
+import { projectCategories } from '../data/projects'
+import { useProjects } from '../hooks/useSiteData'
 import { useLang, L } from '../i18n'
 
 export default function Projects() {
   const [active, setActive] = useState('all')
   const tabRefs = useRef({})
   const { t, lang } = useLang()
-  const revision = useAdminDataRevision()
+  const allProjects = useProjects()
 
-  const filtered = useMemo(
-    () => {
-      const projects = getProjects()
-      return active === 'all' ? projects : projects.filter((p) => p.category === active)
-    },
-    [active, revision],
-  )
+  const projects = useMemo(() => {
+    return active === 'all' ? allProjects : allProjects.filter((p) => p.category === active)
+  }, [active, allProjects])
 
   const selectCategory = (id) => {
     setActive(id)
@@ -66,7 +62,7 @@ export default function Projects() {
           {/* شبكة المشاريع */}
           <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
-              {filtered.map((project, i) => (
+              {projects.map((project, i) => (
                 <motion.div
                   key={project.id}
                   layout
@@ -81,7 +77,7 @@ export default function Projects() {
             </AnimatePresence>
           </motion.div>
 
-          {filtered.length === 0 && (
+          {projects.length === 0 && (
             <p className="py-20 text-center text-muted">{t('projectsPage.empty')}</p>
           )}
         </div>

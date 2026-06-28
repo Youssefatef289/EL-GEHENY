@@ -1,9 +1,10 @@
 // بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
 import { company } from './site'
-import { getSiteCache } from '../lib/siteDataCache'
+import { getSiteCache, setSiteCache, notifySiteDataUpdated } from '../lib/siteDataCache'
 import { getData, STORAGE_KEYS } from '../admin/storage'
-import { isSupabaseConfigured } from '../lib/supabase'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { rowToProject } from '../admin/mappers'
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 import m75Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التالت m75/الوجهات_(1).jpg'
 import e80Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي الخامس E80/WhatsApp Image 2026-06-03 at 1.12.04 PM.jpeg'
@@ -1362,17 +1363,34 @@ const baseProjects = [
   },
 ]
 
-export function getProjects() {
-  if (isSupabaseConfigured()) {
-    const cached = getSiteCache().projects
-    if (Array.isArray(cached) && cached.length > 0) return cached
-    return baseProjects
+export function getProjectsSync() {
+  const cached = getSiteCache().projects
+  if (Array.isArray(cached) && cached.length > 0) return cached
+  if (!isSupabaseConfigured()) {
+    const stored = getData(STORAGE_KEYS.projects, null)
+    if (Array.isArray(stored) && stored.length > 0) return stored
   }
-  const stored = getData(STORAGE_KEYS.projects, null)
-  if (Array.isArray(stored) && stored.length > 0) return stored
   return baseProjects
 }
 
+export async function getProjects() {
+  if (isSupabaseConfigured() && supabase) {
+    const { data, error } = await supabase.from('projects').select('*').order('sort_order')
+    if (!error && data?.length) {
+      const mapped = data.map(rowToProject)
+      setSiteCache({ projects: mapped })
+      notifySiteDataUpdated('projects')
+      return mapped
+    }
+  }
+  if (!isSupabaseConfigured()) {
+    const stored = getData(STORAGE_KEYS.projects, null)
+    if (Array.isArray(stored) && stored.length > 0) return stored
+  }
+  return baseProjects
+}
+
+/** بيانات افتراضية ثابتة — في الواجهة استخدم `useProjects()` أو `getProjects()` */
 export const projects = baseProjects
 export { baseProjects }
 
@@ -1422,7 +1440,7 @@ export function getProjectDisplayTitle(project, lang) {
   return `${district} - ${code}`
 }
 
-export const getProjectById = (id) => getProjects().find((p) => p.id === id)
+export const getProjectById = (id) => getProjectsSync().find((p) => p.id === id)
 
 /** بريد استقبال استفسارات المشاريع */
 export function getProjectSalesEmail() {

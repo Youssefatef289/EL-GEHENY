@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import SectionTitle from '../components/SectionTitle'
 import Reveal from '../components/Reveal'
 import { gsap, ScrollTrigger, registerGsap } from '../gsap/register'
-import { getProjects } from '../data/projects'
-import { useAdminDataRevision } from '../admin/useAdminDataRevision'
+import { useProjects } from '../hooks/useSiteData'
 import { useLang, L } from '../i18n'
 
 const showcaseIds = ['j290', 'e80', 'm75', 'm36']
@@ -16,10 +15,10 @@ function shortTitle(project, lang) {
 
 export default function ProjectsShowcase() {
   const { lang, t } = useLang()
-  const revision = useAdminDataRevision()
+  const projects = useProjects()
   const stackRef = useRef(null)
   const cardRefs = useRef([])
-  const showcase = showcaseIds.map((id) => getProjects().find((p) => p.id === id)).filter(Boolean)
+  const showcase = showcaseIds.map((id) => projects.find((p) => p.id === id)).filter(Boolean)
 
   useEffect(() => {
     registerGsap()

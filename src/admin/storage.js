@@ -3,6 +3,7 @@ import { notifySiteDataUpdated } from '../lib/siteDataCache'
 import { refreshSiteData } from '../lib/siteDataLoader'
 import {
   projectToRow,
+  rowToProject,
   serviceToRow,
   blogToRow,
   serializeTeam,
@@ -68,9 +69,13 @@ async function afterWrite(key) {
 
 export const projectsDB = {
   async getAll() {
-    if (!supabase) return []
-    const { data } = await supabase.from('projects').select('*').order('sort_order')
-    return data || []
+    if (!supabase) {
+      const stored = getData(STORAGE_KEYS.projects, null)
+      return Array.isArray(stored) ? stored : []
+    }
+    const { data, error } = await supabase.from('projects').select('*').order('sort_order')
+    if (error || !data?.length) return []
+    return data.map(rowToProject)
   },
   async saveAll(projects) {
     if (!supabase) {

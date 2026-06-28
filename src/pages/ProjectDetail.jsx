@@ -8,13 +8,11 @@ import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
 import Reveal from '../components/Reveal'
 import { sendInquiryEmail } from '../lib/email'
 import {
-  getProjectById,
   getProjectDisplayTitle,
   getProjectHeroContent,
   getProjectSalesEmail,
   formatProjectCode,
   getAllProjectLayoutPlans,
-  projects,
   UNIT_TYPE_KEYS,
   UNIT_TYPE_LABELS,
   groupUnitDetails,
@@ -24,6 +22,7 @@ import {
   getConstructionStageState,
   getActiveConstructionPhase,
 } from '../data/projects'
+import { useProjects, useSiteDataLoaded } from '../hooks/useSiteData'
 import { company } from '../data/site'
 import { useLang, L } from '../i18n'
 
@@ -38,7 +37,9 @@ function formatRoomLabel(room, lang) {
 
 export default function ProjectDetail() {
   const { id } = useParams()
-  const project = getProjectById(id)
+  const projects = useProjects()
+  const loaded = useSiteDataLoaded()
+  const project = useMemo(() => projects.find((p) => p.id === id), [projects, id])
   const [activeImg, setActiveImg] = useState(0)
   const [activeUnitType, setActiveUnitType] = useState('all')
   const [activeUnitIndex, setActiveUnitIndex] = useState(0)
@@ -129,6 +130,7 @@ export default function ProjectDetail() {
     setActiveAutocadImg(0)
   }, [project?.id])
 
+  if (!loaded) return null
   if (!project) return <Navigate to="/projects" replace />
 
   const related = projects.filter((p) => p.id !== project.id).slice(0, 3)

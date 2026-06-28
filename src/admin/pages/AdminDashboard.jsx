@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getProjects } from '../../data/projects'
+import { getProjectsSync } from '../../data/projects'
 import { getBlogPosts } from '../../data/blog'
 import { getServices } from '../../data/services'
 import { getTeamMembers, getFounder } from '../../data/team'
@@ -9,7 +9,7 @@ import { seedDatabase } from '../seedData'
 import { AdminPageHeader, useToast } from '../components/AdminUI'
 
 const cards = [
-  { to: '/admin/projects', label: 'المشاريع', icon: 'fa-building', count: () => getProjects().length },
+  { to: '/admin/projects', label: 'المشاريع', icon: 'fa-building', count: () => getProjectsSync().length },
   { to: '/admin/blog', label: 'مقالات المدونة', icon: 'fa-newspaper', count: () => getBlogPosts().length },
   { to: '/admin/services', label: 'الخدمات', icon: 'fa-briefcase', count: () => getServices().length },
   { to: '/admin/team', label: 'فريق الإدارة', icon: 'fa-users', count: () => getTeamMembers().length + 1 },

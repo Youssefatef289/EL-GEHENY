@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getSiteCache } from '../lib/siteDataCache'
+import { isSupabaseConfigured } from '../lib/supabase'
 import { baseCompany, baseStats } from '../data/site'
 import { translations as defaultTranslations } from '../i18n/translations'
 import { baseProjects } from '../data/projects'
@@ -43,10 +44,17 @@ export function useTranslations() {
   }
 }
 
+export function useSiteDataLoaded() {
+  useSiteDataRevision()
+  return getSiteCache().loaded
+}
+
 export function useProjects() {
   useSiteDataRevision()
-  const cached = getSiteCache().projects
-  return cached?.length ? cached : baseProjects
+  const cache = getSiteCache()
+  if (cache.projects?.length) return cache.projects
+  if (isSupabaseConfigured() && !cache.loaded) return []
+  return baseProjects
 }
 
 export function useServices() {

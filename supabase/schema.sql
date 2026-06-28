@@ -112,35 +112,20 @@ VALUES (
   ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif']::text[]
 )
 ON CONFLICT (id) DO UPDATE SET
-  public = true,
-  file_size_limit = 5242880,
-  allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif']::text[];
-
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+  public = EXCLUDED.public,
+  file_size_limit = EXCLUDED.file_size_limit,
+  allowed_mime_types = EXCLUDED.allowed_mime_types;
 
 DROP POLICY IF EXISTS "public read project images" ON storage.objects;
 DROP POLICY IF EXISTS "anon read project images" ON storage.objects;
 DROP POLICY IF EXISTS "anon upload project images" ON storage.objects;
 DROP POLICY IF EXISTS "anon update project images" ON storage.objects;
 DROP POLICY IF EXISTS "anon delete project images" ON storage.objects;
+DROP POLICY IF EXISTS "project images public access" ON storage.objects;
 
-CREATE POLICY "public read project images"
-  ON storage.objects FOR SELECT
-  TO public
-  USING (bucket_id = 'project-images');
-
-CREATE POLICY "anon upload project images"
-  ON storage.objects FOR INSERT
-  TO public
-  WITH CHECK (bucket_id = 'project-images');
-
-CREATE POLICY "anon update project images"
-  ON storage.objects FOR UPDATE
+CREATE POLICY "project images public access"
+  ON storage.objects
+  FOR ALL
   TO public
   USING (bucket_id = 'project-images')
   WITH CHECK (bucket_id = 'project-images');
-
-CREATE POLICY "anon delete project images"
-  ON storage.objects FOR DELETE
-  TO public
-  USING (bucket_id = 'project-images');

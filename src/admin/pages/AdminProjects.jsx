@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { baseProjects, getProjects } from '../../data/projects'
+import { useMemo, useState, useEffect } from 'react'
+import { baseProjects } from '../../data/projects'
 import {
   uploadProjectCover,
   uploadProjectImage,
@@ -160,42 +160,63 @@ function ProjectForm({ project, onSave, onCancel, saving }) {
 export default function AdminProjects() {
   const revision = useAdminDataRevision()
   const { showToast } = useToast()
-  const projects = useMemo(() => getProjects(), [revision])
+  const [projects, setProjects] = useState([])
   const [editing, setEditing] = useState(null)
   const [creating, setCreating] = useState(false)
   const [deleteId, setDeleteId] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  const persist = async (list) => {
-    setSaving(true)
-    const ok = await projectsDB.saveAll(list)
-    setSaving(false)
-    if (ok) showToast('تم الحفظ بنجاح ✓')
-    else showToast('فشل الحفظ — تحقق من إعداد Supabase', 'error')
+  const refreshProjects = async () => {
+    const updated = await projectsDB.getAll()
+    setProjects(updated.length > 0 ? updated : baseProjects)
+    setLoading(false)
   }
 
+  useEffect(() => {
+    setLoading(true)
+    refreshProjects()
+  }, [revision])
+
   const handleSave = async (form) => {
-    const exists = projects.some((p) => p.id === form.id)
-    const next = exists
-      ? projects.map((p) => (p.id === form.id ? { ...p, ...form } : p))
-      : [...projects, form]
-    await persist(next)
-    setEditing(null)
-    setCreating(false)
+    setSaving(true)
+    const index = projects.findIndex((p) => p.id === form.id)
+    const sortOrder = index >= 0 ? index : projects.length
+    const ok = await projectsDB.save(form, sortOrder)
+    if (ok) {
+      await projectsDB.getAll().then(setProjects)
+      showToast('تم الحفظ بنجاح ✓')
+      setEditing(null)
+      setCreating(false)
+    } else {
+      showToast('فشل الحفظ — تحقق من إعداد Supabase', 'error')
+    }
+    setSaving(false)
   }
 
   const handleDelete = async () => {
-    const next = projects.filter((p) => p.id !== deleteId)
-    await persist(next)
+    setSaving(true)
+    const ok = await projectsDB.delete(deleteId)
+    if (ok) {
+      await projectsDB.getAll().then(setProjects)
+      showToast('تم الحذف بنجاح ✓')
+    } else {
+      showToast('فشل الحذف', 'error')
+    }
+    setSaving(false)
     setDeleteId(null)
   }
 
   const handleReset = async () => {
     setSaving(true)
     const ok = await projectsDB.clear()
+    if (ok) {
+      setProjects(baseProjects)
+      showToast('تمت استعادة المشاريع الافتراضية ✓')
+    } else {
+      showToast('فشلت الاستعادة', 'error')
+    }
     setSaving(false)
-    if (ok) showToast('تمت استعادة المشاريع الافتراضية ✓')
-    else showToast('فشلت الاستعادة', 'error')
     setEditing(null)
     setCreating(false)
   }
@@ -215,7 +236,7 @@ export default function AdminProjects() {
     <div>
       <AdminPageHeader
         title="إدارة المشاريع"
-        subtitle={`${projects.length} مشروع`}
+        subtitle={loading ? 'جاري التحميل...' : `${projects.length} مشروع`}
         action={(
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => setCreating(true)} className="admin-btn-primary">إضافة مشروع</button>
