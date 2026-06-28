@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { baseProjects, getProjects } from '../../data/projects'
-import { uploadProjectCover, coverPreviewUrl } from '../../lib/uploadImage'
+import { uploadProjectCover, coverPreviewUrl, uploadResultMessage } from '../../lib/uploadImage'
 import { projectsDB } from '../storage'
 import { useAdminDataRevision } from '../useAdminDataRevision'
 import { AdminPageHeader, BilingualInput, ConfirmDialog, ImageUploadField, useToast } from '../components/AdminUI'
@@ -51,9 +51,9 @@ function ProjectForm({ project, onSave, onCancel, saving }) {
   }
 
   const handleUpload = async (file) => {
-    const url = await uploadProjectCover(file, form.id)
-    showToast('تم رفع الصورة ✓')
-    return url
+    const result = await uploadProjectCover(file, form.id)
+    showToast(uploadResultMessage(result))
+    return result.url
   }
 
   return (
@@ -64,7 +64,7 @@ function ProjectForm({ project, onSave, onCancel, saving }) {
         value={form.cover}
         onChange={(cover) => setForm({ ...form, cover })}
         onUpload={handleUpload}
-        hint="JPG أو PNG أو WebP — حد أقصى 5MB. تُرفع إلى Supabase Storage."
+        hint="JPG أو PNG أو WebP — حد أقصى 5MB. تُرفع تلقائياً وتُحفظ مع المشروع."
       />
       <BilingualInput label="العنوان" value={form.title} onChange={(title) => setForm({ ...form, title })} />
       <BilingualInput label="الوصف" value={form.description} onChange={(description) => setForm({ ...form, description })} multiline />
