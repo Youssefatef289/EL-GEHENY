@@ -105,3 +105,71 @@ export function AdminPageHeader({ title, subtitle, action }) {
     </div>
   )
 }
+
+export function ImageUploadField({ label, value, onChange, onUpload, hint }) {
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState('')
+  const preview = typeof value === 'string' ? value : ''
+
+  const handleFile = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setError('')
+    setUploading(true)
+    try {
+      const url = await onUpload(file)
+      onChange(url)
+    } catch (err) {
+      setError(err.message || 'فشل رفع الصورة')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="text-sm font-bold text-[#1a1a2e]">{label}</p>
+      {preview ? (
+        <img
+          src={preview}
+          alt=""
+          className="h-44 w-full max-w-md rounded-xl border border-gray-200 object-cover"
+        />
+      ) : (
+        <div className="flex h-44 w-full max-w-md items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 text-sm text-gray-400">
+          لا توجد صورة
+        </div>
+      )}
+      <div className="flex flex-wrap gap-2">
+        <label className={`admin-btn-secondary cursor-pointer ${uploading ? 'pointer-events-none opacity-60' : ''}`}>
+          {uploading ? 'جاري الرفع...' : 'رفع صورة من الجهاز'}
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            disabled={uploading}
+            onChange={handleFile}
+          />
+        </label>
+        {preview && (
+          <button type="button" onClick={() => onChange('')} className="admin-btn-secondary">
+            حذف الصورة
+          </button>
+        )}
+      </div>
+      <label className="block space-y-1">
+        <span className="text-xs font-semibold text-gray-500">أو أدخل رابط الصورة</span>
+        <input
+          className="admin-input"
+          dir="ltr"
+          value={preview}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="https://..."
+        />
+      </label>
+      {error && <p className="text-sm font-semibold text-red-500">{error}</p>}
+      {hint && <p className="text-xs text-gray-500">{hint}</p>}
+    </div>
+  )
+}

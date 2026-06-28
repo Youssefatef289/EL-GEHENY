@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
 import { baseProjects, getProjects } from '../../data/projects'
+import { uploadProjectCover, coverPreviewUrl } from '../../lib/uploadImage'
 import { projectsDB } from '../storage'
 import { useAdminDataRevision } from '../useAdminDataRevision'
-import { AdminPageHeader, BilingualInput, ConfirmDialog, useToast } from '../components/AdminUI'
+import { AdminPageHeader, BilingualInput, ConfirmDialog, ImageUploadField, useToast } from '../components/AdminUI'
 
 const emptyProject = () => ({
   id: `project-${Date.now()}`,
@@ -24,7 +25,11 @@ const emptyProject = () => ({
 })
 
 function ProjectForm({ project, onSave, onCancel, saving }) {
-  const [form, setForm] = useState(project)
+  const { showToast } = useToast()
+  const [form, setForm] = useState(() => ({
+    ...project,
+    cover: coverPreviewUrl(project.cover),
+  }))
   const [featureAr, setFeatureAr] = useState('')
   const [featureEn, setFeatureEn] = useState('')
 
@@ -45,9 +50,22 @@ function ProjectForm({ project, onSave, onCancel, saving }) {
     }))
   }
 
+  const handleUpload = async (file) => {
+    const url = await uploadProjectCover(file, form.id)
+    showToast('تم رفع الصورة ✓')
+    return url
+  }
+
   return (
     <div className="admin-card space-y-6">
       <h2 className="text-xl font-bold text-[#1a1a2e]">{project.id ? 'تعديل مشروع' : 'إضافة مشروع'}</h2>
+      <ImageUploadField
+        label="صورة المشروع (الغلاف)"
+        value={form.cover}
+        onChange={(cover) => setForm({ ...form, cover })}
+        onUpload={handleUpload}
+        hint="JPG أو PNG أو WebP — حد أقصى 5MB. تُرفع إلى Supabase Storage."
+      />
       <BilingualInput label="العنوان" value={form.title} onChange={(title) => setForm({ ...form, title })} />
       <BilingualInput label="الوصف" value={form.description} onChange={(description) => setForm({ ...form, description })} multiline />
       <BilingualInput label="الموقع" value={form.location} onChange={(location) => setForm({ ...form, location })} />
@@ -108,7 +126,9 @@ export default function AdminProjects() {
 
   const handleSave = async (form) => {
     const exists = projects.some((p) => p.id === form.id)
-    const next = exists ? projects.map((p) => (p.id === form.id ? { ...p, ...form } : p)) : [...projects, form]
+    const next = exists
+      ? projects.map((p) => (p.id === form.id ? { ...p, ...form } : p))
+      : [...projects, form]
     await persist(next)
     setEditing(null)
     setCreating(false)
@@ -157,6 +177,7 @@ export default function AdminProjects() {
         <table className="admin-table">
           <thead>
             <tr>
+              <th>الصورة</th>
               <th>المشروع</th>
               <th>الموقع</th>
               <th>الحالة</th>
@@ -165,18 +186,28 @@ export default function AdminProjects() {
             </tr>
           </thead>
           <tbody>
-            {projects.map((project) => (
-              <tr key={project.id}>
-                <td>{project.title?.ar || project.id}</td>
-                <td>{project.location?.ar}</td>
-                <td>{project.deliveryStatus?.ar}</td>
-                <td>{project.progress ?? 0}%</td>
-                <td className="space-x-2 space-x-reverse whitespace-nowrap">
-                  <button type="button" onClick={() => setEditing(project)} className="admin-btn-secondary !px-3 !py-1.5">تعديل</button>
-                  <button type="button" onClick={() => setDeleteId(project.id)} className="admin-btn-danger !px-3 !py-1.5">حذف</button>
-                </td>
-              </tr>
-            ))}
+            {projects.map((project) => {
+              const thumb = coverPreviewUrl(project.cover)
+              return (
+                <tr key={project.id}>
+                  <td>
+                    {thumb ? (
+                      <img src={thumb} alt="" className="h-12 w-16 rounded-lg object-cover" />
+                    ) : (
+                      <span className="text-xs text-gray-400">—</span>
+                    )}
+                  </td>
+                  <td>{project.title?.ar || project.id}</td>
+                  <td>{project.location?.ar}</td>
+                  <td>{project.deliveryStatus?.ar}</td>
+                  <td>{project.progress ?? 0}%</td>
+                  <td className="space-x-2 space-x-reverse whitespace-nowrap">
+                    <button type="button" onClick={() => setEditing(project)} className="admin-btn-secondary !px-3 !py-1.5">تعديل</button>
+                    <button type="button" onClick={() => setDeleteId(project.id)} className="admin-btn-danger !px-3 !py-1.5">حذف</button>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
