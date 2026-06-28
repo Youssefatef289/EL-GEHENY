@@ -4,7 +4,8 @@ import LazyImage from '../components/LazyImage'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
-import { blogPosts } from '../data/blog'
+import { getBlogPosts } from '../data/blog'
+import { useAdminDataRevision } from '../admin/useAdminDataRevision'
 import { useLang, L } from '../i18n'
 
 function formatDate(dateStr, locale) {
@@ -71,6 +72,8 @@ function PostCard({ post, index, featured = false }) {
 }
 
 export default function Blog() {
+  const revision = useAdminDataRevision()
+  const blogPosts = getBlogPosts()
   const [first, ...rest] = blogPosts
   const { t } = useLang()
 

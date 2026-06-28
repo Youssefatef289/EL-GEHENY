@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { translations } from './translations'
+import { translations as baseTranslations } from './translations'
+import { getSiteCache } from '../lib/siteDataCache'
+import { deepMerge } from '../lib/deepMerge'
 
 const LanguageContext = createContext(null)
 
@@ -15,10 +17,23 @@ function resolvePath(obj, path) {
   return path.split('.').reduce((acc, key) => (acc && acc[key] != null ? acc[key] : undefined), obj)
 }
 
+function getMergedTranslations(lang) {
+  const overrides = getSiteCache().translationOverrides
+  if (!overrides) return baseTranslations[lang]
+  return deepMerge(baseTranslations[lang], overrides[lang] || {})
+}
+
 export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState(getInitialLang)
+  const [revision, setRevision] = useState(0)
 
   const dir = lang === 'ar' ? 'rtl' : 'ltr'
+
+  useEffect(() => {
+    const onUpdate = () => setRevision((n) => n + 1)
+    window.addEventListener('admin-data-updated', onUpdate)
+    return () => window.removeEventListener('admin-data-updated', onUpdate)
+  }, [])
 
   useEffect(() => {
     const root = document.documentElement
@@ -33,15 +48,16 @@ export function LanguageProvider({ children }) {
   const toggleLang = () => setLangState((cur) => (cur === 'ar' ? 'en' : 'ar'))
 
   const t = (path) => {
-    const value = resolvePath(translations[lang], path)
+    const bundle = getMergedTranslations(lang)
+    const value = resolvePath(bundle, path)
     if (value == null) {
-      const fallback = resolvePath(translations.ar, path)
+      const fallback = resolvePath(getMergedTranslations('ar'), path)
       return fallback == null ? path : fallback
     }
     return value
   }
 
-  const value = useMemo(() => ({ lang, dir, setLang, toggleLang, t }), [lang, dir])
+  const value = useMemo(() => ({ lang, dir, setLang, toggleLang, t }), [lang, dir, revision])
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }
@@ -52,7 +68,6 @@ export function useLang() {
   return ctx
 }
 
-// Helper to pick a localized value from a {ar, en} object (or return as-is)
 export function L(value, lang) {
   if (value && typeof value === 'object' && ('ar' in value || 'en' in value)) {
     return value[lang] ?? value.ar ?? value.en

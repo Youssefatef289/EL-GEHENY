@@ -2,23 +2,28 @@ import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import ImagePageHero from '../components/ImagePageHero'
-import { projects, projectCategories } from '../data/projects'
+import { getProjects, projectCategories } from '../data/projects'
+import { useAdminDataRevision } from '../admin/useAdminDataRevision'
 import { useLang, L } from '../i18n'
 
 export default function Projects() {
   const [active, setActive] = useState('all')
   const tabRefs = useRef({})
   const { t, lang } = useLang()
+  const revision = useAdminDataRevision()
+
+  const filtered = useMemo(
+    () => {
+      const projects = getProjects()
+      return active === 'all' ? projects : projects.filter((p) => p.category === active)
+    },
+    [active, revision],
+  )
 
   const selectCategory = (id) => {
     setActive(id)
     tabRefs.current[id]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
   }
-
-  const filtered = useMemo(
-    () => (active === 'all' ? projects : projects.filter((p) => p.category === active)),
-    [active],
-  )
 
   return (
     <>

@@ -1,6 +1,10 @@
 // بيانات الشركة الأساسية
 
-export const company = {
+import { getSiteCache } from '../lib/siteDataCache'
+import { getData, STORAGE_KEYS } from '../admin/storage'
+import { isSupabaseConfigured } from '../lib/supabase'
+
+export const baseCompany = {
   name: { ar: 'الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development' },
   nameShort: { ar: 'الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development' },
   slogan: { ar: 'قوة الخبرة... برؤية جديدة', en: 'The power of experience... with a new vision' },
@@ -25,12 +29,48 @@ export const company = {
   },
 }
 
-export const stats = [
+export function getCompany() {
+  if (isSupabaseConfigured()) {
+    const { company, social } = getSiteCache()
+    let merged = company ? { ...baseCompany, ...company } : { ...baseCompany }
+    if (social) {
+      merged = { ...merged, social: { ...baseCompany.social, ...social } }
+    }
+    return merged
+  }
+
+  const stored = getData(STORAGE_KEYS.company, null)
+  const socialStored = getData(STORAGE_KEYS.social, null)
+  let merged = stored ? { ...baseCompany, ...stored } : { ...baseCompany }
+  if (socialStored) {
+    merged = { ...merged, social: { ...baseCompany.social, ...socialStored } }
+  }
+  return merged
+}
+
+export const company = new Proxy(
+  {},
+  {
+    get(_, prop) {
+      return getCompany()[prop]
+    },
+  },
+)
+
+export const baseStats = [
   { value: 35, suffix: { ar: '+', en: '+' }, label: { ar: 'سنة خبرة', en: 'Years of experience' }, prefix: '' },
   { value: 100, suffix: { ar: '+', en: '+' }, label: { ar: 'مشروع منجز', en: 'Completed projects' }, prefix: '' },
   { value: 0.5, suffix: { ar: ' مليار', en: 'B' }, label: { ar: 'جنيه استثمارات', en: 'EGP in investments' }, prefix: '', decimals: 1 },
   { value: 500, suffix: { ar: '+', en: '+' }, label: { ar: 'عميل واثق', en: 'Confident clients' }, prefix: '' },
 ]
+
+export function getStats() {
+  if (isSupabaseConfigured()) {
+    const cached = getSiteCache().stats
+    return cached?.length ? cached : baseStats
+  }
+  return getData(STORAGE_KEYS.stats, baseStats)
+}
 
 export const navLinks = [
   { to: '/', key: 'home' },

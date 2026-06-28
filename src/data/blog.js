@@ -1,6 +1,10 @@
 // مقالات المدونة العقارية لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
-export const blogPosts = [
+import { getSiteCache } from '../lib/siteDataCache'
+import { getData, STORAGE_KEYS } from '../admin/storage'
+import { isSupabaseConfigured } from '../lib/supabase'
+
+export const baseBlogPosts = [
   {
     id: 'beit-elwatan-investment',
     title: {
@@ -127,4 +131,18 @@ export const blogPosts = [
   },
 ]
 
-export const getPostById = (id) => blogPosts.find((p) => p.id === id)
+export function getBlogPosts() {
+  if (isSupabaseConfigured()) {
+    const cached = getSiteCache().blog
+    if (Array.isArray(cached) && cached.length > 0) return cached
+    return baseBlogPosts
+  }
+  const stored = getData(STORAGE_KEYS.blog, null)
+  if (Array.isArray(stored) && stored.length > 0) return stored
+  return baseBlogPosts
+}
+
+export const blogPosts = baseBlogPosts
+export { baseBlogPosts as defaultPosts }
+
+export const getPostById = (id) => getBlogPosts().find((p) => p.id === id)

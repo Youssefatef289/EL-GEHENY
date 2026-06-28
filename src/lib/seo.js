@@ -1,6 +1,6 @@
 import { company } from '../data/site'
-import { projects, getProjectById } from '../data/projects'
-import { blogPosts } from '../data/blog'
+import { getProjects, getProjectById } from '../data/projects'
+import { getBlogPosts } from '../data/blog'
 import { L } from '../i18n'
 
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || 'https://el-geheny.vercel.app').replace(/\/$/, '')
@@ -93,7 +93,7 @@ export function getPageSeo(pathname, lang, t) {
 
   const blogMatch = path.match(/^\/blog\/([^/]+)$/)
   if (blogMatch) {
-    const post = blogPosts.find((p) => p.id === blogMatch[1])
+    const post = getBlogPosts().find((p) => p.id === blogMatch[1])
     if (post) {
       const title = L(post.title, lang)
       const description = L(post.excerpt, lang)
@@ -208,7 +208,7 @@ export function buildStructuredData(seo, lang) {
 
 export function getSitemapPaths() {
   const paths = ['/', '/about', '/projects', '/blog', '/contact']
-  projects.forEach((p) => paths.push(`/projects/${p.id}`))
-  blogPosts.forEach((p) => paths.push(`/blog/${p.id}`))
+  getProjects().forEach((p) => paths.push(`/projects/${p.id}`))
+  getBlogPosts().forEach((p) => paths.push(`/blog/${p.id}`))
   return paths
 }

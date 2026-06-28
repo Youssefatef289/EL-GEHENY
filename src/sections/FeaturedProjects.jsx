@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom'
 import SectionHeading from '../components/SectionHeading'
 import ProjectCard from '../components/ProjectCard'
 import Reveal from '../components/Reveal'
-import { projects } from '../data/projects'
+import { getProjects } from '../data/projects'
+import { useAdminDataRevision } from '../admin/useAdminDataRevision'
 import { useLang } from '../i18n'
 
 export default function FeaturedProjects() {
-  const featured = projects.slice(0, 3)
+  const revision = useAdminDataRevision()
+  const featured = getProjects().slice(0, 3)
   const { t } = useLang()
 
   return (

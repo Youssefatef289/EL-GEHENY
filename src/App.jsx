@@ -11,6 +11,7 @@ import Loader from './components/Loader'
 import IntroLoader from './components/IntroLoader'
 import ErrorBoundary from './components/ErrorBoundary'
 import { useLang } from './i18n'
+import AdminApp from './admin/AdminApp'
 
 function AppErrorFallback() {
   const { t } = useLang()
@@ -49,6 +50,18 @@ function PageTransition({ children }) {
 
 export default function App() {
   const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin')
+
+  if (isAdmin) {
+    return (
+      <>
+        <ScrollToTop />
+        <Routes location={location}>
+          <Route path="/admin/*" element={<AdminApp />} />
+        </Routes>
+      </>
+    )
+  }
 
   return (
     <div className="relative flex min-h-screen flex-col bg-ink">

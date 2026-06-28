@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import LazyImage from '../components/LazyImage'
-import { projects } from '../data/projects'
+import { getProjects } from '../data/projects'
+import { useAdminDataRevision } from '../admin/useAdminDataRevision'
 import { useLang, L } from '../i18n'
 
 const FEATURED_IDS = ['j290', 'e80', 'm75', 'north-orchid-179']
@@ -68,7 +69,8 @@ function FeaturedProjectCard({ project, lang, index }) {
 
 export default function ExploreProjects() {
   const { t, lang } = useLang()
-  const featured = FEATURED_IDS.map((id) => projects.find((p) => p.id === id)).filter(Boolean)
+  const revision = useAdminDataRevision()
+  const featured = FEATURED_IDS.map((id) => getProjects().find((p) => p.id === id)).filter(Boolean)
 
   return (
     <section id="our-projects" className="section-pad relative overflow-hidden bg-ink">

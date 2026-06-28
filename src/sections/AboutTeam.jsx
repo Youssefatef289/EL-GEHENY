@@ -1,52 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useLang, L } from '../i18n'
 import { motionConfig, revealTransition, revealViewport } from '../utils/motion'
-
-import founderImg from '../../images/الحاج صلاح الجهينى.png'
-import alaaImg from '../../images/علاء صلاح الجهينى.png'
-import ahmedImg from '../../images/احمد صلاح الجهينى.png'
-import waleedImg from '../../images/وليد كمال الجهينى.png'
+import { getFounder, getTeamMembers } from '../data/team'
 import signatureImg from '../../images/التوقيع.png'
-
-const founder = {
-  name: { ar: 'الحاج / صلاح كمال الجهيني', en: 'Haj Salah Kamal El Geheny' },
-  role: { ar: 'المؤسس ورئيس مجلس الإدارة', en: 'Founder & Chairman of the Board' },
-  bio: {
-    ar: 'يُعد الحاج صلاح كمال الجهيني المؤسس ورئيس مجلس إدارة شركة الجهيني للتطوير العقاري، ويتمتع بخبرة طويلة في مجالات التطوير العقاري والمقاولات والإنشاءات. قاد تنفيذ العديد من المشروعات السكنية والتجارية والهندسية في مختلف أنحاء مصر، ووضع أسس الشركة على مبادئ الثقة والالتزام والجودة، مما ساهم في بناء سجل قوي من المشروعات الناجحة وسمعة راسخة للشركة.',
-    en: 'Salah Kamal El Geheny is the Founder and Chairman of El Geheny Real Estate Development. With extensive experience in real estate development, construction, and infrastructure projects, he has led the execution of numerous residential, commercial, and engineering developments across Egypt. His vision is built on trust, commitment, and quality, forming the foundation of the company\'s strong reputation and successful project portfolio.',
-  },
-  image: founderImg,
-}
-
-const teamMembers = [
-  {
-    name: { ar: 'م/ وليد كمال الجهيني', en: 'Eng. Waleed Kamal El Geheny' },
-    role: { ar: 'مدير المشروعات', en: 'Project Manager' },
-    bio: {
-      ar: 'يدير وليد كمال الجهيني الإشراف على التنفيذ والمتابعة الميدانية للمشروعات، مع التركيز على الحفاظ على معايير الجودة، والالتزام بالجداول الزمنية، وضمان التسليم الناجح في كل مرحلة من مراحل التطوير.',
-      en: 'Waleed Kamal El Geheny manages on-site supervision and project execution, with a focus on maintaining quality standards, meeting timelines, and ensuring successful delivery at every stage of development.',
-    },
-    image: waleedImg,
-  },
-  {
-    name: { ar: 'م/ علاء صلاح الجهيني', en: 'Eng. Alaa Salah El Geheny' },
-    role: { ar: 'المدير العام', en: 'General Manager' },
-    bio: {
-      ar: 'يتولى علاء صلاح الجهيني الإشراف على العمليات اليومية للشركة والتنفيذ الاستراتيجي، مع ضمان الكفاءة والجودة وتسليم المشروعات في مواعيدها بما يدعم أهداف النمو طويلة الأمد للشركة.',
-      en: 'Alaa Salah El Geheny oversees the company\'s daily operations and strategic execution, ensuring efficiency, quality standards, and timely project delivery while supporting the company\'s long-term growth objectives.',
-    },
-    image: alaaImg,
-  },
-  {
-    name: { ar: 'م/ احمد صلاح الجهيني', en: 'Eng. Ahmed Salah El Geheny' },
-    role: { ar: ' الرئيس التنفيذي ومدير العمليات', en: 'CEO & Operations Manager' },
-    bio: {
-      ar: 'يقود أحمد صلاح الجهيني فريق المبيعات ويشرف على تطوير علاقات العملاء وتحقيق أهداف البيع، مع متابعة أداء كل فرد، وتصحيح مسار التواصل مع العملاء إذا لزم الأمر، لضمان تجربة احترافية تعكس قيمة مشروعات الجهيني.',
-      en: 'Ahmed Salah El Geheny leads the sales team and oversees client relationships and sales targets, monitoring each member\'s performance and adjusting client communication when needed to ensure a professional experience that reflects the value of El Geheny projects.',
-    },
-    image: ahmedImg,
-  },
-]
 
 function SideReveal({ children, from = 'start', delay = 0, className = '' }) {
   const reduceMotion = useReducedMotion()
@@ -139,6 +95,8 @@ function TeamCard({ member, lang, delay = 0, reverse = false }) {
 
 export default function AboutTeam() {
   const { lang, dir } = useLang()
+  const founder = getFounder()
+  const teamMembers = getTeamMembers()
   const founderName = L(founder.name, lang)
   const founderRole = L(founder.role, lang)
   const founderBio = L(founder.bio, lang)
@@ -149,7 +107,6 @@ export default function AboutTeam() {
       <div className="pointer-events-none absolute -right-16 bottom-1/4 h-64 w-64 rounded-full bg-primary-500/5 blur-[120px]" />
 
       <div className="container-x relative">
-        {/* المؤسس — صورة من جانب / نص من الجانب الآخر */}
         <div
           className={`flex flex-col items-center gap-10 lg:gap-14 xl:gap-20 ${
             dir === 'rtl' ? 'lg:flex-row-reverse' : 'lg:flex-row'
@@ -168,11 +125,10 @@ export default function AboutTeam() {
           </SideReveal>
         </div>
 
-        {/* فريق الإدارة */}
         <div className="mt-16 space-y-16 sm:mt-20 sm:space-y-20 lg:mt-24 lg:space-y-24">
           {teamMembers.map((member, i) => (
             <TeamCard
-              key={L(member.name, 'ar')}
+              key={member.id || L(member.name, 'ar')}
               member={member}
               lang={lang}
               delay={i * 0.06}

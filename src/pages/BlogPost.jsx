@@ -2,7 +2,8 @@ import { Link, useParams, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import LazyImage from '../components/LazyImage'
 import Reveal from '../components/Reveal'
-import { getPostById, blogPosts } from '../data/blog'
+import { getPostById, getBlogPosts } from '../data/blog'
+import { useAdminDataRevision } from '../admin/useAdminDataRevision'
 import { useLang, L } from '../i18n'
 
 function formatDate(dateStr, locale) {
@@ -15,12 +16,13 @@ function formatDate(dateStr, locale) {
 
 export default function BlogPost() {
   const { id } = useParams()
+  const revision = useAdminDataRevision()
   const post = getPostById(id)
   const { t, lang } = useLang()
 
   if (!post) return <Navigate to="/blog" replace />
 
-  const related = blogPosts.filter((p) => p.id !== post.id).slice(0, 3)
+  const related = getBlogPosts().filter((p) => p.id !== post.id).slice(0, 3)
 
   return (
     <>

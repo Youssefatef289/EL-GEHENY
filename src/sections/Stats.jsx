@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { useCountUp } from '../hooks/useCountUp'
-import { stats } from '../data/site'
+import { getStats } from '../data/site'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
@@ -75,6 +75,7 @@ function CheckIcon() {
 
 export default function Stats() {
   const { t, lang } = useLang()
+  const stats = getStats()
   const sectionRef = useRef(null)
   const reduceMotion = useReducedMotion()
 

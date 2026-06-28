@@ -288,7 +288,7 @@ export default function ProjectDetail() {
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 shrink-0 text-primary-300">
               <path d="M12 2a7 7 0 00-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
             </svg>
-            {L(project.location, lang)}
+            {heroContent.locationLine}
           </p>
         </div>
       </ImagePageHero>

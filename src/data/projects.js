@@ -1,6 +1,9 @@
 // بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
 import { company } from './site'
+import { getSiteCache } from '../lib/siteDataCache'
+import { getData, STORAGE_KEYS } from '../admin/storage'
+import { isSupabaseConfigured } from '../lib/supabase'
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 import m75Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التالت m75/الوجهات_(1).jpg'
 import e80Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي الخامس E80/WhatsApp Image 2026-06-03 at 1.12.04 PM.jpeg'
@@ -644,7 +647,7 @@ const fifthDistrictHighlights = [
   },
 ]
 
-export const projects = [
+const baseProjects = [
   {
     id: 'j290',
     title: { ar: 'J290 - الحي الثاني', en: 'J290 - Second District' },
@@ -1195,7 +1198,7 @@ export const projects = [
     title: { ar: '179 - شمال الأوركيد', en: '179 - North Orchid' },
     category: 'north-orchid',
     categoryName: { ar: 'بيت الوطن - شمال الأوركيد', en: 'Beit El-Watan - North Orchid' },
-    location: { ar: 'بيت الوطن، شمال الأوركيد، القاهرة الجديدة، القاهرة الجديدة', en: 'Beit El-Watan, North Orchid, New Cairo, New Cairo' },
+    location: { ar: 'شمال الأوركيد - بيت الوطن - القاهرة الجديدة', en: 'North Orchid - Beit El-Watan - New Cairo' },
     type: { ar: 'مشروع سكني', en: 'Residential project' },
     area: { ar: 'من 120 م² إلى 180 م²', en: 'From 120 m² to 180 m²' },
     units: { ar: '10 شقق', en: '10 apartments' },
@@ -1349,6 +1352,20 @@ export const projects = [
   },
 ]
 
+export function getProjects() {
+  if (isSupabaseConfigured()) {
+    const cached = getSiteCache().projects
+    if (Array.isArray(cached) && cached.length > 0) return cached
+    return baseProjects
+  }
+  const stored = getData(STORAGE_KEYS.projects, null)
+  if (Array.isArray(stored) && stored.length > 0) return stored
+  return baseProjects
+}
+
+export const projects = baseProjects
+export { baseProjects }
+
 export function formatProjectCode(id) {
   if (id === 'north-orchid-179') return '179'
   const match = id.match(/^([a-z]+)(\d+)$/i)
@@ -1380,7 +1397,10 @@ export function getProjectHeroContent(project, lang) {
     settlement = locationText.split(',').pop()?.trim() || settlement
   }
 
-  const locationLine = `${compound} - ${settlement}`
+  let locationLine = `${compound} - ${settlement}`
+  if (project.category === 'north-orchid') {
+    locationLine = `${districtName} - ${compound} - ${settlement}`
+  }
 
   return { companyName, districtLine, locationLine }
 }
@@ -1392,7 +1412,7 @@ export function getProjectDisplayTitle(project, lang) {
   return `${district} - ${code}`
 }
 
-export const getProjectById = (id) => projects.find((p) => p.id === id)
+export const getProjectById = (id) => getProjects().find((p) => p.id === id)
 
 /** بريد استقبال استفسارات المشاريع */
 export function getProjectSalesEmail() {
