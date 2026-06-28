@@ -447,6 +447,16 @@ export function groupUnitDetails(unitDetails = []) {
 }
 
 export function getProjectUnitDivisions(project) {
+  const custom = project?.unitDivisions
+  if (custom && typeof custom === 'object') {
+    const normalized = {
+      ground: (custom.ground || []).filter((u) => typeof u === 'string'),
+      repeated: (custom.repeated || []).filter((u) => typeof u === 'string'),
+      roof: (custom.roof || []).filter((u) => typeof u === 'string'),
+    }
+    const hasCustom = UNIT_TYPE_KEYS.some((key) => normalized[key].length > 0)
+    if (hasCustom) return normalized
+  }
   if (project?.id === 'm75') return m75Divisions
   if (project?.id === 'e80') return e80Divisions
   if (project?.id === 'm36') return m36Divisions

@@ -1,9 +1,19 @@
 import { useMemo, useState } from 'react'
 import { baseProjects, getProjects } from '../../data/projects'
-import { uploadProjectCover, coverPreviewUrl, uploadResultMessage } from '../../lib/uploadImage'
+import {
+  uploadProjectCover,
+  uploadProjectImage,
+  coverPreviewUrl,
+  normalizeImageList,
+  uploadResultMessage,
+} from '../../lib/uploadImage'
 import { projectsDB } from '../storage'
 import { useAdminDataRevision } from '../useAdminDataRevision'
 import { AdminPageHeader, BilingualInput, ConfirmDialog, ImageUploadField, useToast } from '../components/AdminUI'
+import { ProjectImageListField } from '../components/ProjectImageListField'
+import { ProjectDivisionsField } from '../components/ProjectDivisionsField'
+
+const emptyUnitDivisions = () => ({ ground: [], repeated: [], roof: [] })
 
 const emptyProject = () => ({
   id: `project-${Date.now()}`,
@@ -22,14 +32,31 @@ const emptyProject = () => ({
   statusKey: 'in-progress',
   cover: '',
   gallery: [],
+  unitDivisions: emptyUnitDivisions(),
 })
+
+function initProjectForm(project) {
+  return {
+    ...project,
+    cover: coverPreviewUrl(project.cover),
+    gallery: normalizeImageList(project.gallery),
+    unitDivisions: project.unitDivisions ?? emptyUnitDivisions(),
+  }
+}
+
+function prepareProjectForSave(form) {
+  const data = { ...form }
+  const hasDivisions = ['ground', 'repeated', 'roof'].some(
+    (key) => (data.unitDivisions?.[key]?.length ?? 0) > 0,
+  )
+  if (!hasDivisions) delete data.unitDivisions
+  if (!data.gallery?.length) data.gallery = []
+  return data
+}
 
 function ProjectForm({ project, onSave, onCancel, saving }) {
   const { showToast } = useToast()
-  const [form, setForm] = useState(() => ({
-    ...project,
-    cover: coverPreviewUrl(project.cover),
-  }))
+  const [form, setForm] = useState(() => initProjectForm(project))
   const [featureAr, setFeatureAr] = useState('')
   const [featureEn, setFeatureEn] = useState('')
 
@@ -50,56 +77,79 @@ function ProjectForm({ project, onSave, onCancel, saving }) {
     }))
   }
 
-  const handleUpload = async (file) => {
+  const handleCoverUpload = async (file) => {
     const result = await uploadProjectCover(file, form.id)
     showToast(uploadResultMessage(result))
     return result.url
   }
 
+  const handleGalleryUpload = async (file) => uploadProjectImage(file, form.id, 'gallery')
+
+  const handleDivisionUpload = async (file, type) => uploadProjectImage(file, form.id, `division-${type}`)
+
   return (
-    <div className="admin-card space-y-6">
-      <h2 className="text-xl font-bold text-[#1a1a2e]">{project.id ? 'تعديل مشروع' : 'إضافة مشروع'}</h2>
-      <ImageUploadField
-        label="صورة المشروع (الغلاف)"
-        value={form.cover}
-        onChange={(cover) => setForm({ ...form, cover })}
-        onUpload={handleUpload}
-        hint="JPG أو PNG أو WebP — حد أقصى 5MB. تُرفع تلقائياً وتُحفظ مع المشروع."
-      />
-      <BilingualInput label="العنوان" value={form.title} onChange={(title) => setForm({ ...form, title })} />
-      <BilingualInput label="الوصف" value={form.description} onChange={(description) => setForm({ ...form, description })} multiline />
-      <BilingualInput label="الموقع" value={form.location} onChange={(location) => setForm({ ...form, location })} />
-      <BilingualInput label="الحالة" value={form.deliveryStatus} onChange={(deliveryStatus) => setForm({ ...form, deliveryStatus })} />
-      <label className="block space-y-2">
-        <span className="text-sm font-bold text-[#1a1a2e]">نسبة الإنجاز: {form.progress ?? 0}%</span>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={form.progress ?? 0}
-          onChange={(e) => setForm({ ...form, progress: Number(e.target.value) })}
-          className="w-full"
-        />
-      </label>
-      <div className="space-y-3">
-        <p className="text-sm font-bold text-[#1a1a2e]">المميزات</p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <input value={featureAr} onChange={(e) => setFeatureAr(e.target.value)} placeholder="ميزة بالعربي" className="admin-input" />
-          <input value={featureEn} onChange={(e) => setFeatureEn(e.target.value)} placeholder="Feature in English" className="admin-input" dir="ltr" />
+    <div className="space-y-6">
+      <div className="admin-card space-y-6">
+        <h2 className="text-xl font-bold text-[#1a1a2e]">{project.id ? 'تعديل مشروع' : 'إضافة مشروع'}</h2>
+        <BilingualInput label="العنوان" value={form.title} onChange={(title) => setForm({ ...form, title })} />
+        <BilingualInput label="الوصف" value={form.description} onChange={(description) => setForm({ ...form, description })} multiline />
+        <BilingualInput label="الموقع" value={form.location} onChange={(location) => setForm({ ...form, location })} />
+        <BilingualInput label="الحالة" value={form.deliveryStatus} onChange={(deliveryStatus) => setForm({ ...form, deliveryStatus })} />
+        <label className="block space-y-2">
+          <span className="text-sm font-bold text-[#1a1a2e]">نسبة الإنجاز: {form.progress ?? 0}%</span>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={form.progress ?? 0}
+            onChange={(e) => setForm({ ...form, progress: Number(e.target.value) })}
+            className="w-full"
+          />
+        </label>
+        <div className="space-y-3">
+          <p className="text-sm font-bold text-[#1a1a2e]">المميزات</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <input value={featureAr} onChange={(e) => setFeatureAr(e.target.value)} placeholder="ميزة بالعربي" className="admin-input" />
+            <input value={featureEn} onChange={(e) => setFeatureEn(e.target.value)} placeholder="Feature in English" className="admin-input" dir="ltr" />
+          </div>
+          <button type="button" onClick={addFeature} className="admin-btn-secondary">إضافة ميزة</button>
+          <ul className="space-y-2">
+            {(form.features || []).map((feature, i) => (
+              <li key={i} className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm">
+                <span>{feature.ar} / {feature.en}</span>
+                <button type="button" onClick={() => removeFeature(i)} className="text-red-500">حذف</button>
+              </li>
+            ))}
+          </ul>
         </div>
-        <button type="button" onClick={addFeature} className="admin-btn-secondary">إضافة ميزة</button>
-        <ul className="space-y-2">
-          {(form.features || []).map((feature, i) => (
-            <li key={i} className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm">
-              <span>{feature.ar} / {feature.en}</span>
-              <button type="button" onClick={() => removeFeature(i)} className="text-red-500">حذف</button>
-            </li>
-          ))}
-        </ul>
       </div>
+
+      <div className="admin-card space-y-6">
+        <h3 className="text-lg font-bold text-[#1a1a2e]">صور المشروع</h3>
+        <ImageUploadField
+          label="صورة الغلاف"
+          value={form.cover}
+          onChange={(cover) => setForm({ ...form, cover })}
+          onUpload={handleCoverUpload}
+          hint="الصورة الرئيسية في بطاقة المشروع وصفحة التفاصيل."
+        />
+        <ProjectImageListField
+          label="صور تفاصيل المشروع (المعرض)"
+          description="تظهر في صفحة المشروع ضمن قسم معرض الصور."
+          images={form.gallery}
+          onChange={(gallery) => setForm({ ...form, gallery })}
+          onUpload={handleGalleryUpload}
+        />
+        <ProjectDivisionsField
+          unitDivisions={form.unitDivisions}
+          onChange={(unitDivisions) => setForm({ ...form, unitDivisions })}
+          onUpload={handleDivisionUpload}
+        />
+      </div>
+
       <div className="flex flex-wrap gap-3">
-        <button type="button" onClick={() => onSave(form)} disabled={saving} className="admin-btn-primary">
-          {saving ? 'جاري الحفظ...' : 'حفظ'}
+        <button type="button" onClick={() => onSave(prepareProjectForSave(form))} disabled={saving} className="admin-btn-primary">
+          {saving ? 'جاري الحفظ...' : 'حفظ المشروع'}
         </button>
         <button type="button" onClick={onCancel} className="admin-btn-secondary">إلغاء</button>
       </div>
@@ -179,6 +229,7 @@ export default function AdminProjects() {
             <tr>
               <th>الصورة</th>
               <th>المشروع</th>
+              <th>معرض</th>
               <th>الموقع</th>
               <th>الحالة</th>
               <th>الإنجاز</th>
@@ -188,6 +239,7 @@ export default function AdminProjects() {
           <tbody>
             {projects.map((project) => {
               const thumb = coverPreviewUrl(project.cover)
+              const galleryCount = normalizeImageList(project.gallery).length
               return (
                 <tr key={project.id}>
                   <td>
@@ -198,6 +250,7 @@ export default function AdminProjects() {
                     )}
                   </td>
                   <td>{project.title?.ar || project.id}</td>
+                  <td>{galleryCount || '—'}</td>
                   <td>{project.location?.ar}</td>
                   <td>{project.deliveryStatus?.ar}</td>
                   <td>{project.progress ?? 0}%</td>

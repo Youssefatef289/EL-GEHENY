@@ -22,6 +22,7 @@ export function projectToRow(project, sortOrder = 0) {
       ? project.gallery.filter((item) => typeof item === 'string')
       : [],
     units: project.units ?? {},
+    unitDivisions: project.unitDivisions ?? null,
     sort_order: sortOrder,
     payload,
     updated_at: new Date().toISOString(),
@@ -38,6 +39,9 @@ export function rowToProject(row) {
 
   if (Array.isArray(row.gallery) && row.gallery.length > 0) merged.gallery = row.gallery
   else if (!merged.gallery?.length && base?.gallery) merged.gallery = base.gallery
+
+  if (merged.payload?.unitDivisions) merged.unitDivisions = merged.payload.unitDivisions
+  else if (row.payload?.unitDivisions) merged.unitDivisions = row.payload.unitDivisions
 
   if (row.title) merged.title = row.title
   if (row.location) merged.location = row.location
