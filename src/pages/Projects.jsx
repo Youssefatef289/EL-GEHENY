@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import ProjectCard from '../components/ProjectCard'
 import ImagePageHero from '../components/ImagePageHero'
 import { projectCategories } from '../data/projects'
-import { useProjects } from '../hooks/useSiteData'
+import { useProjects, useSectionImage } from '../hooks/useSiteData'
 import { useLang, L } from '../i18n'
 
 export default function Projects() {
@@ -11,6 +11,7 @@ export default function Projects() {
   const tabRefs = useRef({})
   const { t, lang } = useLang()
   const allProjects = useProjects()
+  const heroImage = useSectionImage('pageHero.projects')
 
   const projects = useMemo(() => {
     return active === 'all' ? allProjects : allProjects.filter((p) => p.category === active)
@@ -27,6 +28,7 @@ export default function Projects() {
         eyebrow={t('projectsPage.eyebrow')}
         title={t('projectsPage.title')}
         description={t('projectsPage.desc')}
+        image={heroImage}
         imageAlt={t('projectsPage.title')}
         compact
       />

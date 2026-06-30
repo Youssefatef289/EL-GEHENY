@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useLang, L } from '../i18n'
 import { motionConfig, revealTransition, revealViewport } from '../utils/motion'
 import { getFounder, getTeamMembers } from '../data/team'
-import signatureImg from '../../images/التوقيع.png'
+import { useSectionImage } from '../hooks/useSiteData'
 
 function SideReveal({ children, from = 'start', delay = 0, className = '' }) {
   const reduceMotion = useReducedMotion()
@@ -29,7 +29,7 @@ function SideReveal({ children, from = 'start', delay = 0, className = '' }) {
   )
 }
 
-function PortraitFrame({ src, alt, tall = false, uniform = false, showSignature = false }) {
+function PortraitFrame({ src, alt, tall = false, uniform = false, showSignature = false, signatureSrc }) {
   return (
     <div
       className={`relative w-full bg-transparent ${showSignature ? 'overflow-visible' : 'overflow-hidden'} ${
@@ -46,9 +46,9 @@ function PortraitFrame({ src, alt, tall = false, uniform = false, showSignature 
         loading="lazy"
         className="relative z-[1] mx-auto h-full w-full object-contain object-bottom"
       />
-      {showSignature && (
+      {showSignature && signatureSrc && (
         <img
-          src={signatureImg}
+          src={signatureSrc}
           alt=""
           aria-hidden="true"
           draggable={false}
@@ -95,6 +95,7 @@ function TeamCard({ member, lang, delay = 0, reverse = false }) {
 
 export default function AboutTeam() {
   const { lang, dir } = useLang()
+  const signatureSrc = useSectionImage('aboutTeam.signature')
   const founder = getFounder()
   const teamMembers = getTeamMembers()
   const founderName = L(founder.name, lang)
@@ -114,7 +115,7 @@ export default function AboutTeam() {
         >
           <SideReveal from="start" className="w-full lg:w-[44%] lg:max-w-2xl">
             <div className="relative mx-auto w-full overflow-visible">
-              <PortraitFrame src={founder.image} alt={founderName} tall showSignature />
+              <PortraitFrame src={founder.image} alt={founderName} tall showSignature signatureSrc={signatureSrc} />
             </div>
           </SideReveal>
 

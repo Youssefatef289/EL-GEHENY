@@ -58,16 +58,26 @@ const imageById = {
 }
 
 function mergeTeam(stored) {
+  const resolveImage = (id, storedImage) => {
+    if (typeof storedImage === 'string' && storedImage.trim()) return storedImage.trim()
+    return imageById[id] || ''
+  }
+
   const founder = {
     ...baseFounder,
     ...stored.founder,
-    image: imageById.founder,
+    image: resolveImage('founder', stored.founder?.image),
   }
-  const members = (stored.members || baseTeamMembers).map((member) => ({
-    ...baseTeamMembers.find((m) => m.id === member.id),
-    ...member,
-    image: imageById[member.id] ?? member.image,
-  }))
+
+  const members = (stored.members || baseTeamMembers).map((member) => {
+    const base = baseTeamMembers.find((m) => m.id === member.id)
+    return {
+      ...(base || {}),
+      ...member,
+      image: resolveImage(member.id, member.image) || base?.image || '',
+    }
+  })
+
   return { founder, members }
 }
 

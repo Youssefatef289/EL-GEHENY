@@ -1,12 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { translations } from '../../i18n/translations'
-import { defaultSectionImages } from '../../data/sectionImages'
+import {
+  defaultSectionImages,
+  defaultSectionImageLists,
+} from '../../data/sectionImages'
 import { translationsDB, sectionImagesDB } from '../storage'
 import { getSiteCache } from '../../lib/siteDataCache'
-import { uploadSectionImage, coverPreviewUrl, uploadResultMessage } from '../../lib/uploadImage'
+import {
+  uploadSectionImage,
+  coverPreviewUrl,
+  normalizeImageList,
+  uploadResultMessage,
+} from '../../lib/uploadImage'
 import { useAdminDataRevision } from '../useAdminDataRevision'
 import { SECTION_CONFIG, getByPath } from '../sectionConfig'
 import { AdminPageHeader, ImageUploadField, useToast } from '../components/AdminUI'
+import { ProjectImageListField } from '../components/ProjectImageListField'
 
 function readValue(overrides, lang, path) {
   const custom = getByPath(overrides?.[lang], path)
@@ -50,6 +59,14 @@ function readImageValue(draft, key) {
   return defaultSectionImages[key] || ''
 }
 
+function readImageListValue(draft, key) {
+  const custom = draft?.[key]
+  if (Array.isArray(custom) && custom.length > 0) {
+    return normalizeImageList(custom)
+  }
+  return normalizeImageList(defaultSectionImageLists[key] || [])
+}
+
 export default function AdminSections() {
   const revision = useAdminDataRevision()
   const { showToast } = useToast()
@@ -65,6 +82,7 @@ export default function AdminSections() {
   }, [revision])
 
   const section = SECTION_CONFIG.find((s) => s.id === activeId)
+  const hasImages = (section?.images?.length ?? 0) > 0 || (section?.imageLists?.length ?? 0) > 0
 
   const handleSave = async () => {
     setSaving(true)
@@ -102,6 +120,15 @@ export default function AdminSections() {
     })
   }
 
+  const updateImageList = (key, urls) => {
+    setImageDraft((prev) => {
+      const next = { ...prev }
+      if (!urls?.length) delete next[key]
+      else next[key] = urls
+      return next
+    })
+  }
+
   const handleImageUpload = async (file, imageKey) => {
     const result = await uploadSectionImage(file, activeId, imageKey)
     showToast(uploadResultMessage(result))
@@ -112,7 +139,7 @@ export default function AdminSections() {
     <div>
       <AdminPageHeader
         title="إدارة السيكشنز"
-        subtitle="تعديل نصوص وصور أقسام الموقع"
+        subtitle="تعديل نصوص وصور كل أقسام الموقع"
         action={(
           <div className="flex flex-wrap gap-2">
             <a href={section?.preview || '/'} target="_blank" rel="noreferrer" className="admin-btn-secondary">معاينة</a>
@@ -124,7 +151,7 @@ export default function AdminSections() {
         )}
       />
       <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
-        <div className="admin-card space-y-2 p-3">
+        <div className="admin-card max-h-[70vh] space-y-2 overflow-y-auto p-3">
           {SECTION_CONFIG.map((item) => (
             <button
               key={item.id}
@@ -139,7 +166,7 @@ export default function AdminSections() {
           ))}
         </div>
         <div className="space-y-6">
-          {(section?.images?.length > 0 || section?.imagesNote) && (
+          {(hasImages || section?.imagesNote) && (
             <div className="admin-card space-y-5">
               <h3 className="text-lg font-bold text-[#1a1a2e]">صور القسم</h3>
               {section?.images?.map((field) => (
@@ -149,11 +176,21 @@ export default function AdminSections() {
                   value={coverPreviewUrl(readImageValue(imageDraft, field.key))}
                   onChange={(url) => updateImage(field.key, url)}
                   onUpload={(file) => handleImageUpload(file, field.key)}
-                  hint="الصورة تظهر مباشرة في الموقع بعد الحفظ."
+                  hint="ارفع صورة جديدة أو عدّل الرابط ثم اضغط «حفظ»."
+                />
+              ))}
+              {section?.imageLists?.map((field) => (
+                <ProjectImageListField
+                  key={field.key}
+                  label={field.label}
+                  description={field.description}
+                  images={readImageListValue(imageDraft, field.key)}
+                  onChange={(urls) => updateImageList(field.key, urls)}
+                  onUpload={(file) => handleImageUpload(file, field.key)}
                 />
               ))}
               {section?.imagesNote && (
-                <p className="text-sm text-gray-500">{section.imagesNote}</p>
+                <p className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-600">{section.imagesNote}</p>
               )}
             </div>
           )}
@@ -185,12 +222,6 @@ export default function AdminSections() {
                   </label>
                 </div>
               ))}
-            </div>
-          )}
-
-          {!section?.fields?.length && !section?.images?.length && section?.imagesNote && (
-            <div className="admin-card">
-              <p className="text-sm text-gray-500">{section.imagesNote}</p>
             </div>
           )}
         </div>

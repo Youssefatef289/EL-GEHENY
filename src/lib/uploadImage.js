@@ -54,6 +54,10 @@ export async function uploadSectionImage(file, sectionId, imageKey) {
   return uploadImage(file, `section-${sectionId}`, imageKey)
 }
 
+export async function uploadTeamImage(file, memberId) {
+  return uploadImage(file, `team-${memberId}`, 'photo')
+}
+
 export async function uploadProjectCover(file, projectId) {
   return uploadImage(file, projectId, 'cover')
 }

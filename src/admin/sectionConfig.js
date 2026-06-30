@@ -1,7 +1,7 @@
 export const SECTION_CONFIG = [
   {
     id: 'hero',
-    label: 'Hero',
+    label: 'الهيرو',
     preview: '/',
     fields: [
       ...[0, 1, 2].flatMap((i) => ([
@@ -20,7 +20,7 @@ export const SECTION_CONFIG = [
   },
   {
     id: 'companyBrief',
-    label: 'Company Brief',
+    label: 'نبذة الشركة',
     preview: '/#company-brief',
     fields: [
       { key: 'companyBrief.eyebrow', label: 'Eyebrow', bilingual: false },
@@ -32,14 +32,22 @@ export const SECTION_CONFIG = [
   },
   {
     id: 'aboutGeheny',
-    label: 'About Geheny',
-    preview: '/',
+    label: 'من نحن',
+    preview: '/#about-us',
     fields: [],
     images: [{ key: 'aboutGeheny.main', label: 'صورة القسم' }],
   },
   {
+    id: 'aboutTeam',
+    label: 'فريق الإدارة',
+    preview: '/about',
+    fields: [],
+    images: [{ key: 'aboutTeam.signature', label: 'صورة التوقيع' }],
+    imagesNote: 'صور وأوصاف أعضاء الفريق تُدار من قسم «الفريق» في لوحة التحكم.',
+  },
+  {
     id: 'stats',
-    label: 'Stats',
+    label: 'الإحصائيات',
     preview: '/',
     fields: [
       { key: 'stats.eyebrow', label: 'Eyebrow', bilingual: false },
@@ -47,11 +55,11 @@ export const SECTION_CONFIG = [
       { key: 'stats.p2', label: 'الفقرة 2', bilingual: false },
     ],
     images: [],
-    imagesNote: 'هذا القسم يعرض الإحصائيات فقط بدون صورة خلفية.',
+    imagesNote: 'قسم الإحصائيات لا يحتوي صورة — الأرقام تُدار من قسم «الإحصائيات».',
   },
   {
     id: 'vision',
-    label: 'Vision',
+    label: 'الرؤية',
     preview: '/#vision',
     fields: [
       { key: 'vision.eyebrow', label: 'Eyebrow', bilingual: false },
@@ -63,16 +71,42 @@ export const SECTION_CONFIG = [
     images: [{ key: 'vision.main', label: 'صورة القسم' }],
   },
   {
+    id: 'exploreProjects',
+    label: 'استكشف المشاريع',
+    preview: '/#our-projects',
+    fields: [
+      { key: 'projectsShowcase.eyebrow', label: 'Eyebrow', bilingual: false },
+      { key: 'projectsShowcase.title', label: 'العنوان', bilingual: false },
+      { key: 'projectsShowcase.description', label: 'الوصف', bilingual: false },
+      { key: 'projectsShowcase.exploreAll', label: 'زر عرض الكل', bilingual: false },
+    ],
+    images: [],
+    imagesNote: 'صور بطاقات المشاريع تُدار من قسم «المشاريع».',
+  },
+  {
     id: 'services',
-    label: 'Services',
+    label: 'الخدمات',
     preview: '/',
-    fields: [],
+    fields: [
+      { key: 'services.title', label: 'عنوان القسم', bilingual: false },
+    ],
     images: [{ key: 'services.background', label: 'صورة الخلفية' }],
   },
   {
+    id: 'partners',
+    label: 'شركاء النجاح',
+    preview: '/',
+    fields: [
+      { key: 'partners.eyebrow', label: 'Eyebrow', bilingual: false },
+      { key: 'partners.title', label: 'العنوان', bilingual: false },
+      { key: 'partners.description', label: 'الوصف', bilingual: false },
+    ],
+    imageLists: [{ key: 'partners.logos', label: 'شعارات الشركاء', description: 'ترتيب الشعارات كما يظهر في الموقع (من اليسار لليمين).' }],
+  },
+  {
     id: 'heritage',
-    label: 'Heritage',
-    preview: '/about',
+    label: 'إرث الشركة',
+    preview: '/about#heritage',
     fields: [
       { key: 'heritage.eyebrow', label: 'Eyebrow', bilingual: false },
       { key: 'heritage.title', label: 'العنوان', bilingual: false },
@@ -83,7 +117,7 @@ export const SECTION_CONFIG = [
   },
   {
     id: 'featured',
-    label: 'Featured',
+    label: 'مشاريع مميزة',
     preview: '/',
     fields: [
       { key: 'featured.eyebrow', label: 'Eyebrow', bilingual: false },
@@ -91,23 +125,23 @@ export const SECTION_CONFIG = [
       { key: 'featured.description', label: 'الوصف', bilingual: false },
     ],
     images: [],
-    imagesNote: 'صور هذا القسم تُدار من قسم المشاريع.',
+    imagesNote: 'صور المشاريع المميزة تُدار من قسم «المشاريع».',
   },
   {
     id: 'whyUs',
-    label: 'Why Us',
-    preview: '/',
+    label: 'لماذا نحن',
+    preview: '/about',
     fields: [
       { key: 'whyUs.eyebrow', label: 'Eyebrow', bilingual: false },
       { key: 'whyUs.title', label: 'العنوان', bilingual: false },
       { key: 'whyUs.description', label: 'الوصف', bilingual: false },
     ],
     images: [],
-    imagesNote: 'هذا القسم نصي فقط.',
+    imagesNote: 'قسم نصي — لا توجد صورة خلفية.',
   },
   {
     id: 'cta',
-    label: 'CTA',
+    label: 'دعوة للتواصل',
     preview: '/about',
     fields: [
       { key: 'cta.eyebrow', label: 'Eyebrow', bilingual: false },
@@ -117,7 +151,19 @@ export const SECTION_CONFIG = [
       { key: 'cta.contact', label: 'زر التواصل', bilingual: false },
     ],
     images: [],
-    imagesNote: 'هذا القسم نصي فقط.',
+    imagesNote: 'قسم نصي — لا توجد صورة خلفية.',
+  },
+  {
+    id: 'pageHero',
+    label: 'هيرو الصفحات',
+    preview: '/about',
+    fields: [],
+    images: [
+      { key: 'pageHero.about', label: 'صورة هيرو صفحة «من نحن»' },
+      { key: 'pageHero.projects', label: 'صورة هيرو صفحة «المشاريع»' },
+      { key: 'pageHero.contact', label: 'صورة هيرو صفحة «تواصل معنا»' },
+      { key: 'pageHero.blog', label: 'صورة هيرو صفحة «المدونة»' },
+    ],
   },
 ]
 

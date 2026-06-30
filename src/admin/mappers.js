@@ -104,27 +104,41 @@ export function rowToBlogPost(row) {
   return merged
 }
 
+function teamImageUrl(id, storedImage) {
+  if (typeof storedImage === 'string' && storedImage.trim()) return storedImage.trim()
+  const imageById = Object.fromEntries(
+    [baseFounder, ...baseTeamMembers].map((member) => [member.id, member.image]),
+  )
+  return imageById[id] || ''
+}
+
 export function serializeTeam(team) {
   return {
-    founder: { ...team.founder, image: undefined },
-    members: (team.members || []).map(({ image, ...member }) => member),
+    founder: {
+      ...team.founder,
+      image: typeof team.founder?.image === 'string' ? team.founder.image : undefined,
+    },
+    members: (team.members || []).map((member) => ({
+      ...member,
+      image: typeof member.image === 'string' ? member.image : undefined,
+    })),
   }
 }
 
 export function deserializeTeam(stored) {
   if (!stored) return null
-  const imageById = Object.fromEntries(
-    [baseFounder, ...baseTeamMembers].map((member) => [member.id, member.image]),
-  )
   const founder = {
     ...baseFounder,
     ...stored.founder,
-    image: imageById.founder,
+    image: teamImageUrl('founder', stored.founder?.image),
   }
-  const members = (stored.members || []).map((member) => ({
-    ...baseTeamMembers.find((m) => m.id === member.id),
-    ...member,
-    image: imageById[member.id] ?? member.image,
-  }))
+  const members = (stored.members || []).map((member) => {
+    const base = baseTeamMembers.find((m) => m.id === member.id)
+    return {
+      ...(base || {}),
+      ...member,
+      image: teamImageUrl(member.id, member.image) || base?.image || '',
+    }
+  })
   return { founder, members }
 }

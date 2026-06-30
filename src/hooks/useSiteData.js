@@ -4,7 +4,7 @@ import { isSupabaseConfigured } from '../lib/supabase'
 import { baseCompany, baseStats } from '../data/site'
 import { translations as defaultTranslations } from '../i18n/translations'
 import { baseProjects } from '../data/projects'
-import { resolveSectionImage, defaultSectionImages } from '../data/sectionImages'
+import { resolveSectionImage, defaultSectionImages, resolveSectionImageList, defaultSectionImageLists } from '../data/sectionImages'
 import { deepMerge } from '../lib/deepMerge'
 
 function useSiteDataRevision() {
@@ -84,8 +84,20 @@ export function useSectionImage(key) {
   return images[key] || defaultSectionImages[key] || ''
 }
 
+export function useSectionImageList(key) {
+  useSiteDataRevision()
+  const overrides = getSiteCache().sectionImages || {}
+  return resolveSectionImageList(key, overrides)
+}
+
 function resolveSectionImagesMap(overrides) {
+  const keys = new Set([
+    ...Object.keys(defaultSectionImages),
+    ...Object.keys(overrides || {}),
+  ])
   return Object.fromEntries(
-    Object.keys(defaultSectionImages).map((key) => [key, resolveSectionImage(key, overrides)]),
+    [...keys]
+      .filter((key) => !Array.isArray(overrides?.[key]))
+      .map((key) => [key, resolveSectionImage(key, overrides)]),
   )
 }

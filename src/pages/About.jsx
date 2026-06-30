@@ -2,6 +2,7 @@ import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import SectionReveal from '../components/SectionReveal'
 import ImagePageHero from '../components/ImagePageHero'
+import { useSectionImage } from '../hooks/useSiteData'
 import CompanyBrief from '../sections/CompanyBrief'
 import AboutGeheny from '../sections/AboutGeheny'
 import AboutTeam from '../sections/AboutTeam'
@@ -53,10 +54,12 @@ const whyHeading = {
 
 function AboutHero() {
   const { t, lang } = useLang()
+  const heroImage = useSectionImage('pageHero.about')
   const sinceLabel = lang === 'ar' ? `منذ عام ${company.since}` : `Since ${company.since}`
 
   return (
     <ImagePageHero
+      image={heroImage}
       eyebrow={t('about.heroEyebrow')}
       title={t('about.heroTitle')}
       description={t('about.heroDesc')}
