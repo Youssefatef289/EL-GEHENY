@@ -51,6 +51,7 @@ export async function loadSiteDataFromSupabase() {
     projects,
     services,
     blog,
+    sectionImages: settings?.section_images ?? null,
   }
 
   setSiteCache(partial)

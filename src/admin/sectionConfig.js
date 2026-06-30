@@ -12,6 +12,30 @@ export const SECTION_CONFIG = [
       { key: 'hero.btnProjects', label: 'زر المشاريع', bilingual: false },
       { key: 'hero.btnContact', label: 'زر التواصل', bilingual: false },
     ],
+    images: [
+      { key: 'hero.slide0', label: 'صورة السلايد 1' },
+      { key: 'hero.slide1', label: 'صورة السلايد 2' },
+      { key: 'hero.slide2', label: 'صورة السلايد 3' },
+    ],
+  },
+  {
+    id: 'companyBrief',
+    label: 'Company Brief',
+    preview: '/#company-brief',
+    fields: [
+      { key: 'companyBrief.eyebrow', label: 'Eyebrow', bilingual: false },
+      { key: 'companyBrief.headline', label: 'العنوان', bilingual: false },
+      { key: 'companyBrief.description', label: 'الوصف', bilingual: false },
+      { key: 'companyBrief.highlight', label: 'نقطة مميزة', bilingual: false },
+    ],
+    images: [{ key: 'companyBrief.main', label: 'صورة القسم' }],
+  },
+  {
+    id: 'aboutGeheny',
+    label: 'About Geheny',
+    preview: '/',
+    fields: [],
+    images: [{ key: 'aboutGeheny.main', label: 'صورة القسم' }],
   },
   {
     id: 'stats',
@@ -22,11 +46,13 @@ export const SECTION_CONFIG = [
       { key: 'stats.p1', label: 'الفقرة 1', bilingual: false },
       { key: 'stats.p2', label: 'الفقرة 2', bilingual: false },
     ],
+    images: [],
+    imagesNote: 'هذا القسم يعرض الإحصائيات فقط بدون صورة خلفية.',
   },
   {
     id: 'vision',
     label: 'Vision',
-    preview: '/',
+    preview: '/#vision',
     fields: [
       { key: 'vision.eyebrow', label: 'Eyebrow', bilingual: false },
       { key: 'vision.titleA', label: 'العنوان A', bilingual: false },
@@ -34,6 +60,14 @@ export const SECTION_CONFIG = [
       { key: 'vision.paragraph', label: 'الفقرة', bilingual: false },
       { key: 'vision.cta', label: 'زر CTA', bilingual: false },
     ],
+    images: [{ key: 'vision.main', label: 'صورة القسم' }],
+  },
+  {
+    id: 'services',
+    label: 'Services',
+    preview: '/',
+    fields: [],
+    images: [{ key: 'services.background', label: 'صورة الخلفية' }],
   },
   {
     id: 'heritage',
@@ -45,6 +79,7 @@ export const SECTION_CONFIG = [
       { key: 'heritage.description', label: 'الوصف', bilingual: false },
       { key: 'heritage.cta', label: 'زر CTA', bilingual: false },
     ],
+    images: [{ key: 'heritage.background', label: 'صورة الخلفية' }],
   },
   {
     id: 'featured',
@@ -55,6 +90,8 @@ export const SECTION_CONFIG = [
       { key: 'featured.title', label: 'العنوان', bilingual: false },
       { key: 'featured.description', label: 'الوصف', bilingual: false },
     ],
+    images: [],
+    imagesNote: 'صور هذا القسم تُدار من قسم المشاريع.',
   },
   {
     id: 'whyUs',
@@ -65,6 +102,8 @@ export const SECTION_CONFIG = [
       { key: 'whyUs.title', label: 'العنوان', bilingual: false },
       { key: 'whyUs.description', label: 'الوصف', bilingual: false },
     ],
+    images: [],
+    imagesNote: 'هذا القسم نصي فقط.',
   },
   {
     id: 'cta',
@@ -77,6 +116,8 @@ export const SECTION_CONFIG = [
       { key: 'cta.paragraph', label: 'الفقرة', bilingual: false },
       { key: 'cta.contact', label: 'زر التواصل', bilingual: false },
     ],
+    images: [],
+    imagesNote: 'هذا القسم نصي فقط.',
   },
 ]
 

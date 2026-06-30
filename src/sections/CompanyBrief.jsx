@@ -1,8 +1,7 @@
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang } from '../i18n'
-
-import companyVisual from '../../images/hero-residential.png'
+import { useSectionImage } from '../hooks/useSiteData'
 
 function CheckIcon() {
   return (
@@ -20,6 +19,7 @@ function CheckIcon() {
 
 export default function CompanyBrief() {
   const { t } = useLang()
+  const companyVisual = useSectionImage('companyBrief.main')
 
   return (
     <section id="company-brief" className="relative w-full overflow-hidden bg-ink">

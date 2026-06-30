@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
   social JSONB,
   team JSONB,
   nav_links JSONB,
+  section_images JSONB,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 

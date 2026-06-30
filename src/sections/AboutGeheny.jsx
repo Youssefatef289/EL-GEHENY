@@ -2,8 +2,7 @@ import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useCountUp } from '../hooks/useCountUp'
 import { useLang, L } from '../i18n'
-
-import aboutTeamImage from '../../images/من نحن.jpeg'
+import { useSectionImage } from '../hooks/useSiteData'
 
 const content = {
   eyebrow: { ar: 'من نحن', en: 'About Us' },
@@ -95,6 +94,7 @@ function StatCard({ stat, lang }) {
 
 export default function AboutGeheny() {
   const { lang } = useLang()
+  const aboutTeamImage = useSectionImage('aboutGeheny.main')
 
   return (
     <section id="about-us" className="relative w-full overflow-hidden bg-ink">

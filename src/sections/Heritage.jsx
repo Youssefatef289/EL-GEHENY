@@ -5,9 +5,8 @@ import FixedParallaxBackground from '../components/FixedParallaxBackground'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
+import { useSectionImage } from '../hooks/useSiteData'
 import { motionConfig, revealFromBottom, revealToVisible, revealTransition, revealViewport } from '../utils/motion'
-
-import buildingImage from '../../images/hero-residential.png'
 
 const heritageProjects = [
   {
@@ -114,6 +113,7 @@ function HeritageItem({ item, index }) {
 export default function Heritage() {
   const sectionRef = useRef(null)
   const { t, lang } = useLang()
+  const buildingImage = useSectionImage('heritage.background')
   const reduceMotion = useReducedMotion()
 
   const overlayClassName = lang === 'ar' ? 'heritage-overlay-rtl' : 'heritage-overlay-ltr'

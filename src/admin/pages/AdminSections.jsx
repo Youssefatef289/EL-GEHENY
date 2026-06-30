@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { translations } from '../../i18n/translations'
-import { translationsDB } from '../storage'
+import { defaultSectionImages } from '../../data/sectionImages'
+import { translationsDB, sectionImagesDB } from '../storage'
 import { getSiteCache } from '../../lib/siteDataCache'
+import { uploadSectionImage, coverPreviewUrl, uploadResultMessage } from '../../lib/uploadImage'
 import { useAdminDataRevision } from '../useAdminDataRevision'
 import { SECTION_CONFIG, getByPath } from '../sectionConfig'
-import { AdminPageHeader, useToast } from '../components/AdminUI'
+import { AdminPageHeader, ImageUploadField, useToast } from '../components/AdminUI'
 
 function readValue(overrides, lang, path) {
   const custom = getByPath(overrides?.[lang], path)
@@ -37,45 +39,80 @@ function getOverridesFromCache() {
   return cached ?? { ar: {}, en: {} }
 }
 
+function getImagesFromCache() {
+  const cached = getSiteCache().sectionImages
+  return cached && typeof cached === 'object' ? { ...cached } : {}
+}
+
+function readImageValue(draft, key) {
+  const custom = draft?.[key]
+  if (typeof custom === 'string' && custom.trim()) return custom.trim()
+  return defaultSectionImages[key] || ''
+}
+
 export default function AdminSections() {
   const revision = useAdminDataRevision()
   const { showToast } = useToast()
   const overrides = useMemo(() => getOverridesFromCache(), [revision])
   const [activeId, setActiveId] = useState(SECTION_CONFIG[0].id)
   const [draft, setDraft] = useState(overrides)
+  const [imageDraft, setImageDraft] = useState(() => getImagesFromCache())
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     setDraft(getOverridesFromCache())
+    setImageDraft(getImagesFromCache())
   }, [revision])
 
   const section = SECTION_CONFIG.find((s) => s.id === activeId)
 
   const handleSave = async () => {
     setSaving(true)
-    const ok = await translationsDB.save(draft.ar || {}, draft.en || {})
+    const [textOk, imagesOk] = await Promise.all([
+      translationsDB.save(draft.ar || {}, draft.en || {}),
+      sectionImagesDB.save(imageDraft),
+    ])
     setSaving(false)
-    if (ok) showToast('تم الحفظ بنجاح ✓')
+    if (textOk && imagesOk) showToast('تم الحفظ بنجاح ✓')
     else showToast('فشل الحفظ — تحقق من إعداد Supabase', 'error')
   }
 
   const handleReset = async () => {
     setSaving(true)
-    const ok = await translationsDB.clear()
+    const [textOk, imagesOk] = await Promise.all([
+      translationsDB.clear(),
+      sectionImagesDB.clear(),
+    ])
     setSaving(false)
-    if (ok) {
+    if (textOk && imagesOk) {
       setDraft({ ar: {}, en: {} })
-      showToast('تمت استعادة النصوص الافتراضية ✓')
+      setImageDraft({})
+      showToast('تمت استعادة الافتراضي ✓')
     } else {
       showToast('فشلت الاستعادة', 'error')
     }
+  }
+
+  const updateImage = (key, url) => {
+    setImageDraft((prev) => {
+      const next = { ...prev }
+      if (!url) delete next[key]
+      else next[key] = url
+      return next
+    })
+  }
+
+  const handleImageUpload = async (file, imageKey) => {
+    const result = await uploadSectionImage(file, activeId, imageKey)
+    showToast(uploadResultMessage(result))
+    return result.url
   }
 
   return (
     <div>
       <AdminPageHeader
         title="إدارة السيكشنز"
-        subtitle="تعديل نصوص الصفحة الرئيسية والأقسام"
+        subtitle="تعديل نصوص وصور أقسام الموقع"
         action={(
           <div className="flex flex-wrap gap-2">
             <a href={section?.preview || '/'} target="_blank" rel="noreferrer" className="admin-btn-secondary">معاينة</a>
@@ -101,31 +138,61 @@ export default function AdminSections() {
             </button>
           ))}
         </div>
-        <div className="admin-card space-y-5">
-          {section?.fields.map((field) => (
-            <div key={field.key} className="grid gap-3 sm:grid-cols-2">
-              <label className="block space-y-1 sm:col-span-2">
-                <span className="text-sm font-bold text-[#1a1a2e]">{field.label}</span>
-              </label>
-              <label className="block space-y-1">
-                <span className="text-xs font-semibold text-gray-500">عربي</span>
-                <input
-                  className="admin-input"
-                  value={readValue(draft, 'ar', field.key)}
-                  onChange={(e) => setDraft((prev) => writeValue(prev, 'ar', field.key, e.target.value))}
+        <div className="space-y-6">
+          {(section?.images?.length > 0 || section?.imagesNote) && (
+            <div className="admin-card space-y-5">
+              <h3 className="text-lg font-bold text-[#1a1a2e]">صور القسم</h3>
+              {section?.images?.map((field) => (
+                <ImageUploadField
+                  key={field.key}
+                  label={field.label}
+                  value={coverPreviewUrl(readImageValue(imageDraft, field.key))}
+                  onChange={(url) => updateImage(field.key, url)}
+                  onUpload={(file) => handleImageUpload(file, field.key)}
+                  hint="الصورة تظهر مباشرة في الموقع بعد الحفظ."
                 />
-              </label>
-              <label className="block space-y-1">
-                <span className="text-xs font-semibold text-gray-500">English</span>
-                <input
-                  className="admin-input"
-                  dir="ltr"
-                  value={readValue(draft, 'en', field.key)}
-                  onChange={(e) => setDraft((prev) => writeValue(prev, 'en', field.key, e.target.value))}
-                />
-              </label>
+              ))}
+              {section?.imagesNote && (
+                <p className="text-sm text-gray-500">{section.imagesNote}</p>
+              )}
             </div>
-          ))}
+          )}
+
+          {section?.fields?.length > 0 && (
+            <div className="admin-card space-y-5">
+              <h3 className="text-lg font-bold text-[#1a1a2e]">نصوص القسم</h3>
+              {section.fields.map((field) => (
+                <div key={field.key} className="grid gap-3 sm:grid-cols-2">
+                  <label className="block space-y-1 sm:col-span-2">
+                    <span className="text-sm font-bold text-[#1a1a2e]">{field.label}</span>
+                  </label>
+                  <label className="block space-y-1">
+                    <span className="text-xs font-semibold text-gray-500">عربي</span>
+                    <input
+                      className="admin-input"
+                      value={readValue(draft, 'ar', field.key)}
+                      onChange={(e) => setDraft((prev) => writeValue(prev, 'ar', field.key, e.target.value))}
+                    />
+                  </label>
+                  <label className="block space-y-1">
+                    <span className="text-xs font-semibold text-gray-500">English</span>
+                    <input
+                      className="admin-input"
+                      dir="ltr"
+                      value={readValue(draft, 'en', field.key)}
+                      onChange={(e) => setDraft((prev) => writeValue(prev, 'en', field.key, e.target.value))}
+                    />
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {!section?.fields?.length && !section?.images?.length && section?.imagesNote && (
+            <div className="admin-card">
+              <p className="text-sm text-gray-500">{section.imagesNote}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

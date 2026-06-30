@@ -23,6 +23,7 @@ export const STORAGE_KEYS = {
   social: 'admin_social',
   credentials: 'admin_credentials',
   session: 'admin_session',
+  section_images: 'admin_section_images',
 }
 
 function useLocalFallback() {
@@ -124,6 +125,7 @@ export const settingsDB = {
       if (updates.social) saveData(STORAGE_KEYS.social, updates.social)
       if (updates.stats) saveData(STORAGE_KEYS.stats, updates.stats)
       if (updates.team) saveData(STORAGE_KEYS.team, updates.team)
+      if (updates.section_images) saveData(STORAGE_KEYS.section_images, updates.section_images)
       return true
     }
     const { error } = await supabase.from('site_settings').upsert({
@@ -147,6 +149,7 @@ export const settingsDB = {
           social: STORAGE_KEYS.social,
           stats: STORAGE_KEYS.stats,
           team: STORAGE_KEYS.team,
+          section_images: STORAGE_KEYS.section_images,
         }
         if (keyMap[field]) resetData(keyMap[field])
       }
@@ -270,5 +273,23 @@ export const blogDB = {
     const { error } = await supabase.from('blog_posts').delete().gte('sort_order', -1)
     if (!error) await afterWrite(STORAGE_KEYS.blog)
     return !error
+  },
+}
+
+export const sectionImagesDB = {
+  async get() {
+    if (!supabase) {
+      return getData(STORAGE_KEYS.section_images, {}) || {}
+    }
+    const settings = await settingsDB.get()
+    return settings?.section_images && typeof settings.section_images === 'object'
+      ? settings.section_images
+      : {}
+  },
+  async save(images) {
+    return settingsDB.save({ section_images: images })
+  },
+  async clear() {
+    return settingsDB.clearFields(['section_images'])
   },
 }

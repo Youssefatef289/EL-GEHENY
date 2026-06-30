@@ -2,12 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useLang } from '../i18n'
-
-import heroSlide1 from '../../images/slider - hero (1).jpeg'
-import heroSlide2 from '../../images/slider - hero (2).jpeg'
-import heroSlide3 from '../../images/slider - hero (3).jpeg'
-
-const SLIDE_IMAGES = [heroSlide1, heroSlide2, heroSlide3]
+import { useSectionImages } from '../hooks/useSiteData'
 const AUTO_PLAY_MS = 5500
 
 function SlideContent({ slide, animate, reduceMotion }) {
@@ -44,13 +39,15 @@ function SlideContent({ slide, animate, reduceMotion }) {
 export default function Hero() {
   const reduceMotion = useReducedMotion()
   const { t, lang } = useLang()
+  const sectionImages = useSectionImages()
+  const slideImages = [sectionImages['hero.slide0'], sectionImages['hero.slide1'], sectionImages['hero.slide2']]
   const [activeIndex, setActiveIndex] = useState(0)
   const [animateKey, setAnimateKey] = useState(1)
   const timerRef = useRef(null)
 
   const slides = t('hero.slides').map((slide, index) => ({
     ...slide,
-    image: SLIDE_IMAGES[index],
+    image: slideImages[index],
     btnProjects: t('hero.btnProjects'),
     btnContact: t('hero.btnContact'),
   }))
@@ -86,7 +83,7 @@ export default function Hero() {
 
         return (
           <div
-            key={slide.image}
+            key={`hero-slide-${index}`}
             className={`hero-slider-cell absolute inset-0 transition-opacity duration-1000 ease-out ${
               isActive ? 'z-[1] opacity-100' : 'z-0 opacity-0'
             }`}
@@ -122,7 +119,7 @@ export default function Hero() {
       <div className="hero-slider-dots" role="tablist" aria-label={lang === 'ar' ? 'شرائح الهيرو' : 'Hero slides'}>
         {slides.map((slide, index) => (
           <button
-            key={slide.image}
+            key={`hero-dot-${index}`}
             type="button"
             role="tab"
             aria-selected={index === activeIndex}

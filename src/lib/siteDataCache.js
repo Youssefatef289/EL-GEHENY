@@ -9,6 +9,7 @@ const emptyCache = {
   team: null,
   services: null,
   blog: null,
+  sectionImages: null,
 }
 
 let cache = { ...emptyCache }

@@ -3,11 +3,11 @@ import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
 import { motionConfig, revealFromBottom, revealToVisible, revealTransition, revealViewport } from '../utils/motion'
 import { getServices } from '../data/services'
-
-import bgTexture from '../../images/imgi_99_MMG-Re-Brand-Presentation_pages-to-jpg-0015-scaled-e1748253692652.jpg'
+import { useSectionImage } from '../hooks/useSiteData'
 
 export default function Services() {
   const { lang, t } = useLang()
+  const bgTexture = useSectionImage('services.background')
   const services = getServices()
 
   return (

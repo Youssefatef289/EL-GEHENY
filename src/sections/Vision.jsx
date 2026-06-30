@@ -4,9 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import Reveal from '../components/Reveal'
 import SectionTitle from '../components/SectionTitle'
 import { useLang, L } from '../i18n'
+import { useSectionImage } from '../hooks/useSiteData'
 import { motionConfig, revealFromBottom, revealToVisible, revealTransition } from '../utils/motion'
-
-import visionImage from '../../images/Our vision.jpeg'
 
 const KASHIDA = '\u0640'
 
@@ -45,6 +44,7 @@ const slides = [
 
 export default function Vision({ showCta = true }) {
   const { t, lang } = useLang()
+  const visionImage = useSectionImage('vision.main')
   const reduceMotion = useReducedMotion()
   const [index, setIndex] = useState(0)
 
