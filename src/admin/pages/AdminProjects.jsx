@@ -12,6 +12,7 @@ import { useAdminDataRevision } from '../useAdminDataRevision'
 import { AdminPageHeader, BilingualInput, ConfirmDialog, ImageUploadField, useToast } from '../components/AdminUI'
 import { ProjectImageListField } from '../components/ProjectImageListField'
 import { ProjectDivisionsField } from '../components/ProjectDivisionsField'
+import { ProjectUnitModelsField } from '../components/ProjectUnitModelsField'
 
 const emptyUnitDivisions = () => ({ ground: [], repeated: [], roof: [] })
 
@@ -33,6 +34,7 @@ const emptyProject = () => ({
   cover: '',
   gallery: [],
   unitDivisions: emptyUnitDivisions(),
+  unitDetails: [],
 })
 
 function initProjectForm(project) {
@@ -41,6 +43,7 @@ function initProjectForm(project) {
     cover: coverPreviewUrl(project.cover),
     gallery: normalizeImageList(project.gallery),
     unitDivisions: project.unitDivisions ?? emptyUnitDivisions(),
+    unitDetails: Array.isArray(project.unitDetails) ? project.unitDetails : [],
   }
 }
 
@@ -51,6 +54,7 @@ function prepareProjectForSave(form) {
   )
   if (!hasDivisions) delete data.unitDivisions
   if (!data.gallery?.length) data.gallery = []
+  if (!Array.isArray(data.unitDetails) || data.unitDetails.length === 0) delete data.unitDetails
   return data
 }
 
@@ -122,6 +126,13 @@ function ProjectForm({ project, onSave, onCancel, saving }) {
             ))}
           </ul>
         </div>
+      </div>
+
+      <div className="admin-card space-y-6">
+        <ProjectUnitModelsField
+          unitDetails={form.unitDetails}
+          onChange={(unitDetails) => setForm({ ...form, unitDetails })}
+        />
       </div>
 
       <div className="admin-card space-y-6">
@@ -251,6 +262,7 @@ export default function AdminProjects() {
               <th>الصورة</th>
               <th>المشروع</th>
               <th>معرض</th>
+              <th>نماذج</th>
               <th>الموقع</th>
               <th>الحالة</th>
               <th>الإنجاز</th>
@@ -261,6 +273,7 @@ export default function AdminProjects() {
             {projects.map((project) => {
               const thumb = coverPreviewUrl(project.cover)
               const galleryCount = normalizeImageList(project.gallery).length
+              const modelsCount = project.unitDetails?.length ?? 0
               return (
                 <tr key={project.id}>
                   <td>
@@ -272,6 +285,7 @@ export default function AdminProjects() {
                   </td>
                   <td>{project.title?.ar || project.id}</td>
                   <td>{galleryCount || '—'}</td>
+                  <td>{modelsCount || '—'}</td>
                   <td>{project.location?.ar}</td>
                   <td>{project.deliveryStatus?.ar}</td>
                   <td>{project.progress ?? 0}%</td>
