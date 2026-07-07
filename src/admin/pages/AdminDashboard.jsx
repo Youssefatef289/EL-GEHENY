@@ -73,7 +73,9 @@ export default function AdminDashboard() {
         </p>
         <p className="text-sm text-gray-600">
           {supabaseReady
-            ? 'التعديلات تُحفظ في Supabase وتظهر لجميع الزوار على أي جهاز.'
+            ? sessionStorage.getItem('admin_supabase_offline') === '1'
+              ? '⚠️ Supabase متوقف مؤقتاً — التعديلات تُحفظ محلياً في هذا المتصفح فقط.'
+              : 'التعديلات تُحفظ في Supabase وتظهر لجميع الزوار على أي جهاز.'
             : '⚠️ Supabase غير مُعد — أضف VITE_SUPABASE_URL و VITE_SUPABASE_ANON_KEY في ملف .env'}
         </p>
         {supabaseReady && (

@@ -18,11 +18,15 @@ function saveLocalCredentials(credentials) {
   localStorage.setItem(STORAGE_KEYS.credentials, JSON.stringify(credentials))
 }
 
+function matchLocalCredentials(username, password) {
+  const creds = getLocalCredentials()
+  return username === creds.username && password === creds.password
+}
+
 export async function adminLogin(username, password) {
   if (!isSupabaseConfigured() || !supabase) {
-    const creds = getLocalCredentials()
-    if (username !== creds.username || password !== creds.password) {
-      return { success: false, ok: false, error: 'بيانات خاطئة' }
+    if (!matchLocalCredentials(username, password)) {
+      return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
     }
     saveSession(username)
     return { success: true, ok: true }
@@ -30,17 +34,30 @@ export async function adminLogin(username, password) {
 
   const { data, error } = await supabase
     .from('admin_users')
-    .select('*')
+    .select('username')
     .eq('username', username)
     .eq('password_hash', password)
     .maybeSingle()
 
-  if (error || !data) {
-    return { success: false, ok: false, error: 'بيانات خاطئة' }
+  if (!error && data) {
+    saveSession(data.username)
+    return { success: true, ok: true }
   }
 
-  saveSession(data.username)
-  return { success: true, ok: true }
+  if (matchLocalCredentials(username, password)) {
+    saveSession(username)
+    return { success: true, ok: true, supabaseOffline: Boolean(error) }
+  }
+
+  if (error) {
+    return {
+      success: false,
+      ok: false,
+      error: 'تعذر الاتصال بقاعدة البيانات. تحقق من إعداد Supabase أو استخدم البيانات الافتراضية.',
+    }
+  }
+
+  return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
 }
 
 function saveSession(username) {
@@ -87,8 +104,8 @@ export function logout() {
 }
 
 export async function changePassword(username, newPassword) {
+  saveLocalCredentials({ username, password: newPassword })
   if (!isSupabaseConfigured() || !supabase) {
-    saveLocalCredentials({ username, password: newPassword })
     return true
   }
   const { error } = await supabase
