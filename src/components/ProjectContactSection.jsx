@@ -4,7 +4,7 @@ import Reveal from './Reveal'
 import { company } from '../data/site'
 import { getProjectSalesEmail, projectCategories } from '../data/projects'
 import { socialPlatforms } from '../data/socialLinks'
-import { sendInquiryEmail } from '../lib/email'
+import { submitInquiry } from '../lib/inquiries'
 import { useLang, L } from '../i18n'
 
 const EGYPT_PHONE_PATTERN = /^(010|011|012|015)[0-9]{8}$/
@@ -58,13 +58,15 @@ export default function ProjectContactSection({ projectTitle }) {
       .join('\n')
 
     try {
-      await sendInquiryEmail({
-        toEmail: salesEmail,
+      await submitInquiry({
+        source: isProjectInquiry ? 'project_detail' : 'contact',
         name: form.name,
         phone: form.phone,
         subject,
         message,
         projectName: projectTitle || districtLabel,
+        district: districtLabel,
+        toEmail: salesEmail,
       })
       setSubmitted(true)
     } catch {

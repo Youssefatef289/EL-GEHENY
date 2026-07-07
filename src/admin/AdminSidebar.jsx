@@ -9,6 +9,7 @@ const links = [
   { to: '/admin/stats', label: 'الإحصائيات', icon: 'fa-chart-line' },
   { to: '/admin/team', label: 'الفريق', icon: 'fa-users' },
   { to: '/admin/blog', label: 'المدونة', icon: 'fa-newspaper' },
+  { to: '/admin/inquiries', label: 'طلبات العملاء', icon: 'fa-inbox' },
   { to: '/admin/settings', label: 'إعدادات', icon: 'fa-gear' },
 ]
 

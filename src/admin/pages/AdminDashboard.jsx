@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getProjectsSync } from '../../data/projects'
 import { getBlogPosts } from '../../data/blog'
@@ -6,20 +6,27 @@ import { getServices } from '../../data/services'
 import { getTeamMembers, getFounder } from '../../data/team'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { seedDatabase } from '../seedData'
+import { inquiriesDB } from '../storage'
 import { AdminPageHeader, useToast } from '../components/AdminUI'
-
-const cards = [
-  { to: '/admin/projects', label: 'المشاريع', icon: 'fa-building', count: () => getProjectsSync().length },
-  { to: '/admin/blog', label: 'مقالات المدونة', icon: 'fa-newspaper', count: () => getBlogPosts().length },
-  { to: '/admin/services', label: 'الخدمات', icon: 'fa-briefcase', count: () => getServices().length },
-  { to: '/admin/team', label: 'فريق الإدارة', icon: 'fa-users', count: () => getTeamMembers().length + 1 },
-]
 
 export default function AdminDashboard() {
   const founder = getFounder()
   const { showToast } = useToast()
   const [seeding, setSeeding] = useState(false)
+  const [newInquiries, setNewInquiries] = useState(0)
   const supabaseReady = isSupabaseConfigured()
+
+  useEffect(() => {
+    inquiriesDB.countNew().then(setNewInquiries).catch(() => {})
+  }, [])
+
+  const cards = [
+    { to: '/admin/inquiries', label: 'طلبات جديدة', icon: 'fa-inbox', count: () => newInquiries, highlight: true },
+    { to: '/admin/projects', label: 'المشاريع', icon: 'fa-building', count: () => getProjectsSync().length },
+    { to: '/admin/blog', label: 'مقالات المدونة', icon: 'fa-newspaper', count: () => getBlogPosts().length },
+    { to: '/admin/services', label: 'الخدمات', icon: 'fa-briefcase', count: () => getServices().length },
+    { to: '/admin/team', label: 'فريق الإدارة', icon: 'fa-users', count: () => getTeamMembers().length + 1 },
+  ]
 
   const handleSeed = async () => {
     if (!window.confirm('سيتم رفع البيانات الافتراضية إلى Supabase. متابعة؟')) return
@@ -42,7 +49,11 @@ export default function AdminDashboard() {
       />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <Link key={card.to} to={card.to} className="admin-card block transition hover:-translate-y-0.5">
+          <Link
+            key={card.to}
+            to={card.to}
+            className={`admin-card block transition hover:-translate-y-0.5 ${card.highlight && newInquiries > 0 ? 'ring-2 ring-emerald-400' : ''}`}
+          >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">{card.label}</p>

@@ -6,7 +6,7 @@ import PlanLightbox from '../components/PlanLightbox'
 import ProjectFacadeCarousel from '../components/ProjectFacadeCarousel'
 import ImagePageHero, { heroProjectImage } from '../components/ImagePageHero'
 import Reveal from '../components/Reveal'
-import { sendInquiryEmail } from '../lib/email'
+import { submitInquiry } from '../lib/inquiries'
 import {
   getProjectDisplayTitle,
   getProjectHeroContent,
@@ -180,12 +180,13 @@ export default function ProjectDetail() {
     e.preventDefault()
     setSidebarSending(true)
     try {
-      await sendInquiryEmail({
-        toEmail: getProjectSalesEmail(),
+      await submitInquiry({
+        source: 'project_detail',
         name: form.name,
         phone: form.phone,
         message: form.message,
         projectName: displayTitle,
+        toEmail: getProjectSalesEmail(),
       })
       setSubmitted(true)
     } catch {

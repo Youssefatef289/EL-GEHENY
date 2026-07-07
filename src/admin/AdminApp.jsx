@@ -10,6 +10,7 @@ import AdminStats from './pages/AdminStats'
 import AdminTeam from './pages/AdminTeam'
 import AdminBlog from './pages/AdminBlog'
 import AdminSettings from './pages/AdminSettings'
+import AdminInquiries from './pages/AdminInquiries'
 
 export default function AdminApp() {
   return (
@@ -30,6 +31,7 @@ export default function AdminApp() {
         <Route path="stats" element={<AdminStats />} />
         <Route path="team" element={<AdminTeam />} />
         <Route path="blog" element={<AdminBlog />} />
+        <Route path="inquiries" element={<AdminInquiries />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>
       <Route path="*" element={<Navigate to="dashboard" replace />} />

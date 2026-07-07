@@ -65,6 +65,19 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS form_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  source TEXT NOT NULL,
+  name TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  email TEXT,
+  message TEXT,
+  project_name TEXT,
+  district TEXT,
+  status TEXT DEFAULT 'new',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 INSERT INTO admin_users (username, password_hash)
 VALUES ('admin', 'geheny2024')
 ON CONFLICT (username) DO NOTHING;
@@ -75,6 +88,7 @@ ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE form_submissions ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "public read" ON site_settings;
 DROP POLICY IF EXISTS "public read" ON translations;
@@ -88,6 +102,8 @@ DROP POLICY IF EXISTS "admin write" ON projects;
 DROP POLICY IF EXISTS "admin write" ON services;
 DROP POLICY IF EXISTS "admin write" ON blog_posts;
 DROP POLICY IF EXISTS "admin write" ON admin_users;
+DROP POLICY IF EXISTS "public insert submissions" ON form_submissions;
+DROP POLICY IF EXISTS "admin all submissions" ON form_submissions;
 
 CREATE POLICY "public read" ON site_settings FOR SELECT USING (true);
 CREATE POLICY "public read" ON translations FOR SELECT USING (true);
@@ -102,6 +118,9 @@ CREATE POLICY "admin write" ON services FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "admin write" ON blog_posts FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "admin read" ON admin_users FOR SELECT USING (true);
 CREATE POLICY "admin write" ON admin_users FOR ALL USING (true) WITH CHECK (true);
+
+CREATE POLICY "public insert submissions" ON form_submissions FOR INSERT WITH CHECK (true);
+CREATE POLICY "admin all submissions" ON form_submissions FOR ALL USING (true) WITH CHECK (true);
 
 -- Storage bucket for project cover images (optional — see supabase/storage.sql)
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

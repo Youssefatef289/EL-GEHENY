@@ -24,6 +24,7 @@ export const STORAGE_KEYS = {
   credentials: 'admin_credentials',
   session: 'admin_session',
   section_images: 'admin_section_images',
+  inquiries: 'admin_inquiries',
 }
 
 function useLocalFallback() {
@@ -291,5 +292,64 @@ export const sectionImagesDB = {
   },
   async clear() {
     return settingsDB.clearFields(['section_images'])
+  },
+}
+
+export const inquiriesDB = {
+  async insert(submission) {
+    const row = {
+      source: submission.source,
+      name: submission.name,
+      phone: submission.phone,
+      email: submission.email || null,
+      message: submission.message || null,
+      project_name: submission.project_name || null,
+      district: submission.district || null,
+      status: 'new',
+    }
+    if (!supabase) {
+      const stored = getData(STORAGE_KEYS.inquiries, []) || []
+      const item = { ...row, id: `inq-${Date.now()}`, created_at: new Date().toISOString() }
+      saveData(STORAGE_KEYS.inquiries, [item, ...stored])
+      return true
+    }
+    const { error } = await supabase.from('form_submissions').insert(row)
+    return !error
+  },
+  async getAll() {
+    if (!supabase) {
+      const stored = getData(STORAGE_KEYS.inquiries, [])
+      if (!Array.isArray(stored)) return []
+      return [...stored].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    }
+    const { data, error } = await supabase
+      .from('form_submissions')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (error || !data) return []
+    return data
+  },
+  async updateStatus(id, status) {
+    if (!supabase) {
+      const stored = getData(STORAGE_KEYS.inquiries, []) || []
+      const updated = stored.map((item) => (item.id === id ? { ...item, status } : item))
+      saveData(STORAGE_KEYS.inquiries, updated)
+      return true
+    }
+    const { error } = await supabase.from('form_submissions').update({ status }).eq('id', id)
+    return !error
+  },
+  async delete(id) {
+    if (!supabase) {
+      const stored = getData(STORAGE_KEYS.inquiries, []) || []
+      saveData(STORAGE_KEYS.inquiries, stored.filter((item) => item.id !== id))
+      return true
+    }
+    const { error } = await supabase.from('form_submissions').delete().eq('id', id)
+    return !error
+  },
+  async countNew() {
+    const all = await this.getAll()
+    return all.filter((item) => item.status === 'new').length
   },
 }
