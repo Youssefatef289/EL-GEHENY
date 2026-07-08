@@ -10,7 +10,6 @@ import { submitInquiry } from '../lib/inquiries'
 import {
   getProjectDisplayTitle,
   getProjectHeroContent,
-  getProjectSalesEmail,
   formatProjectCode,
   getAllProjectLayoutPlans,
   UNIT_TYPE_KEYS,
@@ -186,7 +185,6 @@ export default function ProjectDetail() {
         phone: form.phone,
         message: form.message,
         projectName: displayTitle,
-        toEmail: getProjectSalesEmail(),
       })
       setSubmitted(true)
     } catch {

@@ -1,20 +1,25 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { inquiriesDB } from '../storage'
+import { deleteInquiry, getAllInquiries, updateInquiryStatus } from '../../lib/inquiriesAdmin'
 import { AdminPageHeader, ConfirmDialog, useToast } from '../components/AdminUI'
 
 const SOURCE_LABELS = {
   contact: 'صفحة التواصل',
   project_detail: 'صفحة مشروع',
+  booking: 'حجز مشروع',
 }
 
 const STATUS_LABELS = {
   new: 'جديد',
+  in_progress: 'قيد المعالجة',
+  done: 'منتهي',
   read: 'مقروء',
   archived: 'مؤرشف',
 }
 
 const STATUS_STYLES = {
   new: 'bg-emerald-100 text-emerald-800',
+  in_progress: 'bg-amber-100 text-amber-800',
+  done: 'bg-gray-100 text-gray-600',
   read: 'bg-blue-100 text-blue-800',
   archived: 'bg-gray-100 text-gray-600',
 }
@@ -30,6 +35,11 @@ function formatDate(value) {
   })
 }
 
+function getSourceLabel(item) {
+  if (item.type === 'booking') return SOURCE_LABELS.booking
+  return SOURCE_LABELS[item.source] || SOURCE_LABELS.contact
+}
+
 export default function AdminInquiries() {
   const { showToast } = useToast()
   const [inquiries, setInquiries] = useState([])
@@ -41,7 +51,7 @@ export default function AdminInquiries() {
   const loadInquiries = useCallback(async () => {
     setLoading(true)
     try {
-      const data = await inquiriesDB.getAll()
+      const data = await getAllInquiries()
       setInquiries(data)
     } catch {
       showToast('فشل تحميل الطلبات', 'error')
@@ -56,18 +66,20 @@ export default function AdminInquiries() {
 
   const filtered = useMemo(() => {
     if (filter === 'all') return inquiries
+    if (filter === 'contact') return inquiries.filter((item) => item.type === 'contact' || item.source === 'contact')
+    if (filter === 'booking') return inquiries.filter((item) => item.type === 'booking' || item.source === 'project_detail')
     return inquiries.filter((item) => item.status === filter)
   }, [inquiries, filter])
 
   const counts = useMemo(() => ({
     all: inquiries.length,
     new: inquiries.filter((i) => i.status === 'new').length,
-    read: inquiries.filter((i) => i.status === 'read').length,
-    archived: inquiries.filter((i) => i.status === 'archived').length,
+    in_progress: inquiries.filter((i) => i.status === 'in_progress' || i.status === 'read').length,
+    done: inquiries.filter((i) => i.status === 'done' || i.status === 'archived').length,
   }), [inquiries])
 
   const handleStatusChange = async (id, status) => {
-    const ok = await inquiriesDB.updateStatus(id, status)
+    const ok = await updateInquiryStatus(id, status)
     if (ok) {
       setInquiries((prev) => prev.map((item) => (item.id === id ? { ...item, status } : item)))
       if (selected?.id === id) setSelected((prev) => ({ ...prev, status }))
@@ -79,7 +91,7 @@ export default function AdminInquiries() {
 
   const handleDelete = async () => {
     if (!deleteId) return
-    const ok = await inquiriesDB.delete(deleteId)
+    const ok = await deleteInquiry(deleteId)
     if (ok) {
       setInquiries((prev) => prev.filter((item) => item.id !== deleteId))
       if (selected?.id === deleteId) setSelected(null)
@@ -92,7 +104,7 @@ export default function AdminInquiries() {
 
   const openDetail = (item) => {
     setSelected(item)
-    if (item.status === 'new') handleStatusChange(item.id, 'read')
+    if (item.status === 'new') handleStatusChange(item.id, 'in_progress')
   }
 
   return (
@@ -112,8 +124,10 @@ export default function AdminInquiries() {
         {[
           { key: 'all', label: 'الكل' },
           { key: 'new', label: 'جديد' },
-          { key: 'read', label: 'مقروء' },
-          { key: 'archived', label: 'مؤرشف' },
+          { key: 'in_progress', label: 'قيد المعالجة' },
+          { key: 'done', label: 'منتهي' },
+          { key: 'contact', label: 'تواصل' },
+          { key: 'booking', label: 'حجز' },
         ].map((tab) => (
           <button
             key={tab.key}
@@ -126,7 +140,9 @@ export default function AdminInquiries() {
             }`}
           >
             {tab.label}
-            <span className="ms-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{counts[tab.key]}</span>
+            {['all', 'new', 'in_progress', 'done'].includes(tab.key) && (
+              <span className="ms-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{counts[tab.key] ?? 0}</span>
+            )}
           </button>
         ))}
       </div>
@@ -143,7 +159,7 @@ export default function AdminInquiries() {
                 <th>التاريخ</th>
                 <th>الاسم</th>
                 <th>الهاتف</th>
-                <th>المصدر</th>
+                <th>النوع</th>
                 <th>المشروع / الحي</th>
                 <th>الحالة</th>
                 <th>إجراءات</th>
@@ -154,8 +170,12 @@ export default function AdminInquiries() {
                 <tr key={item.id} className="cursor-pointer hover:bg-gray-50" onClick={() => openDetail(item)}>
                   <td className="whitespace-nowrap text-sm">{formatDate(item.created_at)}</td>
                   <td className="font-semibold">{item.name}</td>
-                  <td dir="ltr" className="text-sm">{item.phone}</td>
-                  <td className="text-sm">{SOURCE_LABELS[item.source] || item.source}</td>
+                  <td dir="ltr" className="text-sm">
+                    <a href={`tel:${item.phone}`} onClick={(e) => e.stopPropagation()} className="text-[#c8a95a] hover:underline">
+                      {item.phone}
+                    </a>
+                  </td>
+                  <td className="text-sm">{getSourceLabel(item)}</td>
                   <td className="text-sm">{item.project_name || item.district || '—'}</td>
                   <td>
                     <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${STATUS_STYLES[item.status] || STATUS_STYLES.new}`}>
@@ -163,17 +183,16 @@ export default function AdminInquiries() {
                     </span>
                   </td>
                   <td onClick={(e) => e.stopPropagation()}>
-                    <div className="flex flex-wrap gap-1">
-                      {item.status !== 'read' && (
-                        <button type="button" onClick={() => handleStatusChange(item.id, 'read')} className="admin-btn-secondary !px-2 !py-1 text-xs" title="تعليم كمقروء">
-                          <i className="fa-solid fa-check" aria-hidden="true" />
-                        </button>
-                      )}
-                      {item.status !== 'archived' && (
-                        <button type="button" onClick={() => handleStatusChange(item.id, 'archived')} className="admin-btn-secondary !px-2 !py-1 text-xs" title="أرشفة">
-                          <i className="fa-solid fa-box-archive" aria-hidden="true" />
-                        </button>
-                      )}
+                    <div className="flex flex-wrap items-center gap-1">
+                      <select
+                        value={['new', 'in_progress', 'done'].includes(item.status) ? item.status : 'in_progress'}
+                        onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                        className="rounded-lg border border-gray-200 px-2 py-1 text-xs"
+                      >
+                        <option value="new">جديد</option>
+                        <option value="in_progress">قيد المعالجة</option>
+                        <option value="done">منتهي</option>
+                      </select>
                       <button type="button" onClick={() => setDeleteId(item.id)} className="admin-btn-danger !px-2 !py-1 text-xs" title="حذف">
                         <i className="fa-solid fa-trash" aria-hidden="true" />
                       </button>
@@ -222,8 +241,8 @@ export default function AdminInquiries() {
                 </div>
               )}
               <div className="flex gap-2">
-                <dt className="font-bold text-gray-500 w-24 shrink-0">المصدر</dt>
-                <dd>{SOURCE_LABELS[selected.source] || selected.source}</dd>
+                <dt className="font-bold text-gray-500 w-24 shrink-0">النوع</dt>
+                <dd>{getSourceLabel(selected)}</dd>
               </div>
               {selected.project_name && (
                 <div className="flex gap-2">
@@ -246,9 +265,9 @@ export default function AdminInquiries() {
             </dl>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              {selected.status !== 'archived' && (
-                <button type="button" onClick={() => handleStatusChange(selected.id, 'archived')} className="admin-btn-secondary">
-                  أرشفة
+              {selected.status !== 'done' && (
+                <button type="button" onClick={() => handleStatusChange(selected.id, 'done')} className="admin-btn-secondary">
+                  تعليم كمنتهي
                 </button>
               )}
               <button type="button" onClick={() => setDeleteId(selected.id)} className="admin-btn-danger">

@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { STORAGE_KEYS } from './storage'
+import { isApiConfigured, loginApi, setAdminToken } from '../lib/apiClient'
 
 const SESSION_HOURS = 24
 export const DEFAULT_CREDENTIALS = { username: 'admin', password: 'geheny2024' }
@@ -23,7 +24,35 @@ function matchLocalCredentials(username, password) {
   return username === creds.username && password === creds.password
 }
 
+function saveSession(username) {
+  if (typeof window === 'undefined') return
+  localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({
+    username,
+    expires: Date.now() + SESSION_HOURS * 60 * 60 * 1000,
+    expiresAt: Date.now() + SESSION_HOURS * 60 * 60 * 1000,
+  }))
+}
+
+async function loginViaApi(username, password) {
+  try {
+    const data = await loginApi(username, password)
+    if (data?.token) {
+      setAdminToken(data.token)
+      saveSession(data.username || username)
+      return { success: true, ok: true }
+    }
+  } catch {
+    // fall through to legacy auth
+  }
+  return null
+}
+
 export async function adminLogin(username, password) {
+  if (isApiConfigured()) {
+    const apiResult = await loginViaApi(username, password)
+    if (apiResult) return apiResult
+  }
+
   if (!isSupabaseConfigured() || !supabase) {
     if (!matchLocalCredentials(username, password)) {
       return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
@@ -60,15 +89,6 @@ export async function adminLogin(username, password) {
   return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
 }
 
-function saveSession(username) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({
-    username,
-    expires: Date.now() + SESSION_HOURS * 60 * 60 * 1000,
-    expiresAt: Date.now() + SESSION_HOURS * 60 * 60 * 1000,
-  }))
-}
-
 export function isLoggedIn() {
   return isAuthenticated()
 }
@@ -101,6 +121,7 @@ export function adminLogout() {
 export function logout() {
   if (typeof window === 'undefined') return
   localStorage.removeItem(STORAGE_KEYS.session)
+  setAdminToken(null)
 }
 
 export async function changePassword(username, newPassword) {

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import Reveal from './Reveal'
 import { company } from '../data/site'
-import { getProjectSalesEmail, projectCategories } from '../data/projects'
+import { projectCategories } from '../data/projects'
 import { socialPlatforms } from '../data/socialLinks'
 import { submitInquiry } from '../lib/inquiries'
 import { useLang, L } from '../i18n'
@@ -22,7 +22,6 @@ function getDefaultDistrict(projectTitle) {
 
 export default function ProjectContactSection({ projectTitle }) {
   const { t, lang } = useLang()
-  const salesEmail = getProjectSalesEmail()
   const isProjectInquiry = Boolean(projectTitle)
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
@@ -66,7 +65,6 @@ export default function ProjectContactSection({ projectTitle }) {
         message,
         projectName: projectTitle || districtLabel,
         district: districtLabel,
-        toEmail: salesEmail,
       })
       setSubmitted(true)
     } catch {

@@ -7,6 +7,7 @@ import { getTeamMembers, getFounder } from '../../data/team'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { seedDatabase } from '../seedData'
 import { inquiriesDB } from '../storage'
+import { countNewInquiries } from '../../lib/inquiriesAdmin'
 import { AdminPageHeader, useToast } from '../components/AdminUI'
 
 export default function AdminDashboard() {
@@ -17,7 +18,9 @@ export default function AdminDashboard() {
   const supabaseReady = isSupabaseConfigured()
 
   useEffect(() => {
-    inquiriesDB.countNew().then(setNewInquiries).catch(() => {})
+    countNewInquiries().then(setNewInquiries).catch(() => {
+      inquiriesDB.countNew().then(setNewInquiries).catch(() => {})
+    })
   }, [])
 
   const cards = [
