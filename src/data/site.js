@@ -2,7 +2,7 @@
 
 import { getSiteCache } from '../lib/siteDataCache'
 import { getData, STORAGE_KEYS } from '../admin/storage'
-import { isSupabaseConfigured } from '../lib/supabase'
+import { isApiConfigured } from '../lib/apiClient'
 
 export const baseCompany = {
   name: { ar: 'الجهيني للتطوير العقاري', en: 'El-Geheny Real Estate Development' },
@@ -30,7 +30,7 @@ export const baseCompany = {
 }
 
 export function getCompany() {
-  if (isSupabaseConfigured()) {
+  if (isApiConfigured()) {
     const { company, social } = getSiteCache()
     let merged = company ? { ...baseCompany, ...company } : { ...baseCompany }
     if (social) {
@@ -65,7 +65,7 @@ export const baseStats = [
 ]
 
 export function getStats() {
-  if (isSupabaseConfigured()) {
+  if (isApiConfigured()) {
     const cached = getSiteCache().stats
     return cached?.length ? cached : baseStats
   }

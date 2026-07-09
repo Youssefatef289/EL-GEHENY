@@ -3,7 +3,7 @@ import iconHook from '../../images/imgi_45_hook-3.png'
 import iconShelf from '../../images/imgi_37_shelf.png'
 import { getSiteCache } from '../lib/siteDataCache'
 import { getData, STORAGE_KEYS } from '../admin/storage'
-import { isSupabaseConfigured } from '../lib/supabase'
+import { isApiConfigured } from '../lib/apiClient'
 
 export const baseServices = [
   {
@@ -36,7 +36,7 @@ export const baseServices = [
 ]
 
 export function getServices() {
-  if (isSupabaseConfigured()) {
+  if (isApiConfigured()) {
     const cached = getSiteCache().services
     if (Array.isArray(cached) && cached.length > 0) {
       return cached.map((service) => {

@@ -4,9 +4,8 @@ import { getProjectsSync } from '../../data/projects'
 import { getBlogPosts } from '../../data/blog'
 import { getServices } from '../../data/services'
 import { getTeamMembers, getFounder } from '../../data/team'
-import { isSupabaseConfigured } from '../../lib/supabase'
+import { isApiConfigured } from '../../lib/apiClient'
 import { seedDatabase } from '../seedData'
-import { inquiriesDB } from '../storage'
 import { countNewInquiries } from '../../lib/inquiriesAdmin'
 import { AdminPageHeader, useToast } from '../components/AdminUI'
 
@@ -15,12 +14,10 @@ export default function AdminDashboard() {
   const { showToast } = useToast()
   const [seeding, setSeeding] = useState(false)
   const [newInquiries, setNewInquiries] = useState(0)
-  const supabaseReady = isSupabaseConfigured()
+  const apiReady = isApiConfigured()
 
   useEffect(() => {
-    countNewInquiries().then(setNewInquiries).catch(() => {
-      inquiriesDB.countNew().then(setNewInquiries).catch(() => {})
-    })
+    countNewInquiries().then(setNewInquiries).catch(() => {})
   }, [])
 
   const cards = [
@@ -32,7 +29,7 @@ export default function AdminDashboard() {
   ]
 
   const handleSeed = async () => {
-    if (!window.confirm('سيتم رفع البيانات الافتراضية إلى Supabase. متابعة؟')) return
+    if (!window.confirm('سيتم رفع البيانات الافتراضية إلى قاعدة البيانات. متابعة؟')) return
     setSeeding(true)
     try {
       await seedDatabase()
@@ -75,20 +72,18 @@ export default function AdminDashboard() {
           المؤسس: <strong>{founder.name.ar}</strong>
         </p>
         <p className="text-sm text-gray-600">
-          {supabaseReady
-            ? sessionStorage.getItem('admin_supabase_offline') === '1'
-              ? '⚠️ Supabase متوقف مؤقتاً — التعديلات تُحفظ محلياً في هذا المتصفح فقط.'
-              : 'التعديلات تُحفظ في Supabase وتظهر لجميع الزوار على أي جهاز.'
-            : '⚠️ Supabase غير مُعد — أضف VITE_SUPABASE_URL و VITE_SUPABASE_ANON_KEY في ملف .env'}
+          {apiReady
+            ? 'التعديلات تُحفظ في PlanetScale وتظهر لجميع الزوار على أي جهاز.'
+            : '⚠️ API غير مُفعّل — أضف VITE_API_ENABLED=true ومتغيرات PlanetScale في Vercel'}
         </p>
-        {supabaseReady && (
+        {apiReady && (
           <button
             type="button"
             onClick={handleSeed}
             disabled={seeding}
             className="admin-btn-secondary"
           >
-            {seeding ? 'جاري الرفع...' : 'رفع البيانات الأولية إلى Supabase'}
+            {seeding ? 'جاري الرفع...' : 'رفع البيانات الأولية إلى قاعدة البيانات'}
           </button>
         )}
       </div>

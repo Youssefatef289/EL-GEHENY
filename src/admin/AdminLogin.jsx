@@ -26,10 +26,10 @@ export default function AdminLogin() {
       setError(result.error || 'بيانات الدخول غير صحيحة')
       return
     }
-    if (result.supabaseOffline) {
-      sessionStorage.setItem('admin_supabase_offline', '1')
+    if (result.apiOffline) {
+      sessionStorage.setItem('admin_api_offline', '1')
     } else {
-      sessionStorage.removeItem('admin_supabase_offline')
+      sessionStorage.removeItem('admin_api_offline')
     }
     navigate(from, { replace: true })
   }

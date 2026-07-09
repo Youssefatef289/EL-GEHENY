@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { isApiConfigured, cmsWrite, fetchCmsTable } from '../lib/apiClient'
 import { baseCompany, baseStats } from '../data/site'
 import { baseProjects } from '../data/projects'
 import { baseServices } from '../data/services'
@@ -12,18 +12,12 @@ import {
 } from './mappers'
 import { refreshSiteData } from '../lib/siteDataLoader'
 
-async function upsert(table, data, options) {
-  const { error } = await supabase.from(table).upsert(data, options)
-  if (error) throw new Error(`${table}: ${error.message}`)
-}
-
 export async function seedDatabase() {
-  if (!isSupabaseConfigured() || !supabase) {
-    throw new Error('Supabase غير مُعد — أضف VITE_SUPABASE_URL و VITE_SUPABASE_ANON_KEY في ملف .env')
+  if (!isApiConfigured()) {
+    throw new Error('الـ API غير مُفعّل — أضف VITE_API_ENABLED=true في Vercel')
   }
 
-  await upsert('site_settings', {
-    id: 'main',
+  await cmsWrite('site_settings', 'save', {
     company: {
       name: baseCompany.name,
       slogan: baseCompany.slogan,
@@ -36,24 +30,18 @@ export async function seedDatabase() {
     stats: baseStats,
     social: baseCompany.social,
     team: serializeTeam({ founder: baseFounder, members: baseTeamMembers }),
-    updated_at: new Date().toISOString(),
   })
 
-  await upsert('translations', {
-    id: 'main',
-    ar: {},
-    en: {},
-    updated_at: new Date().toISOString(),
-  })
+  await cmsWrite('translations', 'save', { ar: {}, en: {} })
 
   const projectRows = baseProjects.map((project, index) => projectToRow(project, index))
-  await upsert('projects', projectRows, { onConflict: 'id' })
+  await cmsWrite('projects', 'upsert', projectRows)
 
   const serviceRows = baseServices.map((service, index) => serviceToRow(service, index))
-  await upsert('services', serviceRows, { onConflict: 'id' })
+  await cmsWrite('services', 'upsert', serviceRows)
 
   const blogRows = baseBlogPosts.map((post, index) => blogToRow(post, index))
-  await upsert('blog_posts', blogRows, { onConflict: 'id' })
+  await cmsWrite('blog_posts', 'upsert', blogRows)
 
   if (typeof window !== 'undefined') {
     await refreshSiteData('seed')
@@ -62,10 +50,11 @@ export async function seedDatabase() {
 }
 
 export async function isDatabaseEmpty() {
-  if (!isSupabaseConfigured() || !supabase) return true
-  const { count, error } = await supabase
-    .from('projects')
-    .select('id', { count: 'exact', head: true })
-  if (error) return true
-  return (count ?? 0) === 0
+  if (!isApiConfigured()) return true
+  try {
+    const projects = await fetchCmsTable('projects')
+    return !Array.isArray(projects) || projects.length === 0
+  } catch {
+    return true
+  }
 }

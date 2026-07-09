@@ -1,10 +1,9 @@
 // بيانات المشاريع لشركة الجهيني للتطوير العقاري (ثنائية اللغة)
 
 import { company } from './site'
-import { getSiteCache, setSiteCache, notifySiteDataUpdated } from '../lib/siteDataCache'
+import { getSiteCache } from '../lib/siteDataCache'
 import { getData, STORAGE_KEYS } from '../admin/storage'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
-import { rowToProject } from '../admin/mappers'
+import { isApiConfigured } from '../lib/apiClient'
 import j290Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التاني j290/الوجهات_(1).jpg'
 import m75Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي التالت m75/الوجهات_(1).jpg'
 import e80Cover from '../../images/Elgeheny development_/الجهيني للتطوير العقاري كامل المشاريع/الحي الخامس E80/WhatsApp Image 2026-06-03 at 1.12.04 PM.jpeg'
@@ -1366,7 +1365,7 @@ const baseProjects = [
 export function getProjectsSync() {
   const cached = getSiteCache().projects
   if (Array.isArray(cached) && cached.length > 0) return cached
-  if (!isSupabaseConfigured()) {
+  if (!isApiConfigured()) {
     const stored = getData(STORAGE_KEYS.projects, null)
     if (Array.isArray(stored) && stored.length > 0) return stored
   }
@@ -1374,16 +1373,7 @@ export function getProjectsSync() {
 }
 
 export async function getProjects() {
-  if (isSupabaseConfigured() && supabase) {
-    const { data, error } = await supabase.from('projects').select('*').order('sort_order')
-    if (!error && data?.length) {
-      const mapped = data.map(rowToProject)
-      setSiteCache({ projects: mapped })
-      notifySiteDataUpdated('projects')
-      return mapped
-    }
-  }
-  if (!isSupabaseConfigured()) {
+  if (!isApiConfigured()) {
     const stored = getData(STORAGE_KEYS.projects, null)
     if (Array.isArray(stored) && stored.length > 0) return stored
   }

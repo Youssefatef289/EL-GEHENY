@@ -1,4 +1,4 @@
-import { supabase, isSupabaseConfigured } from './supabase'
+import { isApiConfigured, fetchCmsTable } from './apiClient'
 import { getSiteCache, setSiteCache, notifySiteDataUpdated } from './siteDataCache'
 import {
   rowToProject,
@@ -7,60 +7,60 @@ import {
   deserializeTeam,
 } from '../admin/mappers'
 
-export async function loadSiteDataFromSupabase() {
-  if (!isSupabaseConfigured() || !supabase) {
+export async function loadSiteData() {
+  if (!isApiConfigured()) {
     setSiteCache({ loaded: true, loading: false })
     return getSiteCache()
   }
 
   setSiteCache({ loading: true })
 
-  const [
-    settingsRes,
-    translationsRes,
-    projectsRes,
-    servicesRes,
-    blogRes,
-  ] = await Promise.all([
-    supabase.from('site_settings').select('*').eq('id', 'main').maybeSingle(),
-    supabase.from('translations').select('ar,en').eq('id', 'main').maybeSingle(),
-    supabase.from('projects').select('*').order('sort_order'),
-    supabase.from('services').select('*').order('sort_order'),
-    supabase.from('blog_posts').select('*').order('sort_order'),
-  ])
+  try {
+    const [
+      settings,
+      translations,
+      projects,
+      services,
+      blog,
+    ] = await Promise.all([
+      fetchCmsTable('site_settings'),
+      fetchCmsTable('translations'),
+      fetchCmsTable('projects'),
+      fetchCmsTable('services'),
+      fetchCmsTable('blog_posts'),
+    ])
 
-  const settings = settingsRes.data
-  const projects = projectsRes.data?.length
-    ? projectsRes.data.map(rowToProject)
-    : null
-  const services = servicesRes.data?.length
-    ? servicesRes.data.map(rowToService)
-    : null
-  const blog = blogRes.data?.length
-    ? blogRes.data.map(rowToBlogPost)
-    : null
+    const projectsList = Array.isArray(projects) ? projects : []
+    const servicesList = Array.isArray(services) ? services : []
+    const blogList = Array.isArray(blog) ? blog : []
 
-  const partial = {
-    loaded: true,
-    loading: false,
-    company: settings?.company ?? null,
-    social: settings?.social ?? null,
-    stats: settings?.stats ?? null,
-    team: settings?.team ? deserializeTeam(settings.team) : null,
-    translationOverrides: translationsRes.data ?? null,
-    projects,
-    services,
-    blog,
-    sectionImages: settings?.section_images ?? null,
+    const partial = {
+      loaded: true,
+      loading: false,
+      company: settings?.company ?? null,
+      social: settings?.social ?? null,
+      stats: settings?.stats ?? null,
+      team: settings?.team ? deserializeTeam(settings.team) : null,
+      translationOverrides: translations ?? null,
+      projects: projectsList.length ? projectsList.map(rowToProject) : null,
+      services: servicesList.length ? servicesList.map(rowToService) : null,
+      blog: blogList.length ? blogList.map(rowToBlogPost) : null,
+      sectionImages: settings?.section_images ?? null,
+    }
+
+    setSiteCache(partial)
+    notifySiteDataUpdated('all')
+    return partial
+  } catch {
+    setSiteCache({ loaded: true, loading: false })
+    return getSiteCache()
   }
-
-  setSiteCache(partial)
-  notifySiteDataUpdated('all')
-  return partial
 }
 
 export async function refreshSiteData(key = 'all') {
-  const data = await loadSiteDataFromSupabase()
+  const data = await loadSiteData()
   notifySiteDataUpdated(key)
   return data
 }
+
+export const loadSiteDataFromSupabase = loadSiteData

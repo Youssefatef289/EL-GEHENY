@@ -4,7 +4,7 @@ import ahmedImg from '../../images/احمد صلاح الجهينى.png'
 import waleedImg from '../../images/وليد كمال الجهينى.png'
 import { getSiteCache } from '../lib/siteDataCache'
 import { getData, STORAGE_KEYS } from '../admin/storage'
-import { isSupabaseConfigured } from '../lib/supabase'
+import { isApiConfigured } from '../lib/apiClient'
 
 export const baseFounder = {
   id: 'founder',
@@ -82,7 +82,7 @@ function mergeTeam(stored) {
 }
 
 export function getTeamData() {
-  if (isSupabaseConfigured()) {
+  if (isApiConfigured()) {
     const cached = getSiteCache().team
     if (cached) return cached
     return { founder: baseFounder, members: baseTeamMembers }

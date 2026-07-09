@@ -1,6 +1,5 @@
 // Client API layer for Vercel serverless (/api/*).
-// Used by: auth.js, inquiries.js, inquiriesAdmin.js
-// Enable with VITE_API_ENABLED=true after PlanetScale is configured on Vercel.
+// Enable with VITE_API_ENABLED=true on Vercel.
 
 const TOKEN_KEY = 'elgeheny_admin_token'
 const API_BASE = import.meta.env.VITE_API_BASE || ''
@@ -60,6 +59,18 @@ export async function loginApi(username, password) {
   return apiFetch('/api/auth', {
     method: 'POST',
     body: { username, password },
+  })
+}
+
+export async function fetchCmsTable(table) {
+  const data = await apiFetch(`/api/cms?table=${encodeURIComponent(table)}`)
+  return data.data
+}
+
+export async function cmsWrite(table, action, payload) {
+  return apiFetch('/api/cms-write', {
+    method: 'POST',
+    body: { table, action, payload },
   })
 }
 

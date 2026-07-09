@@ -2,7 +2,7 @@
 
 import { getSiteCache } from '../lib/siteDataCache'
 import { getData, STORAGE_KEYS } from '../admin/storage'
-import { isSupabaseConfigured } from '../lib/supabase'
+import { isApiConfigured } from '../lib/apiClient'
 
 export const baseBlogPosts = [
   {
@@ -132,7 +132,7 @@ export const baseBlogPosts = [
 ]
 
 export function getBlogPosts() {
-  if (isSupabaseConfigured()) {
+  if (isApiConfigured()) {
     const cached = getSiteCache().blog
     if (Array.isArray(cached) && cached.length > 0) return cached
     return baseBlogPosts

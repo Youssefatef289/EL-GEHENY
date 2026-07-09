@@ -1,5 +1,4 @@
--- MySQL schema reference (PlanetScale) — full CMS migration (future)
--- Current production CMS still uses supabase/schema.sql (Postgres)
+-- MySQL schema reference (PlanetScale) — full CMS on PlanetScale
 -- API layer uses only: inquiries + admins (see api/setup.js)
 
 CREATE TABLE IF NOT EXISTS site_settings (

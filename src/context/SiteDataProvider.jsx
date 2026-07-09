@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import { loadSiteDataFromSupabase } from '../lib/siteDataLoader'
+import { loadSiteData } from '../lib/siteDataLoader'
 
 export function SiteDataProvider({ children }) {
   useEffect(() => {
-    loadSiteDataFromSupabase()
+    loadSiteData()
 
     const onUpdate = () => {
-      loadSiteDataFromSupabase()
+      loadSiteData()
     }
     window.addEventListener('admin-data-updated', onUpdate)
     return () => window.removeEventListener('admin-data-updated', onUpdate)

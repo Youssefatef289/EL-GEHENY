@@ -1,4 +1,12 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import {
+  isApiConfigured,
+  fetchCmsTable,
+  cmsWrite,
+  submitInquiryApi,
+  fetchInquiriesApi,
+  updateInquiryStatusApi,
+  deleteInquiryApi,
+} from '../lib/apiClient'
 import { notifySiteDataUpdated } from '../lib/siteDataCache'
 import { refreshSiteData } from '../lib/siteDataLoader'
 import {
@@ -28,7 +36,7 @@ export const STORAGE_KEYS = {
 }
 
 function useLocalFallback() {
-  return !isSupabaseConfigured()
+  return !isApiConfigured()
 }
 
 export function saveData(key, data) {
@@ -62,7 +70,7 @@ export function resetData(key) {
 }
 
 async function afterWrite(key) {
-  if (isSupabaseConfigured()) {
+  if (isApiConfigured()) {
     await refreshSiteData(key)
   } else {
     notifySiteDataUpdated(key)
@@ -71,167 +79,203 @@ async function afterWrite(key) {
 
 export const projectsDB = {
   async getAll() {
-    if (!supabase) {
-      const stored = getData(STORAGE_KEYS.projects, null)
-      return Array.isArray(stored) ? stored : []
+    if (isApiConfigured()) {
+      try {
+        const rows = await fetchCmsTable('projects')
+        return Array.isArray(rows) ? rows.map(rowToProject) : []
+      } catch (err) {
+        console.error('projectsDB.getAll:', err)
+      }
     }
-    const { data, error } = await supabase.from('projects').select('*').order('sort_order')
-    if (error || !data?.length) return []
-    return data.map(rowToProject)
+    const stored = getData(STORAGE_KEYS.projects, null)
+    return Array.isArray(stored) ? stored : []
   },
   async saveAll(projects) {
-    if (!supabase) {
-      saveData(STORAGE_KEYS.projects, projects)
-      return true
+    if (isApiConfigured()) {
+      try {
+        const rows = projects.map((project, index) => projectToRow(project, index))
+        await cmsWrite('projects', 'upsert', rows)
+        await afterWrite(STORAGE_KEYS.projects)
+        return true
+      } catch (err) {
+        console.error('projectsDB.saveAll:', err)
+        return false
+      }
     }
-    const rows = projects.map((project, index) => projectToRow(project, index))
-    const { error } = await supabase.from('projects').upsert(rows, { onConflict: 'id' })
-    if (!error) await afterWrite(STORAGE_KEYS.projects)
-    return !error
+    saveData(STORAGE_KEYS.projects, projects)
+    return true
   },
   async save(project, sortOrder = 0) {
-    if (!supabase) return false
-    const { error } = await supabase
-      .from('projects')
-      .upsert(projectToRow(project, sortOrder), { onConflict: 'id' })
-    if (!error) await afterWrite(STORAGE_KEYS.projects)
-    return !error
+    return this.saveAll([project])
   },
   async delete(id) {
-    if (!supabase) return false
-    const { error } = await supabase.from('projects').delete().eq('id', id)
-    if (!error) await afterWrite(STORAGE_KEYS.projects)
-    return !error
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('projects', 'delete', { id })
+        await afterWrite(STORAGE_KEYS.projects)
+        return true
+      } catch {
+        return false
+      }
+    }
+    const stored = getData(STORAGE_KEYS.projects, []) || []
+    saveData(STORAGE_KEYS.projects, stored.filter((p) => p.id !== id))
+    return true
   },
   async clear() {
-    if (!supabase) {
-      resetData(STORAGE_KEYS.projects)
-      return true
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('projects', 'clear', {})
+        await afterWrite(STORAGE_KEYS.projects)
+        return true
+      } catch {
+        return false
+      }
     }
-    const { error } = await supabase.from('projects').delete().gte('sort_order', -1)
-    if (!error) await afterWrite(STORAGE_KEYS.projects)
-    return !error
+    resetData(STORAGE_KEYS.projects)
+    return true
   },
 }
 
 export const settingsDB = {
   async get() {
-    if (!supabase) return null
-    const { data } = await supabase.from('site_settings').select('*').eq('id', 'main').maybeSingle()
-    return data
+    if (isApiConfigured()) {
+      try {
+        return await fetchCmsTable('site_settings')
+      } catch {
+        return null
+      }
+    }
+    return {
+      company: getData(STORAGE_KEYS.company, null),
+      social: getData(STORAGE_KEYS.social, null),
+      stats: getData(STORAGE_KEYS.stats, null),
+      team: getData(STORAGE_KEYS.team, null),
+      section_images: getData(STORAGE_KEYS.section_images, null),
+    }
   },
   async save(updates) {
-    if (!supabase) {
-      if (updates.company) saveData(STORAGE_KEYS.company, updates.company)
-      if (updates.social) saveData(STORAGE_KEYS.social, updates.social)
-      if (updates.stats) saveData(STORAGE_KEYS.stats, updates.stats)
-      if (updates.team) saveData(STORAGE_KEYS.team, updates.team)
-      if (updates.section_images) saveData(STORAGE_KEYS.section_images, updates.section_images)
-      return true
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('site_settings', 'save', updates)
+        await afterWrite('site_settings')
+        return true
+      } catch {
+        return false
+      }
     }
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 'main',
-      ...updates,
-      updated_at: new Date().toISOString(),
-    })
-    if (!error) await afterWrite('site_settings')
-    return !error
+    if (updates.company) saveData(STORAGE_KEYS.company, updates.company)
+    if (updates.social) saveData(STORAGE_KEYS.social, updates.social)
+    if (updates.stats) saveData(STORAGE_KEYS.stats, updates.stats)
+    if (updates.team) saveData(STORAGE_KEYS.team, updates.team)
+    if (updates.section_images) saveData(STORAGE_KEYS.section_images, updates.section_images)
+    return true
   },
   async clearFields(fields) {
-    const current = (await this.get()) || { id: 'main' }
-    const patch = { id: 'main' }
+    if (isApiConfigured()) {
+      const patch = {}
+      for (const field of fields) patch[field] = null
+      return this.save(patch)
+    }
+    const keyMap = {
+      company: STORAGE_KEYS.company,
+      social: STORAGE_KEYS.social,
+      stats: STORAGE_KEYS.stats,
+      team: STORAGE_KEYS.team,
+      section_images: STORAGE_KEYS.section_images,
+    }
     for (const field of fields) {
-      patch[field] = null
+      if (keyMap[field]) resetData(keyMap[field])
     }
-    if (!supabase) {
-      for (const field of fields) {
-        const keyMap = {
-          company: STORAGE_KEYS.company,
-          social: STORAGE_KEYS.social,
-          stats: STORAGE_KEYS.stats,
-          team: STORAGE_KEYS.team,
-          section_images: STORAGE_KEYS.section_images,
-        }
-        if (keyMap[field]) resetData(keyMap[field])
-      }
-      return true
-    }
-    const { error } = await supabase.from('site_settings').upsert({
-      ...current,
-      ...patch,
-      updated_at: new Date().toISOString(),
-    })
-    if (!error) await afterWrite('site_settings')
-    return !error
+    return true
   },
 }
 
 export const translationsDB = {
   async get() {
-    if (!supabase) return null
-    const { data } = await supabase.from('translations').select('*').eq('id', 'main').maybeSingle()
-    return data
+    if (isApiConfigured()) {
+      try {
+        return await fetchCmsTable('translations')
+      } catch {
+        return null
+      }
+    }
+    return getData(STORAGE_KEYS.translations, null)
   },
   async save(ar, en) {
-    if (!supabase) {
-      saveData(STORAGE_KEYS.translations, { ar, en })
-      return true
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('translations', 'save', { ar, en })
+        await afterWrite(STORAGE_KEYS.translations)
+        return true
+      } catch {
+        return false
+      }
     }
-    const { error } = await supabase.from('translations').upsert({
-      id: 'main',
-      ar,
-      en,
-      updated_at: new Date().toISOString(),
-    })
-    if (!error) await afterWrite(STORAGE_KEYS.translations)
-    return !error
+    saveData(STORAGE_KEYS.translations, { ar, en })
+    return true
   },
   async clear() {
-    if (!supabase) {
-      resetData(STORAGE_KEYS.translations)
-      return true
+    if (isApiConfigured()) {
+      return this.save({}, {})
     }
-    const { error } = await supabase.from('translations').upsert({
-      id: 'main',
-      ar: {},
-      en: {},
-      updated_at: new Date().toISOString(),
-    })
-    if (!error) await afterWrite(STORAGE_KEYS.translations)
-    return !error
+    resetData(STORAGE_KEYS.translations)
+    return true
   },
 }
 
 export const servicesDB = {
   async getAll() {
-    if (!supabase) return []
-    const { data } = await supabase.from('services').select('*').order('sort_order')
-    return data || []
+    if (isApiConfigured()) {
+      try {
+        const rows = await fetchCmsTable('services')
+        return Array.isArray(rows) ? rows : []
+      } catch {
+        return []
+      }
+    }
+    return getData(STORAGE_KEYS.services, []) || []
   },
   async saveAll(services) {
-    if (!supabase) {
-      saveData(STORAGE_KEYS.services, services)
-      return true
+    if (isApiConfigured()) {
+      try {
+        const rows = services.map((service, index) => serviceToRow(service, index))
+        await cmsWrite('services', 'upsert', rows)
+        await afterWrite(STORAGE_KEYS.services)
+        return true
+      } catch {
+        return false
+      }
     }
-    const rows = services.map((service, index) => serviceToRow(service, index))
-    const { error } = await supabase.from('services').upsert(rows, { onConflict: 'id' })
-    if (!error) await afterWrite(STORAGE_KEYS.services)
-    return !error
+    saveData(STORAGE_KEYS.services, services)
+    return true
   },
   async delete(id) {
-    if (!supabase) return false
-    const { error } = await supabase.from('services').delete().eq('id', id)
-    if (!error) await afterWrite(STORAGE_KEYS.services)
-    return !error
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('services', 'delete', { id })
+        await afterWrite(STORAGE_KEYS.services)
+        return true
+      } catch {
+        return false
+      }
+    }
+    const stored = getData(STORAGE_KEYS.services, []) || []
+    saveData(STORAGE_KEYS.services, stored.filter((s) => s.id !== id))
+    return true
   },
   async clear() {
-    if (!supabase) {
-      resetData(STORAGE_KEYS.services)
-      return true
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('services', 'clear', {})
+        await afterWrite(STORAGE_KEYS.services)
+        return true
+      } catch {
+        return false
+      }
     }
-    const { error } = await supabase.from('services').delete().gte('sort_order', -1)
-    if (!error) await afterWrite(STORAGE_KEYS.services)
-    return !error
+    resetData(STORAGE_KEYS.services)
+    return true
   },
 }
 
@@ -246,46 +290,68 @@ export const teamDB = {
 
 export const blogDB = {
   async getAll() {
-    if (!supabase) return []
-    const { data } = await supabase.from('blog_posts').select('*').order('sort_order')
-    return data || []
+    if (isApiConfigured()) {
+      try {
+        const rows = await fetchCmsTable('blog_posts')
+        return Array.isArray(rows) ? rows : []
+      } catch {
+        return []
+      }
+    }
+    return getData(STORAGE_KEYS.blog, []) || []
   },
   async saveAll(posts) {
-    if (!supabase) {
-      saveData(STORAGE_KEYS.blog, posts)
-      return true
+    if (isApiConfigured()) {
+      try {
+        const rows = posts.map((post, index) => blogToRow(post, index))
+        await cmsWrite('blog_posts', 'upsert', rows)
+        await afterWrite(STORAGE_KEYS.blog)
+        return true
+      } catch {
+        return false
+      }
     }
-    const rows = posts.map((post, index) => blogToRow(post, index))
-    const { error } = await supabase.from('blog_posts').upsert(rows, { onConflict: 'id' })
-    if (!error) await afterWrite(STORAGE_KEYS.blog)
-    return !error
+    saveData(STORAGE_KEYS.blog, posts)
+    return true
   },
   async delete(id) {
-    if (!supabase) return false
-    const { error } = await supabase.from('blog_posts').delete().eq('id', id)
-    if (!error) await afterWrite(STORAGE_KEYS.blog)
-    return !error
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('blog_posts', 'delete', { id })
+        await afterWrite(STORAGE_KEYS.blog)
+        return true
+      } catch {
+        return false
+      }
+    }
+    const stored = getData(STORAGE_KEYS.blog, []) || []
+    saveData(STORAGE_KEYS.blog, stored.filter((p) => p.id !== id))
+    return true
   },
   async clear() {
-    if (!supabase) {
-      resetData(STORAGE_KEYS.blog)
-      return true
+    if (isApiConfigured()) {
+      try {
+        await cmsWrite('blog_posts', 'clear', {})
+        await afterWrite(STORAGE_KEYS.blog)
+        return true
+      } catch {
+        return false
+      }
     }
-    const { error } = await supabase.from('blog_posts').delete().gte('sort_order', -1)
-    if (!error) await afterWrite(STORAGE_KEYS.blog)
-    return !error
+    resetData(STORAGE_KEYS.blog)
+    return true
   },
 }
 
 export const sectionImagesDB = {
   async get() {
-    if (!supabase) {
-      return getData(STORAGE_KEYS.section_images, {}) || {}
+    if (isApiConfigured()) {
+      const settings = await settingsDB.get()
+      return settings?.section_images && typeof settings.section_images === 'object'
+        ? settings.section_images
+        : {}
     }
-    const settings = await settingsDB.get()
-    return settings?.section_images && typeof settings.section_images === 'object'
-      ? settings.section_images
-      : {}
+    return getData(STORAGE_KEYS.section_images, {}) || {}
   },
   async save(images) {
     return settingsDB.save({ section_images: images })
@@ -314,6 +380,24 @@ function writeLocalInquiries(items) {
 
 export const inquiriesDB = {
   async insert(submission) {
+    if (isApiConfigured()) {
+      try {
+        const type = submission.source === 'project_detail' ? 'booking' : 'contact'
+        await submitInquiryApi({
+          name: submission.name,
+          phone: submission.phone,
+          email: submission.email || null,
+          message: submission.message || null,
+          project_name: submission.project_name || null,
+          district: submission.district || null,
+          type,
+        })
+        return true
+      } catch (err) {
+        console.error('inquiriesDB.insert:', err)
+      }
+    }
+
     const row = {
       source: submission.source,
       name: submission.name,
@@ -323,61 +407,49 @@ export const inquiriesDB = {
       project_name: submission.project_name || null,
       district: submission.district || null,
       status: 'new',
-    }
-
-    const item = {
-      ...row,
       id: `inq-${Date.now()}`,
       created_at: new Date().toISOString(),
     }
-    writeLocalInquiries([item, ...readLocalInquiries()])
-
-    if (supabase) {
-      await supabase.from('form_submissions').insert(row)
-    }
-
+    writeLocalInquiries([row, ...readLocalInquiries()])
     return true
   },
   async getAll() {
-    const local = [...readLocalInquiries()].sort(
+    if (isApiConfigured()) {
+      try {
+        return await fetchInquiriesApi()
+      } catch (err) {
+        console.error('inquiriesDB.getAll:', err)
+      }
+    }
+    return [...readLocalInquiries()].sort(
       (a, b) => new Date(b.created_at) - new Date(a.created_at),
     )
-
-    if (!supabase) return local
-
-    const { data, error } = await supabase
-      .from('form_submissions')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (error || !data?.length) return local
-
-    const remoteIds = new Set(data.map((item) => String(item.id)))
-    const merged = [
-      ...data,
-      ...local.filter((item) => !remoteIds.has(String(item.id))),
-    ]
-    return merged.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
   },
   async updateStatus(id, status) {
+    if (isApiConfigured()) {
+      try {
+        await updateInquiryStatusApi(id, status)
+        return true
+      } catch {
+        return false
+      }
+    }
     const updated = readLocalInquiries().map((item) =>
       (String(item.id) === String(id) ? { ...item, status } : item),
     )
     writeLocalInquiries(updated)
-
-    if (supabase) {
-      await supabase.from('form_submissions').update({ status }).eq('id', id)
-    }
-
     return true
   },
   async delete(id) {
-    writeLocalInquiries(readLocalInquiries().filter((item) => String(item.id) !== String(id)))
-
-    if (supabase) {
-      await supabase.from('form_submissions').delete().eq('id', id)
+    if (isApiConfigured()) {
+      try {
+        await deleteInquiryApi(id)
+        return true
+      } catch {
+        return false
+      }
     }
-
+    writeLocalInquiries(readLocalInquiries().filter((item) => String(item.id) !== String(id)))
     return true
   },
   async countNew() {

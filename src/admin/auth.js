@@ -62,7 +62,7 @@ export async function adminLogin(username, password) {
   return {
     success: true,
     ok: true,
-    supabaseOffline: isApiConfigured(),
+    apiOffline: isApiConfigured(),
   }
 }
 
