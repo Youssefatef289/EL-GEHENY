@@ -1,8 +1,12 @@
+// Client API layer for Vercel serverless (/api/*).
+// Used by: auth.js, inquiries.js, inquiriesAdmin.js
+// Enable with VITE_API_ENABLED=true after PlanetScale is configured on Vercel.
+
 const TOKEN_KEY = 'elgeheny_admin_token'
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 
 export function isApiConfigured() {
-  return import.meta.env.PROD || Boolean(import.meta.env.VITE_API_BASE)
+  return import.meta.env.VITE_API_ENABLED === 'true' || Boolean(import.meta.env.VITE_API_BASE)
 }
 
 export function getAdminToken() {

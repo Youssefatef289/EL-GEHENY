@@ -1,4 +1,3 @@
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { STORAGE_KEYS } from './storage'
 import { isApiConfigured, loginApi, setAdminToken } from '../lib/apiClient'
 
@@ -42,51 +41,29 @@ async function loginViaApi(username, password) {
       return { success: true, ok: true }
     }
   } catch {
-    // fall through to legacy auth
+    // API unavailable — fall back to local credentials
   }
   return null
 }
 
+// Login order: 1) PlanetScale JWT API  2) local credentials (admin/geheny2024)
+// CMS content still loads from Supabase separately via storage.js
 export async function adminLogin(username, password) {
   if (isApiConfigured()) {
     const apiResult = await loginViaApi(username, password)
     if (apiResult) return apiResult
   }
 
-  if (!isSupabaseConfigured() || !supabase) {
-    if (!matchLocalCredentials(username, password)) {
-      return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
-    }
-    saveSession(username)
-    return { success: true, ok: true }
+  if (!matchLocalCredentials(username, password)) {
+    return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
   }
 
-  const { data, error } = await supabase
-    .from('admin_users')
-    .select('username')
-    .eq('username', username)
-    .eq('password_hash', password)
-    .maybeSingle()
-
-  if (!error && data) {
-    saveSession(data.username)
-    return { success: true, ok: true }
+  saveSession(username)
+  return {
+    success: true,
+    ok: true,
+    supabaseOffline: isApiConfigured(),
   }
-
-  if (matchLocalCredentials(username, password)) {
-    saveSession(username)
-    return { success: true, ok: true, supabaseOffline: Boolean(error) }
-  }
-
-  if (error) {
-    return {
-      success: false,
-      ok: false,
-      error: 'تعذر الاتصال بقاعدة البيانات. تحقق من إعداد Supabase أو استخدم البيانات الافتراضية.',
-    }
-  }
-
-  return { success: false, ok: false, error: 'بيانات الدخول غير صحيحة' }
 }
 
 export function isLoggedIn() {
@@ -94,8 +71,7 @@ export function isLoggedIn() {
 }
 
 export function isAuthenticated() {
-  const session = getSession()
-  return Boolean(session)
+  return Boolean(getSession())
 }
 
 export function getSession() {
@@ -126,14 +102,7 @@ export function logout() {
 
 export async function changePassword(username, newPassword) {
   saveLocalCredentials({ username, password: newPassword })
-  if (!isSupabaseConfigured() || !supabase) {
-    return true
-  }
-  const { error } = await supabase
-    .from('admin_users')
-    .update({ password_hash: newPassword })
-    .eq('username', username)
-  return !error
+  return true
 }
 
 export async function login(username, password) {
