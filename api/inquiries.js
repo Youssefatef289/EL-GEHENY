@@ -50,11 +50,12 @@ export default async function handler(req, res) {
 
       const result = await db.execute(
         `INSERT INTO inquiries (name, phone, email, subject, message, project_name, district, type)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+         RETURNING id`,
         [name.trim(), phone.trim(), email, subject, message, project_name, district, type],
       )
 
-      return sendJson(res, 201, { success: true, id: result.insertId })
+      return sendJson(res, 201, { success: true, id: result.insertId ?? result.rows?.[0]?.id })
     }
 
     if (req.method === 'DELETE') {

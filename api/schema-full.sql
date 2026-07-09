@@ -1,73 +1,69 @@
--- MySQL schema reference (PlanetScale) — full CMS on PlanetScale
--- API layer uses only: inquiries + admins (see api/setup.js)
+-- Postgres schema reference (Neon) — full CMS
 
 CREATE TABLE IF NOT EXISTS site_settings (
-  id VARCHAR(50) PRIMARY KEY DEFAULT 'main',
-  company JSON,
-  stats JSON,
-  social JSON,
-  team JSON,
-  nav_links JSON,
-  section_images JSON,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  id VARCHAR(50) PRIMARY KEY,
+  company JSONB,
+  stats JSONB,
+  social JSONB,
+  team JSONB,
+  section_images JSONB,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS translations (
-  id VARCHAR(50) PRIMARY KEY DEFAULT 'main',
-  ar JSON,
-  en JSON,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  id VARCHAR(50) PRIMARY KEY,
+  ar JSONB,
+  en JSONB,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS projects (
   id VARCHAR(100) PRIMARY KEY,
-  title JSON,
-  location JSON,
-  status JSON,
+  title JSONB,
+  location JSONB,
+  status JSONB,
   progress INT DEFAULT 0,
-  description JSON,
-  features JSON,
+  description JSONB,
+  features JSONB,
   cover_url TEXT,
-  gallery JSON,
-  units JSON,
-  payload JSON,
+  gallery JSONB,
+  units JSONB,
+  payload JSONB,
   sort_order INT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS services (
   id VARCHAR(100) PRIMARY KEY,
-  title JSON,
-  description JSON,
+  title JSONB,
+  description JSONB,
   icon_url TEXT,
-  payload JSON,
+  payload JSONB,
   sort_order INT DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS blog_posts (
   id VARCHAR(100) PRIMARY KEY,
-  title JSON,
-  content JSON,
-  excerpt JSON,
+  title JSONB,
+  content JSONB,
+  excerpt JSONB,
   cover_url TEXT,
   published_at VARCHAR(50),
   slug VARCHAR(200),
-  payload JSON,
+  payload JSONB,
   sort_order INT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS admins (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   username VARCHAR(50) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS inquiries (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   phone VARCHAR(20) NOT NULL,
   email VARCHAR(100),
@@ -75,7 +71,7 @@ CREATE TABLE IF NOT EXISTS inquiries (
   message TEXT,
   project_name VARCHAR(100),
   district VARCHAR(100),
-  type ENUM('contact', 'booking') DEFAULT 'contact',
-  status ENUM('new', 'in_progress', 'done') DEFAULT 'new',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  type VARCHAR(20) DEFAULT 'contact',
+  status VARCHAR(20) DEFAULT 'new',
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );

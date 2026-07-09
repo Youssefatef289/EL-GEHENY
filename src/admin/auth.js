@@ -46,7 +46,7 @@ async function loginViaApi(username, password) {
   return null
 }
 
-// Login order: 1) PlanetScale JWT API  2) local credentials (admin/geheny2024)
+// Login order: 1) Neon JWT API  2) local credentials (admin/geheny2024)
 // CMS content still loads from Supabase separately via storage.js
 export async function adminLogin(username, password) {
   if (isApiConfigured()) {

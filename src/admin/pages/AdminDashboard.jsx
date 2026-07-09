@@ -73,8 +73,8 @@ export default function AdminDashboard() {
         </p>
         <p className="text-sm text-gray-600">
           {apiReady
-            ? 'التعديلات تُحفظ في PlanetScale وتظهر لجميع الزوار على أي جهاز.'
-            : '⚠️ API غير مُفعّل — أضف VITE_API_ENABLED=true ومتغيرات PlanetScale في Vercel'}
+            ? 'التعديلات تُحفظ في Neon وتظهر لجميع الزوار على أي جهاز.'
+            : '⚠️ API غير مُفعّل — أضف VITE_API_ENABLED=true و DATABASE_URL في Vercel'}
         </p>
         {apiReady && (
           <button

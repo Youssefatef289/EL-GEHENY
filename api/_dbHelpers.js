@@ -38,6 +38,10 @@ export function serializeValue(value) {
   return value
 }
 
+export function isJsonColumn(table, column) {
+  return (JSON_FIELDS[table] || []).includes(column)
+}
+
 export function pickRow(table, row) {
   const columns = TABLE_COLUMNS[table]
   if (!columns) return row
@@ -53,9 +57,14 @@ export async function upsertRow(db, table, row) {
   const keys = Object.keys(data)
   if (!keys.length) return
 
-  const placeholders = keys.map(() => '?').join(', ')
-  const updates = keys.filter((k) => k !== 'id').map((k) => `${k} = VALUES(${k})`).join(', ')
-  const sql = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders}) ON DUPLICATE KEY UPDATE ${updates}`
+  const placeholders = keys
+    .map((k) => (isJsonColumn(table, k) ? '?::jsonb' : '?'))
+    .join(', ')
+  const updates = keys
+    .filter((k) => k !== 'id')
+    .map((k) => `${k} = EXCLUDED.${k}`)
+    .join(', ')
+  const sql = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders}) ON CONFLICT (id) DO UPDATE SET ${updates}`
   await db.execute(sql, keys.map((k) => data[k]))
 }
 

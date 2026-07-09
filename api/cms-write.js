@@ -52,13 +52,13 @@ export default async function handler(req, res) {
       const values = []
       for (const field of fields) {
         if (payload?.[field] !== undefined) {
-          sets.push(`${field} = ?`)
+          sets.push(`${field} = ?::jsonb`)
           values.push(serializeValue(payload[field]))
         }
       }
       if (!sets.length) return sendJson(res, 400, { error: 'Nothing to save' })
       await db.execute(
-        `UPDATE site_settings SET ${sets.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = 'main'`,
+        `UPDATE site_settings SET ${sets.join(', ')}, updated_at = NOW() WHERE id = 'main'`,
         values,
       )
       return sendJson(res, 200, { success: true })
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
 
     if (table === 'translations' && action === 'save') {
       await db.execute(
-        "UPDATE translations SET ar = ?, en = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 'main'",
+        "UPDATE translations SET ar = ?::jsonb, en = ?::jsonb, updated_at = NOW() WHERE id = 'main'",
         [serializeValue(payload?.ar ?? {}), serializeValue(payload?.en ?? {})],
       )
       return sendJson(res, 200, { success: true })
