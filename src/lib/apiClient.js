@@ -1,11 +1,11 @@
-// Client API layer for Vercel serverless (/api/*).
-// Enable with VITE_API_ENABLED=true on Vercel.
+// Client API layer for Vercel serverless (/api/*) and local Express (server.js).
+// Enable with VITE_API_ENABLED=true
 
 const TOKEN_KEY = 'elgeheny_admin_token'
-const API_BASE = import.meta.env.VITE_API_BASE || ''
+const API_BASE = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE || ''
 
 export function isApiConfigured() {
-  return import.meta.env.VITE_API_ENABLED === 'true' || Boolean(import.meta.env.VITE_API_BASE)
+  return import.meta.env.VITE_API_ENABLED === 'true' || Boolean(API_BASE)
 }
 
 export function getAdminToken() {

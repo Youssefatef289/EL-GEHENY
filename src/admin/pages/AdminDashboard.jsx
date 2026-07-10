@@ -73,8 +73,8 @@ export default function AdminDashboard() {
         </p>
         <p className="text-sm text-gray-600">
           {apiReady
-            ? 'التعديلات تُحفظ في Neon وتظهر لجميع الزوار على أي جهاز.'
-            : '⚠️ API غير مُفعّل — أضف VITE_API_ENABLED=true و DATABASE_URL في Vercel'}
+            ? 'التعديلات تُحفظ في قاعدة البيانات وتظهر لجميع الزوار على أي جهاز.'
+            : '⚠️ API غير مُفعّل — محلياً: npm run docker:up ثم npm run dev:full'}
         </p>
         {apiReady && (
           <button

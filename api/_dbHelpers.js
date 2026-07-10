@@ -57,6 +57,17 @@ export async function upsertRow(db, table, row) {
   const keys = Object.keys(data)
   if (!keys.length) return
 
+  const dialect = db.dialect || 'postgres'
+  const values = keys.map((k) => data[k])
+
+  if (dialect === 'mysql') {
+    const placeholders = keys.map(() => '?').join(', ')
+    const updates = keys.filter((k) => k !== 'id').map((k) => `${k} = VALUES(${k})`).join(', ')
+    const sql = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders}) ON DUPLICATE KEY UPDATE ${updates}`
+    await db.execute(sql, values)
+    return
+  }
+
   const placeholders = keys
     .map((k) => (isJsonColumn(table, k) ? '?::jsonb' : '?'))
     .join(', ')
@@ -65,7 +76,12 @@ export async function upsertRow(db, table, row) {
     .map((k) => `${k} = EXCLUDED.${k}`)
     .join(', ')
   const sql = `INSERT INTO ${table} (${keys.join(', ')}) VALUES (${placeholders}) ON CONFLICT (id) DO UPDATE SET ${updates}`
-  await db.execute(sql, keys.map((k) => data[k]))
+  await db.execute(sql, values)
+}
+
+export function jsonPlaceholder(db, table, field) {
+  if ((db.dialect || 'postgres') === 'mysql') return '?'
+  return isJsonColumn(table, field) ? '?::jsonb' : '?'
 }
 
 export function readBody(req) {

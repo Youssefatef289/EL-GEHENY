@@ -1,0 +1,37 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: elgeheny_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: elgeheny_root_2024
+      MYSQL_DATABASE: elgeheny
+      MYSQL_USER: elgeheny_user
+      MYSQL_PASSWORD: elgeheny_pass_2024
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./api/schema-mysql.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uelgeheny_user", "-pelgeheny_pass_2024"]
+      timeout: 20s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: elgeheny_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: elgeheny_user
+      PMA_PASSWORD: elgeheny_pass_2024
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

@@ -48,12 +48,22 @@ export default async function handler(req, res) {
         return sendJson(res, 400, { error: 'Name and phone are required' })
       }
 
-      const result = await db.execute(
-        `INSERT INTO inquiries (name, phone, email, subject, message, project_name, district, type)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-         RETURNING id`,
-        [name.trim(), phone.trim(), email, subject, message, project_name, district, type],
-      )
+      const params = [name.trim(), phone.trim(), email, subject, message, project_name, district, type]
+      let result
+      if (db.dialect === 'mysql') {
+        result = await db.execute(
+          `INSERT INTO inquiries (name, phone, email, subject, message, project_name, district, type)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          params,
+        )
+      } else {
+        result = await db.execute(
+          `INSERT INTO inquiries (name, phone, email, subject, message, project_name, district, type)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+           RETURNING id`,
+          params,
+        )
+      }
 
       return sendJson(res, 201, { success: true, id: result.insertId ?? result.rows?.[0]?.id })
     }

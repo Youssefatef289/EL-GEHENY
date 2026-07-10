@@ -1,6 +1,6 @@
 import { db, isDbConfigured } from './db.js'
 import { applyCors, handleOptions, requireAuth, sendJson } from './_utils.js'
-import { readBody, upsertRow, serializeValue } from './_dbHelpers.js'
+import { readBody, upsertRow, serializeValue, jsonPlaceholder } from './_dbHelpers.js'
 
 const LIST_TABLES = new Set(['projects', 'services', 'blog_posts'])
 
@@ -52,21 +52,24 @@ export default async function handler(req, res) {
       const values = []
       for (const field of fields) {
         if (payload?.[field] !== undefined) {
-          sets.push(`${field} = ?::jsonb`)
+          sets.push(`${field} = ${jsonPlaceholder(db, 'site_settings', field)}`)
           values.push(serializeValue(payload[field]))
         }
       }
       if (!sets.length) return sendJson(res, 400, { error: 'Nothing to save' })
+      const ts = db.dialect === 'mysql' ? 'CURRENT_TIMESTAMP' : 'NOW()'
       await db.execute(
-        `UPDATE site_settings SET ${sets.join(', ')}, updated_at = NOW() WHERE id = 'main'`,
+        `UPDATE site_settings SET ${sets.join(', ')}, updated_at = ${ts} WHERE id = 'main'`,
         values,
       )
       return sendJson(res, 200, { success: true })
     }
 
     if (table === 'translations' && action === 'save') {
+      const cast = db.dialect === 'mysql' ? '?' : '?::jsonb'
+      const ts = db.dialect === 'mysql' ? 'CURRENT_TIMESTAMP' : 'NOW()'
       await db.execute(
-        "UPDATE translations SET ar = ?::jsonb, en = ?::jsonb, updated_at = NOW() WHERE id = 'main'",
+        `UPDATE translations SET ar = ${cast}, en = ${cast}, updated_at = ${ts} WHERE id = 'main'`,
         [serializeValue(payload?.ar ?? {}), serializeValue(payload?.en ?? {})],
       )
       return sendJson(res, 200, { success: true })

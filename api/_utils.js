@@ -4,6 +4,7 @@ const ALLOWED_ORIGINS = [
   'https://el-geheny.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000',
+  'http://localhost:3001',
 ]
 
 export function applyCors(req, res) {
